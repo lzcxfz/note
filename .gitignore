@@ -1,0 +1,56 @@
+
+node_modules/
+vuepress/.vuepress/.cache/
+vuepress/.vuepress/.temp/
+vuepress/.vuepress/dist/
+
+node_modules/
+docs/.vuepress/.cache/
+docs/.vuepress/.temp/
+docs/.vuepress/dist/
+
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+.deploy*/
+_multiconfig.yml
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/hs_err_pid*.log
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### docker ###
+/data/
+

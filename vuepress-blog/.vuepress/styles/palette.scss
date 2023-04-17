@@ -1,0 +1,43 @@
+$theme-color: rgb(43, 150, 150);
+.page .theme-hope-content:not(.custom){
+    max-width: 1000px;
+    // text-align: center
+    background: rgb(245, 245, 213);
+}
+
+// div[class*=language-] {
+//     background-color: rgb(245, 242, 240);
+// }
+
+.theme-hope-content:not(.custom) >h1:first-child, .theme-hope-content:not(.custom) >h2:first-child,.theme-hope-content:not(.custom) >h3:first-child{
+//    color: aqua;
+}
+
+#toc{
+    left: calc(100% + 15rem);
+}
+
+
+.theme-container.has-toc .page {
+    padding-right: 0rem;
+}
+
+.theme-container .page {
+    background: rgb(245, 245, 213);
+}
+.has-toc #toc {
+    background-color: rgb(245, 242, 240);
+}
+.blog-hero h1 {
+    display: none;
+}
+
+.blog-hero .description {
+    display: none;
+}
+// h1{
+//     text-align: center;
+// }
+// .page-info{
+//     display: none;
+// }
