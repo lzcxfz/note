@@ -16,7 +16,7 @@ jobs:
       - name: Build
         run: npm run docs:build
       - name: Deploy to Nginx
-        uses: appleboy/scp-action@v2
+        uses: appleboy/scp-action@v3
         with:
           host: 150.158.20.104
           username: root

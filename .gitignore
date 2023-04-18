@@ -1,8 +1,8 @@
 
 node_modules/
-vuepress/.vuepress/.cache/
-vuepress/.vuepress/.temp/
-vuepress/.vuepress/dist/
+vuepress-blog/.vuepress/.cache/
+vuepress-blog/.vuepress/.temp/
+vuepress-blog/.vuepress/dist/
 
 node_modules/
 docs/.vuepress/.cache/
