@@ -47,6 +47,9 @@
 <li>
 <p>try、catch、finally、return</p>
 </li>
+<li>
+<p>vue前端</p>
+</li>
 </ul>
 </div></template>
 

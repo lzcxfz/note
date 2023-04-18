@@ -1,9 +1,9 @@
-import { useStyleTag } from "D:/blog/blog/node_modules/vuepress-plugin-components/lib/client/composables/index.js";
+import { useStyleTag } from "C:/Users/Admin/Desktop/lzc-sync/note/node_modules/vuepress-plugin-components/lib/client/composables/index.js";
 import { h } from "vue";
 import { defineClientConfig } from "@vuepress/client";
-import Badge from "D:/blog/blog/node_modules/vuepress-plugin-components/lib/client/components/Badge";
-import FontIcon from "D:/blog/blog/node_modules/vuepress-plugin-components/lib/client/components/FontIcon";
-import BackToTop from "D:/blog/blog/node_modules/vuepress-plugin-components/lib/client/components/BackToTop";
+import Badge from "C:/Users/Admin/Desktop/lzc-sync/note/node_modules/vuepress-plugin-components/lib/client/components/Badge";
+import FontIcon from "C:/Users/Admin/Desktop/lzc-sync/note/node_modules/vuepress-plugin-components/lib/client/components/FontIcon";
+import BackToTop from "C:/Users/Admin/Desktop/lzc-sync/note/node_modules/vuepress-plugin-components/lib/client/components/BackToTop";
 
 
 export default defineClientConfig({
