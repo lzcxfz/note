@@ -4,7 +4,7 @@ layout: Blog
 icon: home
 title: 主页
 # heroImage: /logo.svg
-bgImage: https://img.xjh.me/random_img.php?type=bg&ctype=nature&return=302
+bgImage: https://source.unsplash.com/user/erondu/1600x900
 heroText: 
 heroFullScreen: true
 tagline: 人若无名，专心练剑。
