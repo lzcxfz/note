@@ -23,5 +23,5 @@ jobs:
         host: 150.158.20.104
         username: root
         password: qq1111.1
-        source: '../../vuepress-blog/.vuepress/dist'
+        source: 'vuepress-blog/.vuepress/dist'
         target: '/usr/local/nginx/html'
