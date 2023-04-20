@@ -315,3 +315,40 @@ public class BinarySearch {
 
   
 
+### 19-数组高级操作-冒泡排序代码实现
+
+```java
+/**
+ * 冒泡排序
+ *
+ * @author lzc
+ * @date 2023/04/21
+ */
+public class BubbleSort {
+    public static void main(String[] args) {
+        int [] arr = {9,8,7,6,5,4,3,2,1,0};
+
+        bubbleSort(arr);
+    }
+
+    private static void bubbleSort(int[] arr) {
+        for (int i=1;i<arr.length-1;i++){
+            for (int j = 0;j<arr.length-i;j++){
+                if (arr[j]>arr[j+1]){
+                    int temp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = temp;
+                }
+            }
+            System.out.println("第"+i+"轮："+Arrays.toString(arr));
+
+        }
+
+        System.out.println("排序后"+Arrays.toString(arr));
+    }
+}
+```
+
+为了更好看，来个最差的：
+
+![image-20230421004844917](http://www.iocaop.com/images/2023-04/image-20230421004844917.png)
