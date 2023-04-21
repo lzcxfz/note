@@ -349,7 +349,7 @@ public class BubbleSort {
 }
 ```
 
-为了更好看，来个最差的：
+为了更直观，打印最差的情况：
 
 ![image-20230421004844917](http://www.iocaop.com/images/2023-04/image-20230421004844917.png)
 
