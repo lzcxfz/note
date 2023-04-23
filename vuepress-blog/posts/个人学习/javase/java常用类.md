@@ -355,3 +355,57 @@ public class BubbleSort {
 
 ### 20-递归-概念
 
+概述：方法定义中调用方法本身的现象。
+
+思路：把复杂问题转为一个<span style="background-color:pink;">与原问题相似的规模较小的问题来求解</span>，递归策略只需少量的程序就可以描述出截图过程所需要的多次重复计算。
+
+递归解决问题要找到2个内容：
+
+* 递归出口：否则会出现内存溢出
+* 递归规则：与原问题相似的规模较小的问题
+
+求1-100的和：
+
+```java
+/**
+ * 求1-100 传统写法
+ *
+ * @author 赖卓成
+ * @date 2023/04/23
+ */
+public class MyFactorialDemo01 {
+    public static void main(String[] args) {
+        int sum = 0;
+        for (int i = 0; i <= 100; i++) {
+            sum+=i;
+        }
+        System.out.println(sum);
+    }
+}
+
+```
+
+```java
+/**
+ * 求1-100 递归写法
+ *
+ * @author 赖卓成
+ * @date 2023/04/23
+ */
+public class MyFactorialDemo02 {
+    public static void main(String[] args) {
+        int sum = getSum(100);
+        System.out.println(sum);
+    }
+
+    private static int getSum(int i) {
+        if (i==1){
+            return 1;
+        }else {
+            return i+getSum(i-1);
+        }
+
+    }
+}
+```
+
