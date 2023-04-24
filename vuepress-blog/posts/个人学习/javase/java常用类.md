@@ -414,3 +414,33 @@ public class MyFactorialDemo02 {
 需求：用递归求5的阶乘，输出结果。
 
 5! = 5\*4\*3\*2\*1
+
+* 递归的出口 1！=1，也就是一直拆分，直到乘1为止。
+* 递归规则：n!=n*(n-1!),如5的阶乘等于5乘以4的阶乘：5!=5\*4!
+
+代码实现：
+
+```java
+/**
+ * 用递归求5的阶乘 5*4*3*2*1 = 120
+ *
+ * @author lzc
+ * @date 2023/04/25
+ */
+public class MyFactorialDemo03 {
+    public static void main(String[] args) {
+        int result  = getResult(5);
+        System.out.println(result);
+    }
+
+    private static int getResult(int i) {
+        // 递归出口
+        if (i==1){
+            return 1;
+        }
+        // 递归的规则 n! = n*(n-1)!
+        return i * getResult(i-1);
+    }
+}
+```
+
