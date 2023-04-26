@@ -563,7 +563,7 @@ public class QuickSort {
 }
 ```
 
-需要注意，在移动指针后，需要处理等于的情况。即：
+需要注意，在移动指针后，需要处理等于的情况。即：这里遗留一个问题，即使元素没重复，不加=依然是错的，没找到原因
 
 ```java
 // 处理等于的情况  <=
@@ -573,3 +573,97 @@ while (arr[0] >= arr[left] && left < right){...}
 ```
 
 递归一次后，记得把基准数归位。
+
+### 25-数组的高级操作-快排完整实现
+
+上面代码，也就是快排中的代码只调用一次后，形成的效果如下图：
+
+![image-20230427013502785](http://www.iocaop.com/images/2023-04/image-20230427013502785.png)
+
+接下来我们就要再次选取基准数，确定基准数位置，我们选择下标为0的，也就是3为基准数，在整个范围中来确定它的位置。
+
+依然是从右往左找，即arr[arr.length-1]开始，即最右的位置往左移动，遇到比3小的则停下来，再从左往右找到比3大的数停下来，左交换。
+
+不难发现，经过第一次循环操作，现在根本不需要从最右边开始找，因为6右边的都大于6，左边都小于6，可以得到0索引的值小于6，即3<6，而6右边都大于6，得6右边都大于3。
+
+![image-20230427014011700](http://www.iocaop.com/images/2023-04/image-20230427014011700.png)
+
+右边的也是同理：
+
+![image-20230427014237434](http://www.iocaop.com/images/2023-04/image-20230427014237434.png)
+
+什么时候递归结束？
+
+当3元素位置确定后，下一次需要递归的范围如下图：
+
+![image-20230427014330165](http://www.iocaop.com/images/2023-04/image-20230427014330165.png)
+
+再确定2元素的位置，得下一次需要递归将基准数归位的范围：
+
+![image-20230427014446314](http://www.iocaop.com/images/2023-04/image-20230427014446314.png)
+
+1元素位置确定后，下一次基准数归位需要递归的范围：
+
+![image-20230427014542989](http://www.iocaop.com/images/2023-04/image-20230427014542989.png)
+
+可以看到，数组越界了，这时候应该结束递归了。即left>right时结束递归。
+
+代码实现：
+
+```java
+public class QuickSort {
+    public static void main(String[] args) {
+        // 定义数组
+        int[] arr = {6, 1, 2, 7, 9, 3, 4, 5, 10, 8};
+
+        quickSort(arr, 0, arr.length - 1);
+
+        // 一次递归后，结果应该是确定了基准数6应该处于哪个位置，且左边的比6小，右边的比6大
+        System.out.println(Arrays.toString(arr));
+    }
+
+    /**
+     * 快速排序 一次递归
+     *
+     * @param arr   数组
+     * @param left  最小索引
+     * @param right 最大索引
+     */
+    private static void quickSort(int[] arr, int left, int right) {
+        if (left>right){
+            return;
+        }
+        int left0 = left;
+        int max = right;
+        int baseNumber = arr[left0];
+        // 从一次递归的最后一步，即两个索引重叠时可以得出循环次数：
+        while (left != right) {
+            // 从右往左找比基准数小的，可以得出以下循环，即：没找到一直移动索引，循环次数就是移动次数。找到了就停下来，即跳出循环
+            while (baseNumber <= arr[right] && left < right) {
+                right--;
+            }
+
+            // 上一个循环，从右往左找到比6小的，找到后停下来，就要移动左边索引，从左往右找比6大的,没找到就一直移动索引
+            while (baseNumber >= arr[left] && left < right) {
+                left++;
+            }
+
+            // 走到这一步，说明从右往左已经找到比6小的，从左往右也已经找到比6大的，此时交换两个索引位置的值
+            int temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+        }
+        // 两个索引重叠时，基准数归位，即交换基准数和当前索引位置的值
+        int temp = arr[left];
+        arr[left] = baseNumber;
+        arr[left0] = temp;
+
+        // 递归处理左边
+        quickSort(arr,left0,left-1);
+        // 递归处理右边
+        quickSort(arr,left+1,max);
+    }
+}
+```
+
+这里，进入方法时判断递归条件，定义了left0和max记录基准数位置和递归索引最大值。为什么要这样？因为基准数位置不是每次都是0索引，当确定第一次递归，即6元素右边的元素的范围时，基准数位置每次都在变化。至于max，范围有不一样的情况，6左边的元素确定位置时没必要从数组尾部开始移动，直接从6元素索引-1的位置移动即可。
