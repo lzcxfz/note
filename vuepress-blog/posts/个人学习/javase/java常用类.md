@@ -512,3 +512,64 @@ public class MyFactorialDemo03 {
   ![image-20230426232429270](http://www.iocaop.com/images/2023-04/image-20230426232429270.png)
 
 * 到此，一次递归结束，就确定了第一个基准数应该放的位置。
+
+### 24-数组的高级操作-快排核心代码实现
+
+先实现一次递归，基准数6在数组中应该存放的位置。
+
+```java
+public class QuickSort {
+    public static void main(String[] args) {
+        // 定义数组
+        int[] arr = {6, 1, 2, 7, 9, 3, 4, 5, 10, 8};
+
+        quickSort(arr, 0, arr.length - 1);
+
+        // 一次递归后，结果应该是确定了基准数6应该处于哪个位置，且左边的比6小，右边的比6大
+        System.out.println(Arrays.toString(arr));
+    }
+
+    /**
+     * 快速排序 一次递归
+     *
+     * @param arr   数组
+     * @param left  最小索引
+     * @param right 最大索引
+     */
+    private static void quickSort(int[] arr, int left, int right) {
+
+        // 从一次递归的最后一步，即两个索引重叠时可以得出循环次数：
+        while (left != right) {
+            // 从右往左找比基准数小的，可以得出以下循环，即：没找到一直移动索引，循环次数就是移动次数。找到了就停下来，即跳出循环
+            while (arr[0] <= arr[right] && left < right) {
+                right--;
+            }
+
+            // 上一个循环，从右往左找到比6小的，找到后停下来，就要移动左边索引，从左往右找比6大的,没找到就一直移动索引
+            while (arr[0] >= arr[left] && left < right) {
+                left++;
+            }
+
+            // 走到这一步，说明从右往左已经找到比6小的，从左往右也已经找到比6大的，此时交换两个索引位置的值
+            int temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+        }
+        // 两个索引重叠时，基准数归位，即交换基准数和当前索引位置的值
+        int temp = arr[left];
+        arr[left] = arr[0];
+        arr[0] = temp;
+    }
+}
+```
+
+需要注意，在移动指针后，需要处理等于的情况。即：
+
+```java
+// 处理等于的情况  <=
+while (arr[0] <= arr[right] && left < right){...}
+// 处理等于的情况  <=
+while (arr[0] >= arr[left] && left < right){...}
+```
+
+递归一次后，记得把基准数归位。
