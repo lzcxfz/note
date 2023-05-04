@@ -732,3 +732,112 @@ public class DateDemo01 {
 }
 ```
 
+### 03-Date成员方法
+
+![image-20230504133902128](http://www.iocaop.com/images/2023-05/image-20230504133902128.png)
+
+```java
+public class DateDemo02 {
+    public static void main(String[] args) {
+        Date date = new Date();
+        // Thu May 04 13:42:07 CST 2023
+        System.out.println(date);
+        
+        // 获取毫秒数
+        long time = date.getTime();
+        // 1683178927205
+        System.out.println(time);
+        // 与下面这条等价
+        System.currentTimeMillis();
+
+        // 设置时间毫秒数
+        date.setTime(0L);
+        // Thu Jan 01 08:00:00 CST 1970
+        System.out.println(date);
+    }
+}
+```
+
+### 04-SimpleDateFormat
+
+可以对Date对象进行<span style="background-color:pink;">格式化和解析</span>。
+
+![image-20230504134658748](http://www.iocaop.com/images/2023-05/image-20230504134658748.png)
+
+常用模式字母对应关系如下：
+
+* y  年
+* M  月
+* d  日
+* H  时
+* m  分
+* s  秒
+
+如：
+
+* 2020-11-11 13:27:06 对应模式：yyyy-MM-dd HH:mm:ss
+* 2020年11月11日 13:27:06 对应模式yyyy年MM月dd日 HH:mm:ss
+
+SimpleDateFormat的构造方法：
+
+![image-20230504135102568](http://www.iocaop.com/images/2023-05/image-20230504135102568.png)
+
+```java
+public class DateDemo03 {
+    public static void main(String[] args) {
+        // 创建时间
+        Date date = new Date();
+
+        // 创建日期格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+    }
+}
+```
+
+创建好了，就需要调用成员方法进行格式化和解析：
+
+![image-20230504135404024](http://www.iocaop.com/images/2023-05/image-20230504135404024.png)
+
+```java
+public class DateDemo03 {
+    public static void main(String[] args) {
+        // 创建时间
+        Date date = new Date();
+
+        // 创建日期格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+
+        // 格式化
+        String format = sdf.format(date);
+        // 2023年05月04日 13:54:56
+        System.out.println(format);
+    }
+}
+```
+
+反过来也是一样，将字符串解析成Date对象：
+
+需要注意sdf的格式需要和时间字符串格式一致，否则会报异常。
+
+```java
+public class DateDemo03 {
+    public static void main(String[] args) throws ParseException {
+        // 创建时间
+        Date date = new Date();
+
+        // 创建日期格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+
+        // 格式化
+        String format = sdf.format(date);
+        // 2023年05月04日 13:54:56
+        System.out.println(format);
+
+        // 解析
+        Date parse = sdf.parse(format);
+        // Thu May 04 13:56:07 CST 2023
+        System.out.println(parse);
+    }
+}
+```
+
