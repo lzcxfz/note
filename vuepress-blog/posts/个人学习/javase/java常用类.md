@@ -691,3 +691,44 @@ public class QuickSort {
 * 排序，底层是快排
 
   ![image-20230427015947531](http://www.iocaop.com/images/2023-04/image-20230427015947531.png)
+
+## 8-4-时间日期类
+
+### 01-时间概述
+
+世界标准时间：格林威治天文台时间，简称GMT。现在已经有点偏差了，现在标准时间是原子钟提供的时间。
+
+中国时间：世界标准时间+8小时
+
+计算机中的时间原点：1970年1月1日 00:00:00 C语言的生日。了解更多：<a href='http://www.binsky.net/index.php/287.html'>点击跳转</a>
+
+### 02-Date类概述和构造方法
+
+Date代表了一个特定的时间，精确到毫秒。
+
+空参构造，表示<span style="background-color:pink;">电脑当前时间</span>。
+
+带参构造，从计算机的时间原点,过了指定<span style="background-color:pink;">毫秒</span>的那个时间
+
+```java
+public class DateDemo01 {
+    public static void main(String[] args) {
+        // 电脑的当前时间
+        Date date = new Date();
+        // Thu May 04 13:36:14 CST 2023
+        System.out.println(date);
+
+        // 计算机的时间原点,过了指定毫秒的那个时间
+        Date date1 = new Date(0L);
+        // Thu Jan 01 08:00:00 CST 1970  为什么是8点？东八区
+        System.out.println(date1);
+
+        // 1970年早上九点
+        Date date2 = new Date(3600*1000);
+        // Thu Jan 01 09:00:00 CST 1970
+        System.out.println(date2);
+
+    }
+}
+```
+
