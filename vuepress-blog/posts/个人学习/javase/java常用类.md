@@ -1090,3 +1090,25 @@ public class JDK8DateDemo07 {
 类似的方法还有：
 
 ![image-20230505074434754](http://www.iocaop.com/images/2023-05/image-20230505074434754.png)
+
+### 13-with系列方法
+
+直接修改时间
+
+![image-20230505075507734](http://www.iocaop.com/images/2023-05/image-20230505075507734.png)
+
+```java
+public class JDK8DateDemo08 {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("now = " + now);
+        LocalDateTime localDateTime = now.withYear(2222);
+        System.out.println("localDateTime = " + localDateTime);
+        LocalDateTime localDateTime1 = now.withMonth(20);
+    }
+}
+```
+
+![image-20230505075455470](http://www.iocaop.com/images/2023-05/image-20230505075455470.png)
+
+> 需要注意，如果超出范围，会报异常。<span style="background-color:pink;">plus、minus、with方法不会修改原来的对象，而是返回一个新的时间对象，原来的对象还是原来的时间</span>
