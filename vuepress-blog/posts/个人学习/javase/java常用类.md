@@ -924,3 +924,9 @@ public class DateDemo04 {
 需要注意的是，jdk8格式化要严格一点：保留两位，否则报错。
 
 ![image-20230504230437046](http://www.iocaop.com/images/2023-05/image-20230504230437046.png)
+
+### JDK8新增实践类-获取时间对象
+
+在jdk8，jdk7中的Date被拆分成了三个类：![image-20230504230845577](http://www.iocaop.com/images/2023-05/image-20230504230845577.png)
+
+![image-20230504230955007](http://www.iocaop.com/images/2023-05/image-20230504230955007.png)
