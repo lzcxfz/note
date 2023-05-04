@@ -925,7 +925,7 @@ public class DateDemo04 {
 
 ![image-20230504230437046](http://www.iocaop.com/images/2023-05/image-20230504230437046.png)
 
-### JDK8新增实践类-获取时间对象
+### 07-JDK8新增时间类-获取时间对象
 
 在jdk8，jdk7中的Date被拆分成了三个类：![image-20230504230845577](http://www.iocaop.com/images/2023-05/image-20230504230845577.png)
 
@@ -944,5 +944,52 @@ public class JDK8DateDemo02 {
         System.out.println(time);
     }
 }
+```
+
+### 08-获取时间中的每个值
+
+![image-20230505065717735](http://www.iocaop.com/images/2023-05/image-20230505065717735.png)
+
+```java
+/**
+ * jdk8 获取时间中的每个值
+ *
+ * @author lzc
+ * @date 2023/05/05
+ */
+public class JDK8DateDemo03 {
+    public static void main(String[] args) {
+        LocalDateTime localDateTime = LocalDateTime.of(2020, 11, 11, 11, 11);
+
+        // 获取年
+        int year = localDateTime.getYear();
+        System.out.println("year = " + year);
+
+        // 月
+        Month month = localDateTime.getMonth();
+        System.out.println("month = " + month);
+        int monthValue = localDateTime.getMonthValue();
+        System.out.println("monthValue = " + monthValue);
+
+        // 日
+        int dayOfMonth = localDateTime.getDayOfMonth();
+        System.out.println("dayOfMonth = " + dayOfMonth);
+
+        // 星期
+        DayOfWeek dayOfWeek = localDateTime.getDayOfWeek();
+        System.out.println("dayOfWeek = " + dayOfWeek);
+        int dayOfYear = localDateTime.getDayOfYear();
+        System.out.println("dayOfYear = " + dayOfYear);
+
+        // 小时
+        int hour = localDateTime.getHour();
+        System.out.println("hour = " + hour);
+
+        //分钟
+        int minute = localDateTime.getMinute();
+        System.out.println("minute = " + minute);
+    }
+}
+
 ```
 
