@@ -993,3 +993,27 @@ public class JDK8DateDemo03 {
 
 ```
 
+### 09-时间转换方法
+
+![image-20230505070958423](http://www.iocaop.com/images/2023-05/image-20230505070958423.png)
+
+```java
+/**
+ * jdk8 时间转换方法
+ *
+ * @author lzc
+ * @date 2023/05/05
+ */
+public class JDK8DateDemo04 {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("now = " + now);
+        LocalDate localDate = now.toLocalDate();
+        System.out.println("localDate = " + localDate);
+        LocalTime localTime = now.toLocalTime();
+        System.out.println("localTime = " + localTime);
+    }
+}
+```
+
+![image-20230505071139338](http://www.iocaop.com/images/2023-05/image-20230505071139338.png)
