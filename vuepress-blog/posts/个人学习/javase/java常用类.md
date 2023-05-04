@@ -1017,3 +1017,31 @@ public class JDK8DateDemo04 {
 ```
 
 ![image-20230505071139338](http://www.iocaop.com/images/2023-05/image-20230505071139338.png)
+
+### 10-格式化和解析
+
+![image-20230505071438756](http://www.iocaop.com/images/2023-05/image-20230505071438756.png)
+
+在jdk7中，日期格式化器是`SimpleDateFormat`，而在jdk8中是`DateTimeFormatter`
+
+![image-20230505071502212](http://www.iocaop.com/images/2023-05/image-20230505071502212.png)
+
+```java
+    private static void parse() {
+        String strTime = "2020年11月11日 11:11:11";
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse(strTime, dateTimeFormatter);
+        System.out.println("dateTime = " + dateTime);
+    }
+
+    private static void format() {
+        LocalDateTime now = LocalDateTime.now();
+        // 直接输出  now = 2023-05-05T07:22:50.455788700
+        System.out.println("now = " + now);
+        // 格式化输出  format = 2023年05月05日 07:22:50
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss");
+        String format = now.format(dateTimeFormatter);
+        System.out.println("format = " + format);
+    }
+```
+
