@@ -841,3 +841,48 @@ public class DateDemo03 {
 }
 ```
 
+### 05-练习
+
+![image-20230504140615023](http://www.iocaop.com/images/2023-05/image-20230504140615023.png)
+
+付款时间：2020年11月11日 0:03:47和2020年11月11日 0:10:11哪个秒杀成功？
+
+需要判断时间是否在秒杀范围，如何判断？可以转成毫秒值进行比较。
+
+```java
+public class DateDemo04 {
+    public static void main(String[] args) throws ParseException {
+        // 秒杀活动的开始时间和结束时间字符串
+        String start = "2020年11月11日 0:0:0";
+        String end = "2020年11月11日 0:10:0";
+
+        // 两个下单时间字符串
+        String one = "2020年11月11日 0:03:47";
+        String two = "2020年11月11日 0:10:11";
+
+        // 创建时间格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+
+        // 解析城Date对象并获取毫秒值
+        long startTime = sdf.parse(start).getTime();
+        long endTime = sdf.parse(end).getTime();
+        long oneTime = sdf.parse(one).getTime();
+        long twoTime = sdf.parse(two).getTime();
+
+        if (oneTime <= endTime && oneTime >= startTime) {
+            System.out.println("one秒杀成功");
+        } else {
+            System.out.println("one秒杀失败");
+        }
+
+        if (twoTime <= endTime && twoTime >= startTime) {
+            System.out.println("two秒杀成功");
+        } else {
+            System.out.println("two秒杀失败");
+        }
+
+    }
+}
+```
+
+![image-20230504141658583](http://www.iocaop.com/images/2023-05/image-20230504141658583.png)
