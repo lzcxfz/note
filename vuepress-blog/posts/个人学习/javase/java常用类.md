@@ -1045,3 +1045,48 @@ public class JDK8DateDemo04 {
     }
 ```
 
+### 11-plus系列方法
+
+```java
+public class JDK8DateDemo06 {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime years2024 = now.plusYears(1);
+        System.out.println("years2024 = " + years2024);
+        LocalDateTime  years2022= now.plusYears(-1);
+        System.out.println("years2022 = " + years2022);
+    }
+}
+```
+
+![image-20230505073535041](http://www.iocaop.com/images/2023-05/image-20230505073535041.png)
+
+> 需要注意的就是，参数可以是正数也可以是负数。正数则往后一年，负数则是前一年。
+
+类似方法：
+
+![image-20230505073618861](http://www.iocaop.com/images/2023-05/image-20230505073618861.png)
+
+### 12-minus系列方法
+
+与plus方法相反，用法一样。一个加，一个减。
+
+```java
+public class JDK8DateDemo07 {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime year2022 = now.minusYears(1);
+        System.out.println("year2022 = " + year2022);
+        LocalDateTime year2024 = now.minusYears(-1);
+        System.out.println("year2024 = " + year2024);
+    }
+}
+```
+
+![image-20230505074401862](http://www.iocaop.com/images/2023-05/image-20230505074401862.png)
+
+> 参数是正数则是以前的时间，为负数则是以后的时间。
+
+类似的方法还有：
+
+![image-20230505074434754](http://www.iocaop.com/images/2023-05/image-20230505074434754.png)
