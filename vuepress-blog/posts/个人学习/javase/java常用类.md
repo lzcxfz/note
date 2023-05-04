@@ -930,3 +930,19 @@ public class DateDemo04 {
 在jdk8，jdk7中的Date被拆分成了三个类：![image-20230504230845577](http://www.iocaop.com/images/2023-05/image-20230504230845577.png)
 
 ![image-20230504230955007](http://www.iocaop.com/images/2023-05/image-20230504230955007.png)
+
+```java
+public class JDK8DateDemo02 {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+        // 2023-05-04T23:12:45.785872500
+        System.out.println(now);
+
+        // 如果写错，会报错 如13月 32日 等
+        LocalDateTime time = LocalDateTime.of(2020, 11, 11, 1, 1, 1);
+        // 2020-11-11T01:01:01
+        System.out.println(time);
+    }
+}
+```
+
