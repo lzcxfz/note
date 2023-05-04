@@ -889,3 +889,38 @@ public class DateDemo04 {
 
 ### 06-JDK8的体验
 
+假如有字符串表示的时间 2020年11月11日 0:00:00  现在需要将时间往后一天。在jdk7中需要这样做：
+
+在Date类中没有提供相应的方法，需要获取Date对应的毫秒数手动计算进行相加：
+
+![image-20230504225523893](http://www.iocaop.com/images/2023-05/image-20230504225523893.png)
+
+```java
+    private static void jdk7Time() throws ParseException {
+        String strTime = "2020年11月11日 0:00:00";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        Date date = sdf.parse(strTime);
+        long time = date.getTime();
+        date.setTime(time+1000*60*60*24);
+        // 2020年11月12日 00:00:00
+        System.out.println(sdf.format(date));
+    }
+```
+
+而在jdk8中，可以使用`LocalDateTime`中的方法进行计算：
+
+```java
+    private static void jdk8Time() {
+        String strTime = "2020年11月11日 00:00:00";
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss");
+        LocalDateTime localDateTime = LocalDateTime.parse(strTime, dateTimeFormatter);
+        LocalDateTime newLocalDateTime = localDateTime.plusDays(1);
+        String result = newLocalDateTime.format(dateTimeFormatter);
+        // 2020年11月12日 00:00:00
+        System.out.println(result);
+    }
+```
+
+需要注意的是，jdk8格式化要严格一点：保留两位，否则报错。
+
+![image-20230504230437046](http://www.iocaop.com/images/2023-05/image-20230504230437046.png)
