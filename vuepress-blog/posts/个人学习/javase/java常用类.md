@@ -1272,3 +1272,60 @@ public class ExceptionDemo06 {
 
 ### 20-throw抛出异常
 
+```java
+/**
+ * 异常demo01
+ *
+ * @author 赖卓成
+ * @date 2023/05/05
+ */
+public class ExceptionDemo01 {
+    public static void main(String[] args) {
+        System.out.println("哈哈哈1");
+        System.out.println("哈哈哈2");
+        System.out.println("哈哈哈3");
+        // 代码执行到这，手动抛出了运行时异常，并且自己没有处理，交给了jvm默认处理。下面的代码不会再执行，且编译会提示无法访问的语句
+        throw new RuntimeException();
+        System.out.println("哈哈哈4");
+
+    }
+}
+```
+
+throws和throw区别
+
+throws：
+
+* 用在方法声明后面，跟的是异常类名
+* 表示声明异常，告知调用者，调用该方法可能会出现这样的异常
+
+throw：
+
+* 用在方法体内，跟的是异常对象名。
+* 表示手动抛出异常对象，由方法体内的语句处理。
+
+抛出异常的意义：
+
+* 在方法中，如果出现业务错误或参数错误，没有继续运行下去的意义，则采取抛出处理，让改方法结束。
+* 告知调用者该方法出现了问题。
+
+```java
+public class ExceptionDemo02 {
+
+    public static void main(String[] args) {
+//        int[] arr = {1,2,3,4,5};
+        int[] arr = null;
+        printArr(arr);
+    }
+
+    private static void printArr(int[] arr) {
+        if (Objects.isNull(arr)){
+            throw new RuntimeException("数组不能为null");
+        }
+        System.out.println("Arrays.toString(arr) = " + Arrays.toString(arr));
+    }
+}
+```
+
+![image-20230505113132857](http://www.iocaop.com/images/2023-05/image-20230505113132857.png)
+
