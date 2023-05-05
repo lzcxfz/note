@@ -1519,3 +1519,23 @@ public class ExceptionDemo05 {
 ```
 
 ![image-20230505211724603](http://www.iocaop.com/images/2023-05/image-20230505211724603.png)
+
+### 25-自定义异常
+
+上面练习的例子中，当年龄超出范围时，抛出的是`RuntimeException`，范围太大了，需要自定义异常。
+
+自定义异常需要继承`RuntimeException`，只需要定义好构造方法就行了，如果有其他字段需求，可以增加，如异常码、异常信息等。
+
+```java
+public class AgeOutOfRangeException extends RuntimeException{
+
+    public AgeOutOfRangeException() {
+    }
+
+    public AgeOutOfRangeException(String message) {
+        super(message);
+    }
+}
+```
+
+![image-20230505212529737](http://www.iocaop.com/images/2023-05/image-20230505212529737.png)
