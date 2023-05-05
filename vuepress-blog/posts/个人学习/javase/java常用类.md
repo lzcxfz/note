@@ -1258,3 +1258,17 @@ public class ExceptionDemo06 {
 
 ```
 
+### 19-声明异常的注意事项
+
+如果是运行时异常，`throws`可以省略不写，如果是编译时异常，则必须要写。
+
+运行时异常，省略不写，没问题：
+
+![image-20230505111247603](http://www.iocaop.com/images/2023-05/image-20230505111247603.png)
+
+编译时异常，省略不写，报红，必须手动`throws`：
+
+![image-20230505111305393](http://www.iocaop.com/images/2023-05/image-20230505111305393.png)
+
+### 20-throw抛出异常
+
