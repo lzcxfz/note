@@ -1330,3 +1330,123 @@ public class ExceptionDemo02 {
 ![image-20230505113132857](http://www.iocaop.com/images/2023-05/image-20230505113132857.png)
 
 ### 21-try...catch
+
+目的：为了让程序继续往下执行。
+
+```java
+/**
+ * 异常demo02
+ *
+ * @author 赖卓成
+ * @date 2023/05/05
+ */
+public class ExceptionDemo02 {
+
+    public static void main(String[] args) {
+//        int[] arr = {1,2,3,4,5};
+        int[] arr = null;
+        // 自己处理异常，目的就是为了让代码不终止，继续往下执行。
+        try{
+            // 有可能出现异常的代码
+            printArr(arr);
+        }catch (RuntimeException e){
+            // 如果出现异常，打印一句话
+            System.out.println("参数不能为null");
+        }
+        // 测试后面的代码会不会执行
+        System.out.println("哈哈哈");
+    }
+
+    private static void printArr(int[] arr) {
+        if (Objects.isNull(arr)){
+            throw new RuntimeException("数组不能为null");
+        }
+        System.out.println("Arrays.toString(arr) = " + Arrays.toString(arr));
+    }
+}
+```
+
+### 22-try...catch常见问题
+
+* 如果try中没有遇到问题，怎么执行？
+
+  ```java
+  public class ExceptionDemo03 {
+      public static void main(String[] args) {
+          try {
+              Scanner scanner = new Scanner(System.in);
+              String line = scanner.nextLine();
+              int i = Integer.parseInt(line);
+              System.out.println(i);
+              System.out.println("测试123");
+          }catch (NumberFormatException e){
+              System.out.println("出现异常咯");
+          }
+          System.out.println("测试456");
+      }
+  }
+  ```
+
+  ![image-20230505201705165](http://www.iocaop.com/images/2023-05/image-20230505201705165.png)
+
+  正常执行，把try中的代码执行完，再执行try...catch体系外的代码，catch中的代码不会执行。
+
+* 如果try中遇到了问题，那么try下面的代码还会执行吗？
+
+  和上面一样的代码。
+
+  ![image-20230505201740019](http://www.iocaop.com/images/2023-05/image-20230505201740019.png)
+
+  try中，出现异常的代码后面的都不执行了，跳到catch块中执行，执行完以后再执行try...catch体系外的代码
+
+* 如果出现的问题没有被捕获，那么程序如何运行？
+
+  ```java
+  public class ExceptionDemo03 {
+      public static void main(String[] args) {
+          try {
+              Scanner scanner = new Scanner(System.in);
+              String line = scanner.nextLine();
+              int i = Integer.parseInt(line);
+              System.out.println(i);
+              System.out.println("测试123");
+          }catch (NullPointerException e){
+              System.out.println("出现异常咯");
+          }
+          System.out.println("测试456");
+      }
+  }
+  ```
+
+  ![image-20230505202114735](http://www.iocaop.com/images/2023-05/image-20230505202114735.png)
+
+  没有被捕获，则会交给虚拟机默认处理
+
+* 同时有可能出现多个异常，怎么处理？
+
+  ```java
+  public class ExceptionDemo03 {
+      public static void main(String[] args) {
+          try {
+              Scanner scanner = new Scanner(System.in);
+              String line = scanner.nextLine();
+              int i = Integer.parseInt(line);
+              System.out.println(i);
+              System.out.println(i/0);
+              System.out.println("测试123");
+          }catch (NumberFormatException e){
+              System.out.println("出现number异常咯");
+          }catch (ArithmeticException e){
+              System.out.println("出现zero异常咯");
+          }
+          System.out.println("测试456");
+      }
+  }
+  
+  ```
+
+  ![image-20230505202404503](http://www.iocaop.com/images/2023-05/image-20230505202404503.png)
+
+  ![image-20230505202344485](http://www.iocaop.com/images/2023-05/image-20230505202344485.png)
+
+  需要多个catch块来捕获，或者直接捕获父类异常`Exception`，但需要根据实际业务来捕获，是否需要分情况处理异常。
