@@ -1200,3 +1200,61 @@ public class JDK8DateDemo08 {
 运行时异常和编译时异常：
 
 ![image-20230505100102940](http://www.iocaop.com/images/2023-05/image-20230505100102940.png)
+
+### 17-虚拟机默认处理异常的方式
+
+思考：为什么出现异常时，控制台会出现红色警告？
+
+在出现异常时，出现什么异常，就会在出现异常的位置创建对应的异常对象。
+
+创建完异常对象后：
+
+* 首先会看程序中有没有自己处理异常的代码
+* 如果么有就交给本方法的调用者处理
+* 如果还是没有，最终这个异常交给虚拟机默认处理
+* JVM默认处理异常做了什么？
+
+JVM默认处理异常：
+
+* 将异常名称、异常信息、异常出现的位置等信息以红色字体输出在控制台
+* 停止程序运行。（哪里出现异常，程序就在哪里停止）
+
+### 18-throws声明异常
+
+```java
+/**
+ * 异常demo06
+ *
+ * @author 赖卓成
+ * @date 2023/05/05
+ */
+public class ExceptionDemo06 {
+    public static void main(String[] args) throws ParseException {
+        method1();
+
+        // 如果出现异常，不处理，则会交给虚拟机默认处理
+        method2();
+    }
+
+    /**
+     *
+     * @throws ParseException 用于告知调用者，调用该方法将会出现异常，如果没有出现，程序照常运行，如果出现异常，异常由调用者处理
+     */
+    private static void method2() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        sdf.parse("2020年11月11日 11:11:11");
+    }
+
+    /**
+     *
+     * @throws NullPointerException 用于告知调用者，调用该方法将会出现异常，如果没有出现，程序照常运行，如果出现异常，异常由调用者处理
+     */
+    private static void method1() throws NullPointerException{
+        int [] arr = null;
+        int length = arr.length;
+        System.out.println(length);
+    }
+}
+
+```
+
