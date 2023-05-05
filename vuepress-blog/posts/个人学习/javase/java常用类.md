@@ -1,5 +1,5 @@
 ---
-title: java基础-常用API、集合
+title: java基础-常用API&异常
 date: 2023-02-16
 category:
   - JavaSE
@@ -1179,3 +1179,24 @@ public class JDK8DateDemo08 {
   其他方法：
   
   ![image-20230505083647918](http://www.iocaop.com/images/2023-05/image-20230505083647918.png)
+
+## 8-5-异常
+
+### 16-异常的体系和异常的分类
+
+异常：程序中出现了不正常的情况，程序在执行过程中出现非正常的情况，最终<span style="background-color:pink;">会导致jvm非正常停止</span>。
+
+> 注意：语法错误不算在异常体系中。
+
+![image-20230505095306158](http://www.iocaop.com/images/2023-05/image-20230505095306158.png)
+
+* Error：严重问题，通过代码无法处理，比如内存溢出
+* Exception：称为异常类，表示程序本身可以处理的问题
+  * RuntimeException及其子类：运行时异常。（空指针异常，数组越界异常）。
+  * 除RuntimeException之外所有的异常：编译期间必须处理的，否则程序不能通过编译。
+
+![image-20230505095658693](http://www.iocaop.com/images/2023-05/image-20230505095658693.png)
+
+运行时异常和编译时异常：
+
+![image-20230505100102940](http://www.iocaop.com/images/2023-05/image-20230505100102940.png)
