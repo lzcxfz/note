@@ -1112,3 +1112,68 @@ public class JDK8DateDemo08 {
 ![image-20230505075455470](http://www.iocaop.com/images/2023-05/image-20230505075455470.png)
 
 > 需要注意，如果超出范围，会报异常。<span style="background-color:pink;">plus、minus、with方法不会修改原来的对象，而是返回一个新的时间对象，原来的对象还是原来的时间</span>
+
+### 14-时间间隔对象
+
+* Period 
+
+  ![image-20230505082911741](http://www.iocaop.com/images/2023-05/image-20230505082911741.png)
+
+  传入两个`LocalDate`对象，获得时间间隔
+
+  ```java
+  public class JDK8DateDemo09 {
+      public static void main(String[] args) {
+          LocalDate now = LocalDate.now();
+          LocalDate localDate2022 = LocalDate.of(2020, 11, 11);
+          Period period = Period.between(localDate2022, now);
+          // period = P2Y5M24D
+          System.out.println("period = " + period);
+          
+          // 获得间隔的年数
+          int years = period.getYears();
+          System.out.println("years = " + years);
+  
+          // 获得间隔的月数
+          int months = period.getMonths();
+          System.out.println("months = " + months);
+  
+          // 获得间隔的天数
+          int days = period.getDays();
+          System.out.println("days = " + days);
+      }
+  }
+  ```
+
+* Duration
+
+  ![image-20230505083232993](http://www.iocaop.com/images/2023-05/image-20230505083232993.png)
+
+  ```java
+  public class JDK8DateDemo10 {
+      public static void main(String[] args) {
+          LocalDateTime now = LocalDateTime.now();
+          LocalDateTime localDateTime = LocalDateTime.of(2020, 11, 11, 11, 11, 11);
+          Duration duration = Duration.between(now, localDateTime);
+          // duration = PT-21717H-23M-19.7687483S
+          System.out.println("duration = " + duration);
+  
+          // 获得间隔的秒
+          long seconds = duration.toSeconds();
+          System.out.println("seconds = " + seconds);
+  
+          // 获得间隔的微秒
+          long millis = duration.toMillis();
+          System.out.println("millis = " + millis);
+  
+          // 获得间隔的纳秒
+          long nanos = duration.toNanos();
+          System.out.println("nanos = " + nanos);
+  
+      }
+  }
+  ```
+
+  其他方法：
+
+  ![image-20230505083647918](http://www.iocaop.com/images/2023-05/image-20230505083647918.png)
