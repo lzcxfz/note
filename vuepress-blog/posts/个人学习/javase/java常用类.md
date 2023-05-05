@@ -1450,3 +1450,72 @@ public class ExceptionDemo02 {
   ![image-20230505202344485](http://www.iocaop.com/images/2023-05/image-20230505202344485.png)
 
   需要多个catch块来捕获，或者直接捕获父类异常`Exception`，但需要根据实际业务来捕获，是否需要分情况处理异常。
+
+### 23-Throwable的成员方法
+
+![image-20230505205852589](http://www.iocaop.com/images/2023-05/image-20230505205852589.png)
+
+这是异常的最顶级父类的成员方法，所以所有的异常都可以调用这三个方法。
+
+```java
+public class ExceptionDemo04 {
+    public static void main(String[] args) {
+        try {
+            int [] arr = {1,2,3};
+            System.out.println("arr[10] = " + arr[10]);
+        } catch (Exception e) {
+            // 这不是虚拟机异常默认处理方式，打印完后，下面的代码还会执行
+            e.printStackTrace();
+            System.out.println("e.toString() = " + e.toString());
+            System.out.println("e.getMessage() = " + e.getMessage());
+        }
+
+    }
+}
+```
+
+![image-20230505210253601](http://www.iocaop.com/images/2023-05/image-20230505210253601.png)
+
+> 选定代码后可以按快捷键ctrl+alt+t快捷生成try...catch代码块
+
+### 24-异常的小练习
+
+需求：键盘录入学生的姓名和年龄，其中年龄为18-25岁，超出这个范围是异常数据，不能赋值，需要重新录入，一直到录入正确为止。
+
+```java
+public class ExceptionDemo05 {
+    public static void main(String[] args) {
+
+        Student student = new Student();
+        student.setName("赖卓成");
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String line = scanner.nextLine();
+            int age = 0;
+            try {
+                age = Integer.parseInt(line);
+                if (age < 18 || age > 25) {
+                    throw new RuntimeException("请输入18-25范围的年龄");
+                }
+            } catch (NumberFormatException numberFormatException) {
+                System.out.println("请输入一个整数");
+                continue;
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+                continue;
+            }
+            student.setAge(age);
+            System.out.println(student);
+            break;
+        }
+    }
+
+    @Data
+    static class Student {
+        private String name;
+        private Integer age;
+    }
+}
+```
+
+![image-20230505211724603](http://www.iocaop.com/images/2023-05/image-20230505211724603.png)
