@@ -70,7 +70,11 @@ public class Swagger3Configuration {
             .apis(RequestHandlerSelectors.basePackage("com.lzc.rabbit.controller"))
 //                过滤掉一些路径扫描
 //                .paths(PathSelectors.ant("/test/**"))
-            .build();
+            .build()
+                            /* 设置安全模式，swagger可以设置访问token */
+                .securitySchemes(securitySchemes())
+                .securityContexts(securityContexts());
+            ;
     }
 
     /**
@@ -206,4 +210,6 @@ public class TestController {
         return apiKeyList;
     }
 ```
+
+
 
