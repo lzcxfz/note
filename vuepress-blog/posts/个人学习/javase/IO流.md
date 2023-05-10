@@ -71,3 +71,104 @@ public class FileDemo01 {
 ```
 
 ![image-20230510115035494](http://www.iocaop.com/images/2023-05/image-20230510115035494.png)
+
+### 03-绝对路径和相对路径
+
+绝对路径：从盘符开始。如：
+
+```java
+       	// 这个路径固定不变了
+		File file = new File("C:\\lzc\\a.txt");
+```
+
+相对路径：相对当前项目下的路径
+
+```java
+        File file = new File("a.txt");
+      	File file = new File("模块名\\a.txt");
+```
+
+### 04-File的创建功能
+
+![image-20230510124600568](http://www.iocaop.com/images/2023-05/image-20230510124600568.png)
+
+`createNewFile`方法
+
+* 不管调用者路径是否有后缀名，<span style="background-color:pink;">创建的都是文件</span>，不是文件夹。
+* 文件已存在，返回false表示创建失败，文件不存在，创建成功，返回true
+
+```java
+public class FileDemo02 {
+    public static void main(String[] args) throws IOException {
+        File file = new File("C:\\lzc\\a.txt");
+        boolean newFile = file.createNewFile();
+        // 文件已存在，返回false表示创建失败，文件不存在，创建成功，返回true
+        System.out.println("newFile = " + newFile);
+
+        File aFile = new File("C:\\lzc\\aaa");
+        boolean aNewFile = aFile.createNewFile();
+        System.out.println("aNewFile = " + aNewFile);
+
+    }
+}
+```
+
+![image-20230510125118815](http://www.iocaop.com/images/2023-05/image-20230510125118815.png)
+
+`mkdir`方法：
+
+* <span style="background-color:pink;">只能创建单级文件夹</span>，不能创建多级文件夹
+* 不管调用者有没有后缀名，<span style="background-color:pink;">只能创建单级文件夹</span>
+
+```java
+public class FileDemo02 {
+    public static void main(String[] args) throws IOException {
+
+        File dirFile = new File("C:\\lzc\\aaa\\bbb\\ccc");
+        boolean mkdir = dirFile.mkdir();
+        System.out.println("mkdir = " + mkdir);
+    }
+}
+```
+
+![image-20230510125438515](http://www.iocaop.com/images/2023-05/image-20230510125438515.png)
+
+返回了false且文件夹没有创建成功。
+
+```java
+public class FileDemo02 {
+    public static void main(String[] args) throws IOException {
+
+        File dirFile = new File("C:\\lzc\\aaa.txt");
+        boolean mkdir = dirFile.mkdir();
+        System.out.println("mkdir = " + mkdir);
+    }
+}
+```
+
+创建成功，但是是文件夹，不是文件：
+
+![image-20230510125715102](http://www.iocaop.com/images/2023-05/image-20230510125715102.png)
+
+![image-20230510125725137](http://www.iocaop.com/images/2023-05/image-20230510125725137.png)
+
+`mkdirs`方法：
+
+* 可以创建单级文件夹，也可以创建多级文件夹
+
+```java
+public class FileDemo02 {
+    public static void main(String[] args) throws IOException {
+
+        File dirFile = new File("C:\\lzc\\aaa\\bbb\\ccc\\ddd");
+        boolean mkdirs = dirFile.mkdirs();
+        System.out.println("mkdir = " + mkdirs);
+    }
+}
+```
+
+返回了true，且文件夹也创建了：
+
+![image-20230510130023428](http://www.iocaop.com/images/2023-05/image-20230510130023428.png)
+
+> 既然mkdirs可以创建单级文件夹，也可以创建多级文件夹，那mkdir有什么用？确实没用，开发中，mkdirs一把梭就行了。
