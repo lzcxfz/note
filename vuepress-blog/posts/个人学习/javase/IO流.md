@@ -172,3 +172,39 @@ public class FileDemo02 {
 ![image-20230510130023428](http://www.iocaop.com/images/2023-05/image-20230510130023428.png)
 
 > 既然mkdirs可以创建单级文件夹，也可以创建多级文件夹，那mkdir有什么用？确实没用，开发中，mkdirs一把梭就行了。
+
+### 05-File的删除方法
+
+![image-20230510130553733](http://www.iocaop.com/images/2023-05/image-20230510130553733.png)
+
+```java
+public class FileDemo03 {
+    public static void main(String[] args) {
+        File file = new File("C:\\lzc\\a.txt");
+        boolean delete = file.delete();
+        System.out.println("delete = " + delete);
+    }
+}
+```
+
+删除成功了。并返回了true
+
+![image-20230510131423742](http://www.iocaop.com/images/2023-05/image-20230510131423742.png)
+
+```java
+public class FileDemo03 {
+    public static void main(String[] args) {
+        File file = new File("C:\\lzc");
+        boolean delete = file.delete();
+        System.out.println("delete = " + delete);
+    }
+}
+```
+
+当文件夹中有文件时，返回false，删除失败。当文件夹是空文件夹时，返回true，删除成功。
+
+注意事项：
+
+* 删除文件后，不会放到回收站，而是直接从硬盘删除。
+* <span style="background-color:pink;">只能删除文件和空文件夹</span>，如果文件夹中还有文件，会删除失败并返回false。
+* 如果要删除带文件的文件夹，则必须将文件夹中的文件先删除。
