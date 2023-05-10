@@ -217,3 +217,36 @@ public class FileDemo03 {
 
 * 调用者是文件，获取的是文件名和后缀名
 * 调用者是文件夹，获取的是文件夹名。
+
+### 07-File的listFile方法
+
+![image-20230510132717756](http://www.iocaop.com/images/2023-05/image-20230510132717756.png)
+
+* 进入file对象所在的文件夹，并获取该文件夹中的所有文件和文件夹，放在File数组中，<span style="background-color:pink;">包括隐藏文件和文件夹</span>。
+
+```java
+public class FileDemo04 {
+    public static void main(String[] args) {
+        File file = new File("D:\\");
+        File[] files = file.listFiles();
+        for (File f : files) {
+            System.out.println("f = " + f);
+        }
+    }
+}
+```
+
+![image-20230510155422171](http://www.iocaop.com/images/2023-05/image-20230510155422171.png)
+
+注意事项：
+
+* 当调用者是一个文件时，会返回null
+
+  ![image-20230510155839330](http://www.iocaop.com/images/2023-05/image-20230510155839330.png)
+
+* 当调用者是一个空文件夹时，返回空数组
+
+  ![image-20230510160130483](http://www.iocaop.com/images/2023-05/image-20230510160130483.png)
+
+* 当调用者是一个有内容的文件夹时，上面已经试过了。
+* 当调用者是一个有权限才能进入的文件夹时，没有权限则返回null。
