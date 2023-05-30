@@ -335,3 +335,50 @@ public class FileDemo06 {
 
 ### 10-File练习-统计文件夹下文件类型及其个数
 
+使用map存储。
+
+```java
+public class FileDemo07 {
+    private  static Map<String, Integer> map = new HashMap<>();
+    public static void main(String[] args) {
+        File file = new File("D:\\study\\hello-world");
+        statistical(file);
+        System.out.println(map);
+    }
+    public static void statistical( File file){
+        if (Objects.isNull(file)||!file.exists()){
+            return;
+        }
+        if (file.isFile()){
+            // 是文件则直接改变map中的值
+            calc(file);
+        }else if (file.isDirectory()){
+            // 文件夹则遍历文件夹
+            File[] files = file.listFiles();
+            for (File f : files) {
+
+                if (f.isFile()){
+                    // 子文件夹中如果遍历到文件，直接改变map中的值
+                    calc(f);
+                }else {
+                    // 子文件夹遍历到文件夹则递归
+                    statistical(f);
+                }
+            }
+        }
+    }
+    private static void calc(File file) {
+        String fileName = file.getName();
+        String ext = fileName.substring(fileName.lastIndexOf("." )+1);
+        if (map.containsKey(ext)){
+            Integer num = map.get(ext);
+            map.replace(ext,++num);
+        }else {
+            map.put(ext,1);
+        }
+    }
+}
+
+```
+
+![image-20230531001913099](http://www.iocaop.com/images/2023-05/image-20230531001913099.png)
