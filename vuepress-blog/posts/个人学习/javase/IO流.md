@@ -251,6 +251,87 @@ public class FileDemo04 {
 * 当调用者是一个有内容的文件夹时，上面已经试过了。
 * 当调用者是一个有权限才能进入的文件夹时，没有权限则返回null。
 
-### 08-File练习
+### 08-File练习-文件夹不存在时创建文件
 
 在当前模块下的aaa文件夹下创建一个a.txt文件。
+
+ ```java
+ public class FileDemo05 {
+ 
+     public static void main(String[] args) throws IOException {
+         File file = new File("java-workspace\\aaa\\a.txt");
+         file.createNewFile();
+     }
+ }
+ ```
+
+运行报错：
+
+![image-20230530223631960](http://www.iocaop.com/images/2023-05/image-20230530223631960.png)
+
+> 注意：使用`createNewFile()`方法，所要创建的文件夹所在的目录必须要存在，否则就会报上面这个错。
+
+修改后：
+
+```java
+public class FileDemo05 {
+
+    public static void main(String[] args) throws IOException {
+        File dir = new File("java-workspace\\aaa");
+        if (!dir.exists()){
+            dir.mkdirs();
+        }
+        File file = new File(dir, "aaa.txt");
+        file.createNewFile();
+        System.out.println("file.getAbsoluteFile() = " + file.getAbsoluteFile());
+    }
+}
+```
+
+![image-20230530224400092](http://www.iocaop.com/images/2023-05/image-20230530224400092.png)
+
+### 09-File练习-删除一个多级文件夹
+
+现在桌面有一个文件夹，里面包含多级文件夹和文件，需要完全删除这个文件夹。
+
+能不能直接调用`delete()`方法进行删除？
+
+我们在第6节课中已经学过了，删不了，必须把文件夹中的文件删除完毕，才能删除文件夹。
+
+![image-20230530225226354](http://www.iocaop.com/images/2023-05/image-20230530225226354.png)
+
+所以，需要遍历整个文件夹，把文件删除，再删除文件夹，文件夹中套娃，怎么办？递归。
+
+```java
+public class FileDemo06 {
+
+    public static void main(String[] args) {
+        File file = new File("C:\\Users\\lzc\\Desktop\\aaa1");
+        System.out.println("deleteDir(file) = " + deleteDir(file));
+    }
+
+
+    public static boolean deleteDir(File file){
+        if (Objects.isNull(file)||!file.exists()){
+            return false;
+        }
+        // 判断是文件还是文件夹，是文件则直接删除，是文件夹则递归
+        if (!file.isFile()) {
+            // 如果是文件夹，则遍历
+            File[] files = file.listFiles();
+            for (File f : files) {
+                if (!f.isFile()){
+                    deleteDir(f);
+                }else {
+                    f.delete();
+                }
+            }
+        }
+        // 递归删除完文件夹中的文件后，再删除文件夹
+        return file.delete();
+    }
+}
+```
+
+### 10-File练习-统计文件夹下文件类型及其个数
+
