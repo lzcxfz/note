@@ -661,3 +661,32 @@ public class InputDemo02 {
 运行结果：
 
 ![image-20230601010031022](http://www.iocaop.com/images/2023-06/image-20230601010031022.png)
+
+### 22-字节流-复制文件
+
+拷贝D盘下的a.txt，新文件b.txt
+
+```java
+public class InputDemo03 {
+    public static void main(String[] args) throws IOException {
+        // 创建字节输入流，文件存在不报错
+        FileInputStream fileInputStream = new FileInputStream("D:\\a.txt");
+        // 创建字节输出流，文件存在不做操作，文件不存在则会自动创建
+        FileOutputStream outputStream = new FileOutputStream("D:\\b.txt");
+
+        // 定义一个遍历，一次读一个字节，存在这个变量中
+        int b;
+        // 读到一个字节的数据则通过输出流往b.txt写一个字节
+        while((b=fileInputStream.read())!=-1){
+            outputStream.write(b);
+        }
+        // 关闭资源
+        fileInputStream.close();
+        outputStream.close();
+    }
+}
+```
+
+运行结果：
+
+![image-20230601011145722](http://www.iocaop.com/images/2023-06/image-20230601011145722.png)
