@@ -382,3 +382,190 @@ public class FileDemo07 {
 ```
 
 ![image-20230531001913099](http://www.iocaop.com/images/2023-05/image-20230531001913099.png)
+
+## 10-2-字节流
+
+### 12-IO概述
+
+之前数据的存储都是在内存中，不能持久化。
+
+学习IO流的目的：
+
+* 将数据写入到文件中，实现数据持久化存储。
+* 读取文件中已经存在的数据。
+
+IO流中：
+
+* I表示`Input`，是从数据从硬盘进内存的过程，称之为读。
+* O表示`output`，是数据从内存到硬盘的过程，称之为写。
+
+在数据传输的过程中，是谁在读？谁在写？这个参照物是谁？
+
+IO的数据传输，可以看做是一种数据的流动，按照流动的方向，以内存为参照物，进行读写。
+
+所以是：<span style="background-color:pink;">内存在读，内存在写。</span>
+
+### 13-IO流的分类
+
+* 按流向分
+
+![image-20230531211233515](http://www.iocaop.com/images/2023-05/image-20230531211233515.png)
+
+* 按数据类型分
+
+![image-20230531211337937](http://www.iocaop.com/images/2023-05/image-20230531211337937.png)
+
+什么是纯文本文件？
+
+用windows记事本能打开读懂的，就是纯文本文件。
+
+### 14-字节流-字节输出流
+
+步骤：
+
+* 创建字节输出流对象
+* 写数据
+* 释放资源
+
+![image-20230531212351769](http://www.iocaop.com/images/2023-05/image-20230531212351769.png)
+
+```java
+public class OutPutDemo01 {
+    public static void main(String[] args) {
+
+        // 创建字节输出流
+        try {
+            FileOutputStream outputStream = new FileOutputStream("D:\\a.txt");
+            outputStream.write(97);
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+}
+```
+
+运行结果：
+
+![image-20230531212739840](http://www.iocaop.com/images/2023-05/image-20230531212739840.png)
+
+### 15-字节流-注意事项
+
+* 如果文件不存在，会<span style="background-color:pink;">自动创建</span>。
+
+* 如果文件存在，<span style="background-color:pink;">会把文件清空</span>。
+* 写数据时，<span style="background-color:pink;">如果传入的是整数，实际写入的是这个整数在ASCII对应的字符</span>。
+
+* 释放资源：告诉操作系统，程序不需要再使用这个文件了。否则其他程序无法操作文件(如，删除)，所以每次使用完流，必须要释放资源。
+
+### 16-字节流-一次写入多个数据
+
+```java
+public class OutPutDemo02 {
+    public static void main(String[] args) {
+
+        // 创建字节输出流
+        try {
+            FileOutputStream outputStream = new FileOutputStream("D:\\a.txt");
+            outputStream.write(97);
+            outputStream.write(98);
+            outputStream.write(99);
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+}
+```
+
+这样的方式可以实现，但是数据很多，怎么办？看`write()`方法的重载：
+
+![image-20230531213646124](http://www.iocaop.com/images/2023-05/image-20230531213646124.png)
+
+```java
+public class OutPutDemo03 {
+    public static void main(String[] args) {
+        FileOutputStream outputStream = null;
+        try {
+            outputStream= new FileOutputStream("D:\\a.txt");
+            byte[] byteArray =  new byte[]{97,98,99,100,101,102};
+            outputStream.write(byteArray);
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}
+```
+
+运行结果：
+
+![image-20230531214522039](http://www.iocaop.com/images/2023-05/image-20230531214522039.png)
+
+### 17-字节流-两个问题
+
+**在使用字节流写入数据的时候，如何换行？**
+
+换行符：
+
+* windows：\\r\\n
+* linux:\\n
+* mac:\\r
+
+使用`String`类中的`getBytes()`方法获取字节数组。
+
+```java
+public class OutPutDemo02 {
+    public static void main(String[] args) {
+
+        // 创建字节输出流
+        try {
+            FileOutputStream outputStream = new FileOutputStream("D:\\a.txt");
+            outputStream.write(97);
+            outputStream.write("\r\n".getBytes());
+            outputStream.write(98);
+            outputStream.write("\r\n".getBytes());
+            outputStream.write(99);
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+}
+```
+
+运行结果：
+
+![image-20230531215142948](http://www.iocaop.com/images/2023-05/image-20230531215142948.png)
+
+**字节流写数据如何实现追加写入？**
+
+看`FileOutputStream`的构造：
+
+![image-20230531215333039](http://www.iocaop.com/images/2023-05/image-20230531215333039.png)
+
+> 默认是false，如果需要追加写入，就可以传入true。在创建`FileOutPutStream`对象时，如果没有打开续写，则创建对象时会清空文件。
+
+### 18-字节流-try...catch...finally
+
+在finally中释放资源，保证释放资源的代码一定执行。
+
+### 20-字节流-字节输入流
+
