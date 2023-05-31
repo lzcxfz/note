@@ -569,3 +569,95 @@ public class OutPutDemo02 {
 
 ### 20-字节流-字节输入流
 
+![image-20230601004537573](http://www.iocaop.com/images/2023-06/image-20230601004537573.png)
+
+```java
+public class InputDemo01 {
+    public static void main(String[] args) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream("D:\\a.txt");
+            int read = fileInputStream.read();
+            System.out.println(read);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+![image-20230601004713137](http://www.iocaop.com/images/2023-06/image-20230601004713137.png)
+
+运行结果：
+
+![image-20230601004725083](http://www.iocaop.com/images/2023-06/image-20230601004725083.png)
+
+注意事项：
+
+* 创建字节输入流时，如果文件存在不会报错，<span style="background-color:pink;">如果文件不存在，则直接报错</span>。
+
+* `read()`方法一次读一个字节，返回值是本次读到的那个字节数据，是字符在`ASCII`码表中对应的数字。如果想看到的是`char`数据，则需要强转。
+
+### 21-字节流-读多个字节
+
+上面的方法，只能读一个字节，如果我想读多个字节的数据，怎么办？
+
+首先我们有这样的一个`txt`文件：
+
+![image-20230601005606778](http://www.iocaop.com/images/2023-06/image-20230601005606778.png)
+
+最容易想到的思路就是循环读：
+
+```java
+public class InputDemo02 {
+    public static void main(String[] args) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream("D:\\a.txt");
+            while (true){
+                int read = fileInputStream.read();
+                System.out.print((char)read);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+运行结果：
+
+![image-20230601005647638](http://www.iocaop.com/images/2023-06/image-20230601005647638.png)
+
+查阅api可知，当没有读到数据时，`read`方法返回的是-1，所以，修改循环跳出的条件：
+
+```java
+public class InputDemo02 {
+    public static void main(String[] args) {
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream("D:\\a.txt");
+            int read;
+            while ((read=fileInputStream.read())!=-1){
+                System.out.print((char)read);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }finally {
+            try {
+                fileInputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}
+```
+
+运行结果：
+
+![image-20230601010031022](http://www.iocaop.com/images/2023-06/image-20230601010031022.png)
