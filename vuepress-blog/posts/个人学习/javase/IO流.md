@@ -690,3 +690,51 @@ public class InputDemo03 {
 运行结果：
 
 ![image-20230601011145722](http://www.iocaop.com/images/2023-06/image-20230601011145722.png)
+
+### 23-字节流-定义小数组拷贝
+
+22节课中，循环读取如图所示，会不会存在什么问题？
+
+![image-20230601011358394](http://www.iocaop.com/images/2023-06/image-20230601011358394.png)
+
+答：慢。每读一个字节，然后写到硬盘，如果有几千、几万字节，那就非常慢。
+
+<span style="background-color:pink;">为了提高拷贝速度，字节流通过创建字节数组，可以一次读写多个数据。</span>
+
+一次读一个字节数组的方法：
+
+![image-20230601011825407](http://www.iocaop.com/images/2023-06/image-20230601011825407.png)
+
+> 返回值是读入缓冲区的总字节数，也就是实际的读取字节个数。
+
+同样，拷贝a.txt到c.txt
+
+```java
+public class InputDemo04 {
+    public static void main(String[] args) throws IOException {
+        // 输入流和输出流
+        FileInputStream is = new FileInputStream("D:\\a.txt");
+        FileOutputStream os = new FileOutputStream("D:\\c.txt");
+
+        // 定义小数组 表示每次最多读1024个字节
+        byte[] bytes = new byte[1024];
+        // 定义变量用于记录每次实际读了多少个字节
+        int len;
+        while((len = is.read(bytes))!=-1){
+            // 表示从索引0开始写入文件，写入的字节数为len个  这就是len的作用
+            os.write(bytes,0,len);
+        }
+
+        is.close();
+        os.close();
+    }
+}
+```
+
+运行结果：
+
+![image-20230601012852499](http://www.iocaop.com/images/2023-06/image-20230601012852499.png)
+
+### 24-字节流-小数组拷贝原理
+
+![image-20230601013122353](http://www.iocaop.com/images/2023-06/image-20230601013122353.png)
