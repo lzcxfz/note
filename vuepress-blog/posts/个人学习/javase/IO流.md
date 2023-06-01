@@ -845,4 +845,39 @@ private static int DEFAULT_BUFFER_SIZE = 8192;
 
 ![image-20230602005256224](http://www.iocaop.com/images/2023-06/image-20230602005256224.png)
 
-我们写的代码也是一个字节一个字节从缓冲输入流读，再一个字节一个自己从缓冲输出流写，有什么意义呢？意义在于红框部分，缓冲流其实就是把数据缓冲到内存中，然后一个个字节读写，其实是在内存中进行的，所以缓冲流的作用是减少io次数，提高效率。默认一次性读写`8191`个字节。
+我们写的代码也是一个字节一个字节从缓冲输入流读(到内存)，再一个字节一个字节从缓冲输出流写(到缓冲输出流)，有什么意义呢？意义在于红框部分，缓冲流其实就是把数据缓冲到内存中，然后一个个字节读写，其实是在内存中进行的，所以缓冲流的作用是减少io次数，提高效率。默认一次性读写`8191`个字节。
+
+### 27-缓冲流-一次性读写一个字节数组
+
+缓冲流结合字节数组进行文件拷贝。
+
+```java
+public class BufferStreamCopyDemo02 {
+
+    public static void main(String[] args) throws IOException {
+        // 创建字节缓冲输入流
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream("D:\\a.txt"));
+        // 创建字节缓冲输出流
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("D:\\e.txt"));
+
+        // 创建一个长度为1024大小的字节数组
+        byte[] bytes = new byte[1024];
+        int len = 0;
+        // 每次通过字节输入流从硬盘读8192个字节到字节缓冲输入流中，再从字节缓冲输入流读1024个字节到内存  硬盘->字节输入流->字节缓冲输入流—>内存
+        // 每次从内存写1024个字节到字节缓冲输出流，再通过字节输出流，从字节缓冲输出流写8192个字节到磁盘  内存->字节缓冲输出流->字节输出流->磁盘
+
+        while((len = bis.read(bytes))!=-1){
+            bos.write(bytes,0,len);
+        }
+
+        bis.close();
+        bos.close();
+    }
+}
+```
+
+运行结果：
+
+![image-20230602011332670](http://www.iocaop.com/images/2023-06/image-20230602011332670.png)
+
+![image-20230602011524209](http://www.iocaop.com/images/2023-06/image-20230602011524209.png)
