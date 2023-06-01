@@ -789,3 +789,60 @@ public class BufferStreamCopyDemo {
 
 ### 26-缓冲流-一次读写一个字节原理
 
+看字节缓冲输入流和字节缓冲输出流的构造函数：
+
+字节缓冲输入流：
+
+```java
+    public BufferedInputStream(InputStream in) {
+        this(in, DEFAULT_BUFFER_SIZE);
+    }
+```
+
+```java
+    public BufferedInputStream(InputStream in, int size) {
+        super(in);
+        if (size <= 0) {
+            throw new IllegalArgumentException("Buffer size <= 0");
+        }
+        buf = new byte[size];
+    }
+```
+
+```java
+private static int DEFAULT_BUFFER_SIZE = 8192;
+```
+
+字节缓冲输出流：
+
+```java
+    public BufferedOutputStream(OutputStream out) {
+        this(out, 8192);
+    }
+```
+
+```java
+    public BufferedOutputStream(OutputStream out, int size) {
+        super(out);
+        if (size <= 0) {
+            throw new IllegalArgumentException("Buffer size <= 0");
+        }
+        buf = new byte[size];
+    }
+```
+
+发下，在创建字节缓冲输入流和字节缓冲输出流的时候，都会在底层创建一个长度为`8192`的字节数组。
+
+当读写输入时，会一次性读写8192个字节(如果有这么多的话，没有则全部读)到缓冲流中(内存中)
+
+再看关闭方法：
+
+![image-20230602005123908](http://www.iocaop.com/images/2023-06/image-20230602005123908.png)
+
+![image-20230602005153731](http://www.iocaop.com/images/2023-06/image-20230602005153731.png)
+
+只需要知道，关闭字节缓冲输入流或字节缓冲输出流的时候，会关闭字节输入流和字节输出流就可以了，不需要我们手动去关闭了。
+
+![image-20230602005256224](http://www.iocaop.com/images/2023-06/image-20230602005256224.png)
+
+我们写的代码也是一个字节一个字节从缓冲输入流读，再一个字节一个自己从缓冲输出流写，有什么意义呢？意义在于红框部分，缓冲流其实就是把数据缓冲到内存中，然后一个个字节读写，其实是在内存中进行的，所以缓冲流的作用是减少io次数，提高效率。默认一次性读写`8191`个字节。
