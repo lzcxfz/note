@@ -739,6 +739,8 @@ public class InputDemo04 {
 
 ![image-20230601013122353](http://www.iocaop.com/images/2023-06/image-20230601013122353.png)
 
+## 10-3-缓冲流
+
 ### 25-缓冲流-一次读写一个字节
 
 字节缓冲流分为两种：
@@ -752,7 +754,7 @@ public class InputDemo04 {
 
 可以看到，构造函数需要的是字节流，而不是具体的文件或者路径。为什么？
 
-* 字节缓冲流<span style="background-color:pink;">仅仅提供缓冲区</span>，而真正读写数据还是得依靠基本的字节流对象进行操作。
+* 字节缓冲流<span style="background-color:pink;">仅仅提供缓冲区</span>，而<span style="background-color:pink;">真正读写数据还是得依靠基本的字节流对象进行操作</span>。
 
 ```java
 /**
@@ -881,3 +883,92 @@ public class BufferStreamCopyDemo02 {
 ![image-20230602011332670](http://www.iocaop.com/images/2023-06/image-20230602011332670.png)
 
 ![image-20230602011524209](http://www.iocaop.com/images/2023-06/image-20230602011524209.png)
+
+## 10-4 字符流、字符缓冲流
+
+### 01-字节流操作文本文件出现乱码问题
+
+思考：既然字节流可以操作所有类型的文件，为什么还要有字符流？
+
+<span style="background-color:pink;">如果利用字节流读写中文，有可能出现乱码。</span>
+
+```java
+public class CharStreamDemo01 {
+    public static void main(String[] args) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream("D:\\lzc.txt");
+
+        int read;
+        while((read = fileInputStream.read())!=-1){
+            System.out.print((char) read);
+        }
+    }
+}
+```
+
+运行结果：
+
+![image-20230602012325068](http://www.iocaop.com/images/2023-06/image-20230602012325068.png)
+
+![image-20230602012345366](http://www.iocaop.com/images/2023-06/image-20230602012345366.png)
+
+### 02-字符流-编码表
+
+基础知识：
+
+* 计算机存储信息用二进制
+* 按某种规则把字符转二进制，存储到计算机，是编码
+* 同样的规则，从计算机读二进制再解析显示出字符，是解码
+* 编码解码方式必须一致，否则乱码
+
+> 存储a，ASCII为97，转为97的二进制存到硬盘，读到97的二进制，转成97，查ASCII，找到字符a。
+
+> window系统默认GBK，兼容ASCII，一个中文两个字节。
+
+Unicode：万国码，容纳大多数国家的所有常见文字和符号，字符太多，所以Unicode不是直接二进制存在计算机，会先通过UTF-8(还有其他的)进行编码，再存储到计算机。UTF-8一个中文三个字节。
+
+> 世界上并不存在UTF-8这样一张码表，UTF-8是一种编码格式。
+
+![image-20230602013448464](http://www.iocaop.com/images/2023-06/image-20230602013448464.png)
+
+> window默认使用GBK，一个字符两个字节，idea和工作默认使用Unicode的UTF-8编码格式，一个中文三个字节。
+
+### 03-字符流-编码和解码的方法
+
+编码使用的方法：`String`类的成员方法
+
+![image-20230602013750321](http://www.iocaop.com/images/2023-06/image-20230602013750321.png)
+
+```java
+public class CharStreamDemo02 {
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        byte[] bytesUTF8 = "赖卓成".getBytes();
+        System.out.println(Arrays.toString(bytesUTF8));
+
+        byte[] bytesGBK = "赖卓成".getBytes("GBK");
+        System.out.println(Arrays.toString(bytesGBK));
+    }
+}
+```
+
+![image-20230602014306662](http://www.iocaop.com/images/2023-06/image-20230602014306662.png)
+
+解码使用的方法：
+
+![image-20230602013945476](http://www.iocaop.com/images/2023-06/image-20230602013945476.png)
+
+```java
+public class CharStreamDemo03 {
+    public static void main(String[] args) throws UnsupportedEncodingException {
+       byte[] bytesUTF8 =  new byte[]{-24, -75, -106, -27, -115, -109, -26, -120, -112};
+        String utf8Str = new String(bytesUTF8);
+        System.out.println(utf8Str);
+
+        byte[] bytesGBK =  new byte[]{-64, -75, -41, -65, -77, -55};
+        String gbkStr = new String(bytesGBK, "GBK");
+        System.out.println(gbkStr);
+    }
+}
+
+```
+
+![image-20230602014617511](http://www.iocaop.com/images/2023-06/image-20230602014617511.png)
