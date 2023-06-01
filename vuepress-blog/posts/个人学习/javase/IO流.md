@@ -738,3 +738,51 @@ public class InputDemo04 {
 ### 24-字节流-小数组拷贝原理
 
 ![image-20230601013122353](http://www.iocaop.com/images/2023-06/image-20230601013122353.png)
+
+### 25-缓冲流-一次读一个字节
+
+字节缓冲流分为两种：
+
+* BufferedOutputStream：字节缓冲输出流
+* BufferedInputStream：字节缓冲输入流
+
+构造函数：
+
+![image-20230602001508661](http://www.iocaop.com/images/2023-06/image-20230602001508661.png)
+
+可以看到，构造函数需要的是字节流，而不是具体的文件或者路径。为什么？
+
+* 字节缓冲流<span style="background-color:pink;">仅仅提供缓冲区</span>，而真正读写数据还是得依靠基本的字节流对象进行操作。
+
+```java
+/**
+ * 缓冲流复制文件演示
+ *
+ * @author lzc
+ * @date 2023/06/02
+ */
+public class BufferStreamCopyDemo {
+    public static void main(String[] args) throws IOException {
+
+        // 创建一个字节缓冲输入流
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream("D:\\a.txt"));
+        // 创建一个字节缓冲输出流
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("D:\\d.txt"));
+
+        int read;
+
+        // 一个一个字节的读
+        while((read = bis.read())!=-1){
+            bos.write(read);
+        }
+        // 这里只需要关闭缓冲流，缓冲流关闭，字节输入流和输出流也会跟着关闭
+        bis.close();
+        bos.close();
+
+    }
+}
+```
+
+运行结果：
+
+![image-20230602002855662](http://www.iocaop.com/images/2023-06/image-20230602002855662.png)
