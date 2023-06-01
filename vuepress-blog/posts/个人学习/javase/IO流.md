@@ -739,7 +739,7 @@ public class InputDemo04 {
 
 ![image-20230601013122353](http://www.iocaop.com/images/2023-06/image-20230601013122353.png)
 
-### 25-缓冲流-一次读一个字节
+### 25-缓冲流-一次读写一个字节
 
 字节缓冲流分为两种：
 
@@ -786,3 +786,6 @@ public class BufferStreamCopyDemo {
 运行结果：
 
 ![image-20230602002855662](http://www.iocaop.com/images/2023-06/image-20230602002855662.png)
+
+### 26-缓冲流-一次读写一个字节原理
+
