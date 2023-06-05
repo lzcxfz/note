@@ -1088,5 +1088,66 @@ public class CharStreamDemo04 {
 看现象：
 
 ```java
+public class CharStreamDemo05 {
+    public static void main(String[] args) throws IOException {
+        FileWriter fileWriter = new FileWriter("E:\\flush.txt");
+        fileWriter.write(97);
+    }
+}
 ```
 
+运行结果：
+
+文件创建了，是在创建字符输出流时创建的，但是打开文件并没有写入字符：
+
+![image-20230606003440999](http://www.iocaop.com/images/2023-06/image-20230606003440999.png)
+
+加一行代码运行：
+
+```java
+public class CharStreamDemo05 {
+    public static void main(String[] args) throws IOException {
+        FileWriter fileWriter = new FileWriter("E:\\flush.txt");
+        fileWriter.write(97);
+        fileWriter.flush();
+    }
+}
+```
+
+![image-20230606003523348](http://www.iocaop.com/images/2023-06/image-20230606003523348.png)
+
+再加两行：
+
+```java
+public class CharStreamDemo05 {
+    public static void main(String[] args) throws IOException {
+        FileWriter fileWriter = new FileWriter("E:\\flush.txt");
+        fileWriter.write(97);
+        fileWriter.flush();
+        fileWriter.write(98);
+        fileWriter.flush();
+    }
+}
+```
+
+![image-20230606004356757](http://www.iocaop.com/images/2023-06/image-20230606004356757.png)
+
+得出：`flush()`方法是将刷新流，将数据写入文件。
+
+试试`clode()`方法：
+
+```java
+public class CharStreamDemo05 {
+    public static void main(String[] args) throws IOException {
+        FileWriter fileWriter = new FileWriter("E:\\flush.txt");
+        fileWriter.write(97);
+        fileWriter.close();
+    }
+}
+```
+
+这样写，依然可以将数据写入文件，因为在关闭流，会调用`flush()`方法(底层代码不必纠结，知道就行)，将数据写入文件。
+
+但是，关闭流之后就不能继续写数据了，这是`close()`和`flush()`方法的区别：
+
+![image-20230606004752687](http://www.iocaop.com/images/2023-06/image-20230606004752687.png)
