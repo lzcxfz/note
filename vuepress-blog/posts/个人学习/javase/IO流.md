@@ -972,3 +972,9 @@ public class CharStreamDemo03 {
 ```
 
 ![image-20230602014617511](http://www.iocaop.com/images/2023-06/image-20230602014617511.png)
+
+### 04-字节流读取中文出现乱码的原因
+
+因为<span style="background-color:pink;">字节流每次只读一个字节</span>，不管是GBK还是UTF-8，一个中文都是多个字节，用字节流，没读全，所以乱码。
+
+如GBK的`赖`为：`{-64, -75}`，字节流读取，每次读一个，-64和-75都是乱码。
