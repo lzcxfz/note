@@ -1151,3 +1151,76 @@ public class CharStreamDemo05 {
 但是，关闭流之后就不能继续写数据了，这是`close()`和`flush()`方法的区别：
 
 ![image-20230606004752687](http://www.iocaop.com/images/2023-06/image-20230606004752687.png)
+
+### 09-字符流-读取数据
+
+先看API：
+
+![image-20230606004930502](http://www.iocaop.com/images/2023-06/image-20230606004930502.png)
+
+底层也是字节流+编码表，源码不截图了。
+
+一次读取一个字符，需要注意的是，这里一次读取的是一个字符，不是一个字节：
+
+```java
+public class CharStreamDemo06 {
+    public static void main(String[] args) throws IOException {
+        FileReader fileReader = new FileReader("E:\\reader01.txt");
+        int i;
+        while ((i=fileReader.read())!=-1){
+            System.out.println("整数："+i+",字符："+(char)i);
+        }
+    }
+}
+```
+
+![image-20230606005623170](http://www.iocaop.com/images/2023-06/image-20230606005623170.png)
+
+一次读取多个字符：
+
+```java
+public class CharStreamDemo07 {
+    public static void main(String[] args) throws IOException {
+        FileReader fileReader = new FileReader("E:\\reader01.txt");
+        char[] chars = new char[1024];
+        int len=0;
+        while ((len=fileReader.read(chars))!=-1){
+            String s = new String(chars, 0, len);
+            System.out.println(s);
+        }
+    }
+}
+```
+
+![image-20230606010056559](http://www.iocaop.com/images/2023-06/image-20230606010056559.png)
+
+一次性读取多个字节到字节数组，读到多少个记录在len中，创建`String`的时候指定范围就好了。一次读取这么多字节在数组中连续存放，怎么区分？上面讲过，根据负数区分，中文一定是负数，碰到负数，再看用什么码表，就知道中文占几个字节，就知道每次转中文需要几个字节了。
+
+### 10-字符流-练习
+
+输入用户名和密码，保存在文件中，独占一行。
+
+```java
+public class CharStreamDemo08 {
+    public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("请输入用户名：");
+        String userName = scanner.nextLine();
+        System.out.println("请输入密码：");
+        String password = scanner.nextLine();
+        FileWriter fileWriter = new FileWriter("E:\\user.txt");
+        fileWriter.write(userName);
+        fileWriter.write("\r\n");
+        fileWriter.write(password);
+        fileWriter.close();
+    }
+}
+```
+
+![image-20230606010714247](http://www.iocaop.com/images/2023-06/image-20230606010714247.png)
+
+> Windows换行是\\r\\n，Mac是\\r，Linux是\\n
+
+### 11-字符缓冲输入流-读取数据
+
