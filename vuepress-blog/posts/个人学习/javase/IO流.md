@@ -1058,3 +1058,35 @@ public class CharStreamDemo04 {
 运行结果：
 
 ![image-20230606001417880](http://www.iocaop.com/images/2023-06/image-20230606001417880.png)
+
+### 07-字符流-写出数据的注意事项
+
+* 创建字符输出流时
+  * 如果文件不存在则创建，但需要保证父级路径存在
+  * 如果文件存在，则清空
+* 写数据时
+  * 写出`int`类似的整数，实际写出的是整数在`ASCII`码表上对应的字母。
+  * 写出字符串数据时，是把字符串本身原样写出。
+
+> 插播一个装备小技巧：
+>
+> ```java
+>     public static void main(String[] args) {
+>         // 嘻嘻 try-with-resource写法哦
+>         try(FileWriter fileWriter = new FileWriter("E:\\try.txt")){
+>             fileWriter.write(91);
+>         }catch (Exception e){
+>             throw new RuntimeException("嘻嘻 try-with-resource写法哦");
+>         }
+>     }
+> ```
+
+### 08-字符流-flush和clode方法
+
+![image-20230606001822171](http://www.iocaop.com/images/2023-06/image-20230606001822171.png)
+
+看现象：
+
+```java
+```
+
