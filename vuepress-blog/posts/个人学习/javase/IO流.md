@@ -1022,5 +1022,39 @@ public class CharStreamDemo03 {
 写代码：
 
 ```java
+public class CharStreamDemo04 {
+    public static void main(String[] args) throws IOException {
+        // 每次写一个字节的方法demo
+        FileWriter fileWriter01 = new FileWriter("E:\\char01.txt");
+        fileWriter01.write(97);
+        fileWriter01.write(98);
+        fileWriter01.write(99);
+        fileWriter01.close();
+
+        // 一次写出一个字符数组
+        FileWriter fileWriter02 = new FileWriter("E:\\char02.txt");
+        fileWriter02.write(new char[]{97,98,99});
+        fileWriter02.close();
+
+        // 一次写出一个字符的一部分
+        FileWriter fileWriter03 = new FileWriter("E:\\char03.txt");
+        fileWriter03.write(new char[]{97,98,99},0,2);
+        fileWriter03.close();
+
+        // 一次写一个字符串
+        FileWriter fileWriter04 = new FileWriter("E:\\char04.txt");
+        fileWriter04.write("赖卓成");
+        fileWriter04.close();
+
+        // 一次写一个字符串的一部分
+        FileWriter fileWriter05 = new FileWriter("E:\\char05.txt");
+        fileWriter05.write("赖卓成",0,2);
+        fileWriter05.close();
+
+    }
+}
 ```
 
+运行结果：
+
+![image-20230606001417880](http://www.iocaop.com/images/2023-06/image-20230606001417880.png)
