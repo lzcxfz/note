@@ -978,3 +978,49 @@ public class CharStreamDemo03 {
 因为<span style="background-color:pink;">字节流每次只读一个字节</span>，不管是GBK还是UTF-8，一个中文都是多个字节，用字节流，没读全，所以乱码。
 
 如GBK的`赖`为：`{-64, -75}`，字节流读取，每次读一个，-64和-75都是乱码。
+
+### 05-字符流读取中文的过程
+
+* <span style="background-color:pink;">字符流=字节流+编码表</span>
+
+基础知识：
+
+不管在哪张码表中，<span style="background-color:pink;">中文的第一个字节一定是负数</span>。
+
+举例：
+
+当使用字符流读取`a赖卓成`的时候，字节数组是：`[97, -64, -75, -41, -65, -77, -55]`
+
+先读取第一个`97`，没问题，对应字母`a`，当读取到`-64`的时候，这时候知道，这是中文，所以看现在用的码表，是`GBK`，知道了一个中文对应两个字节，所以根据GBK码表得出`[-64,-75]`为`赖`，后面的类推。
+
+小结：
+
+* 如果想要进行<span style="background-color:pink;">拷贝</span>，一律使用<span style="background-color:pink;">字节流或者字节缓冲流</span>。
+* 如果<span style="background-color:pink;">读写文本中的数据</span>，一律使用<span style="background-color:pink;">字符流</span>。
+* `GBK`是windows系统默认的码表，一个中文两个字节，`Unicode`的`UTF-8`编码格式，一个中文三个字节。
+
+### 06-字符流-写数据
+
+步骤和字节流类似：
+
+* 创建字符输出流对象
+* 写数据
+* 释放资源
+
+先看API：
+
+![image-20230605235803985](http://www.iocaop.com/images/2023-06/image-20230605235803985.png)
+
+简单查看源码就可以看出，其实字符流最终还是使用了字节流，加上编码表，实现字符流。
+
+![image-20230606000405744](http://www.iocaop.com/images/2023-06/image-20230606000405744.png)
+
+写数据的5中方式，重载：
+
+![image-20230605235916426](http://www.iocaop.com/images/2023-06/image-20230605235916426.png)
+
+写代码：
+
+```java
+```
+
