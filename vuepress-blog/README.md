@@ -4,7 +4,7 @@ layout: Blog
 icon: home
 title: 主页
 # heroImage: /logo.svg
-bgImage: https://api.btstu.cn/sjbz/api.php?lx=fengjing&format=images
+bgImage: https://api.123home.page/api.php?category=all
 heroText: 
 heroFullScreen: true
 tagline: 人若无名，专心练剑。
