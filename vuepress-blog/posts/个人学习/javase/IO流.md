@@ -1224,3 +1224,157 @@ public class CharStreamDemo08 {
 
 ### 11-字符缓冲输入流-读取数据
 
+作用：提高读取效率。
+
+看API：
+
+![image-20230607012733644](http://www.iocaop.com/images/2023-06/image-20230607012733644.png)
+
+代码和之前都类似：
+
+```java
+public class CharStreamDemo09 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bf = new BufferedReader(new FileReader("E:\\buffedReader01.txt"));
+        char [] chars = new char[1024];
+        int len;
+        while((len=bf.read(chars))!=-1){
+            System.out.println(new String(chars,0,len));
+        }
+    }
+
+}
+```
+
+提高效率的原理也是依次读取8192的字节到缓冲区：
+
+![image-20230607013514016](http://www.iocaop.com/images/2023-06/image-20230607013514016.png)
+
+![image-20230607013522234](http://www.iocaop.com/images/2023-06/image-20230607013522234.png)
+
+### 12-字符缓冲输出流-输出数据
+
+![image-20230607014006231](http://www.iocaop.com/images/2023-06/image-20230607014006231.png)
+
+和字符输出流写数据一样的用法。
+
+### 13-字符缓冲流的特有方法
+
+BufferedWriter:
+
+* `void newLine()`：写一行 行分隔符，行分隔符字符串 由系统属性定义。不需要我们手动来根据系统写`\r\n`、`\r`、`\n`。
+
+```java
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("E:\\newLine.txt"));
+        bufferedWriter.write("赖卓成的笔记");
+        bufferedWriter.newLine();
+        bufferedWriter.write("哈哈");
+        bufferedWriter.newLine();
+        bufferedWriter.close();
+    }
+```
+
+![image-20230607014719549](http://www.iocaop.com/images/2023-06/image-20230607014719549.png)
+
+> 可以理解为跨平台的换行符
+
+BufferedReader:
+
+* `public String readLine`:读一行文字，结果包含行的内容的字符串，不包括任何终止字符，如果流的结尾已经到达，则为null。
+
+```java
+public class CharStreamDemo13 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("E:\\readLine.txt"));
+        String line1 = bufferedReader.readLine();
+        System.out.println("line1 = " + line1);
+
+        String line2 = bufferedReader.readLine();
+        System.out.println("line2 = " + line2);
+
+        String line3 = bufferedReader.readLine();
+        System.out.println("line3 = " + line3);
+
+        String line4 = bufferedReader.readLine();
+        System.out.println(line4);
+
+    }
+
+}
+```
+
+![image-20230607015136086](http://www.iocaop.com/images/2023-06/image-20230607015136086.png)
+
+> 注意：在之前，如果没有读到数据，返回的是-1，而使用`readLine`如果没有读到数据则返回null
+
+当我们使用循环进行读取时，就应该这样写：
+
+```java
+public class CharStreamDemo14 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("E:\\readLine.txt"));
+        String line;
+        while((line=bufferedReader.readLine())!=null){
+            System.out.println(line);
+        }
+    }
+}
+```
+
+> `readLine()`读取一整行数据，一直读到回车换行为止，但不会把回车换行读进来。
+
+### 14-缓冲流
+
+文件里有一行数字，读到内存，排序后写回文件（覆盖原来的文件）。
+
+![image-20230607022301000](http://www.iocaop.com/images/2023-06/image-20230607022301000.png)
+
+```java
+public class CharStreamDemo15 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("E:\\sort.txt"));
+        // 一次读一行，然后按照空格切割
+        String s = bufferedReader.readLine();
+        bufferedReader.close();
+        if (s==null){
+            System.out.println("读到的内容是:null");
+        }else {
+            // 9 1 2 5 3 10 4 6 7 8
+            System.out.println("读到的内容是:"+s);
+        }
+
+        String[] split = s.split(" ");
+        int[] ints = new int[split.length];
+        // 转为int
+        for (int i = 0; i < split.length; i++) {
+            ints[i] = Integer.parseInt(split[i]);
+        }
+        Arrays.sort(ints);
+
+        System.out.println("排序后:"+Arrays.toString(ints));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("E:\\sort.txt"));
+        for (int i = 0; i < ints.length; i++) {
+            bufferedWriter.write(ints[i]+" ");
+        }
+        bufferedWriter.close();
+    }
+
+}
+
+```
+
+![image-20230607023046360](http://www.iocaop.com/images/2023-06/image-20230607023046360.png)
+
+> 这里注意一个细节，不能在创建缓冲字符输入流以后马上创建缓冲字符输出流。
+>
+> 因为创建缓冲字符输入流时，<span style="background-color:pink;">如果文件存在，则清空</span>，不存在则创建。
+>
+> 后果：
+>
+> ![image-20230607023232277](http://www.iocaop.com/images/2023-06/image-20230607023232277.png)
+
