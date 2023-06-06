@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: 同步到我的服务器
 on:
   push:
     branches:
