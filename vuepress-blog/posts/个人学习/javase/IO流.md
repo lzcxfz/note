@@ -1445,3 +1445,52 @@ public class CharStreamDemo15 {
 ![image-20230613001301731](http://www.iocaop.com/images/2023-06/202306130013766.png)
 
 小结：转换流就是用来进行字节流和字符流之间转换的。`InputStreamReader`是从字节流到字符流的桥梁，`OutPutStreamReader`是字符流到字节流的桥梁。
+
+> jdk已经帮我们封装好了转换流，一般我们不需要直接使用转换流，而是使用字节流。
+
+### 17-转换流-指定编码读写
+
+在jdk11之前，转换流可以用作指定编码读写，jdk11之后，一般不会使用转换流了。
+
+先来个demo：使用字符流逐个读取文本文件的内容，文本文件编码使用`ANSI`，`ANSI`表示使用系统默认的编码表。当前是window系统，默认使用`GBK`，而我当前的idea编码格式为`Unicode`的`UTF-8`编码格式。
+
+```java
+public class FileReaderDemo01 {
+    public static void main(String[] args){
+       try( FileReader fileReader = new FileReader("D:\\dev\\workfile\\该文件夹的作用.txt");){
+           int charInt=0;
+           while((charInt = fileReader.read())!=-1){
+               System.out.println((char) charInt);
+           }
+       }catch (Exception e){
+        throw new RuntimeException(e);
+       }
+    }
+}
+```
+
+编码不一致，肯定输出乱码：
+
+![image-20230613002901718](http://www.iocaop.com/images/2023-06/202306130029745.png)
+
+如何解决这个问题？那当然是指定文本文件的编码格式啦，如何指定？jdk11以前需要这样：
+
+```java
+public class FileReaderDemo02 {
+
+    public static void main(String[] args){
+        try(InputStreamReader isr = new InputStreamReader(new FileInputStream("D:\\dev\\workfile\\该文件夹的作用.txt"),"GBK")){
+            int charInt = 0 ;
+            while((charInt = isr.read())!=-1){
+                System.out.println((char)charInt);
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+一个构造方法的使用而已。
+
+![image-20230613004425567](http://www.iocaop.com/images/2023-06/202306130044596.png)
