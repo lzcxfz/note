@@ -1430,3 +1430,16 @@ public class CharStreamDemo15 {
 
 ![image-20230612235804197](http://www.iocaop.com/images/2023-06/202306122358237.png)
 
+<span style="background-color:pink;">OutputStreamWriter是从字符流到字节流的桥接器：使用指定的[`charset`将](../nio/charset/Charset.html)写入其中的字符编码为字节。</span>
+
+图解释：
+
+![image-20230613000900467](http://www.iocaop.com/images/2023-06/202306130009501.png)
+
+看源码：
+
+当我们创建字符输入流时，调用的构造方法，会创建一个字节输入流，再<span style="background-color:pink;">调用父类构造，将字节流传递给父类，创建转换流</span>，并且，在字符输入流中，没有任何成员方法，全是构造方法，所以我们在使用字符流时，调用的成员方法都是继承自父类的。
+
+![image-20230613001234264](http://www.iocaop.com/images/2023-06/202306130012287.png)
+
+![image-20230613001301731](http://www.iocaop.com/images/2023-06/202306130013766.png)
