@@ -884,6 +884,37 @@ public class BufferStreamCopyDemo02 {
 
 ![image-20230602011524209](http://www.iocaop.com/images/2023-06/image-20230602011524209.png)
 
+> ```java
+>     private static void copy2() {
+>         try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream("E:\\sort.txt"));
+>             BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream("E:\\sort_copy.txt"))){
+>             byte[] bytes = new byte[8192];
+>             int len = 0;
+>             while ((len = bis.read(bytes))!=-1){
+>                 fos.write(bytes,0,len);
+>             }
+>         }catch (Exception e){
+>             throw new RuntimeException("111111111111");
+>         }
+>     }
+> 
+>     private static void copy1() {
+>         try(FileInputStream fis = new FileInputStream("E:\\sort.txt");
+>             FileOutputStream fos = new FileOutputStream("E:\\sort_copy.txt")){
+> 
+>             byte[] bytes = new byte[8192];
+>             int len = 0;
+>             while ((len = fis.read(bytes))!=-1){
+>                 fos.write(bytes,0,len);
+>             }
+>         }catch (Exception e){
+>             throw new RuntimeException("111111111111");
+>         }
+>     }
+> ```
+>
+> 这种情况，`copy1`和`copy2`，copy1的效率要高，因为缓冲流内置一个8192大小的数组，需要多倒手一次。如果没有自定义数组或是字符流，那肯定用缓冲流好，缓冲流效率高，且字符缓冲流有特有的方法。
+
 ## 10-4 字符流、字符缓冲流
 
 ### 01-字节流操作文本文件出现乱码问题
