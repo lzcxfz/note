@@ -1513,3 +1513,10 @@ public class FileReaderDemo03 {
 ```
 
 ![image-20230613005047493](http://www.iocaop.com/images/2023-06/202306130051699.png)
+
+所以jdk11之后就没必要再用转换流进行读写了。
+
+### 18-对象操作流-基本特点
+
+上代码：
+
