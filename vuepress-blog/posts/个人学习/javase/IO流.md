@@ -1410,3 +1410,23 @@ public class CharStreamDemo15 {
 > ![image-20230607023232277](http://www.iocaop.com/images/2023-06/image-20230607023232277.png)
 
 ## 10-5转换流、对象操作流、Properties
+
+### 16-转换流的概念
+
+先复习一下字符流读取文件的过程。
+
+* 当没有中文时，也是一个一个字节进行读取，转成`char`类型
+* 当有中文时，遇到第一个负数，会查表，假设是`UTF-8`则会读一次取三个字节，转成一个中文。
+
+字符流在读取数据的过程中，真正读取数据的其实还是字节流。我们知道原理是这样，但是实际创建的还是字符流，那是谁把字符流变成字节流的呢？是转换流。
+
+![image-20230612233525941](http://www.iocaop.com/images/2023-06/image-20230612233525941.png)
+
+官方API解释：
+
+![image-20230612235305927](http://www.iocaop.com/images/2023-06/image-20230612235305927.png)
+
+<span style="background-color:pink;">InputStreamReader是从字节流到字符流的桥接器：它使用指定的[`charset`](../nio/charset/Charset.html)读取字节并将其解码为字符。</span>
+
+![image-20230612235804197](http://www.iocaop.com/images/2023-06/202306122358237.png)
+
