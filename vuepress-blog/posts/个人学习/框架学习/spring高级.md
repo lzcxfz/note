@@ -50,6 +50,6 @@ public class A01Application {
 
 ![image-20230529124938109](http://www.iocaop.com/images/2023-05/image-20230529124938109.png)
 
-> ctrl+u可以查看类图
+> ctrl+alt+u可以查看类图
 
 可以看到`ApplicationContext`间接继承了`BeanFactory`接口，同时也继承了其他的一些接口(为了扩展功能)。
