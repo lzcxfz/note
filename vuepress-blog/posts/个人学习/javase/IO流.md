@@ -1491,6 +1491,25 @@ public class FileReaderDemo02 {
 }
 ```
 
-一个构造方法的使用而已。
+一个构造方法的使用而已，对于`OutputStreamReader`也是一样的操作。不演示了。
 
 ![image-20230613004425567](http://www.iocaop.com/images/2023-06/202306130044596.png)
+
+学习到这，知道了在JDK11之前，转换流可以用来做指定编码的读写，那JDK11以后呢？`FileReader`新推出了一个构造：
+
+```java
+public class FileReaderDemo03 {
+    public static void main(String[] args){
+        try(FileReader fr = new FileReader("D:\\dev\\workfile\\该文件夹的作用.txt", Charset.forName("GBK"))){
+            int charInt = 0;
+            while((charInt = fr.read())!=-1){
+                System.out.println((char)charInt);
+            }
+        }catch (Exception e){
+
+        }
+    }
+}
+```
+
+![image-20230613005047493](http://www.iocaop.com/images/2023-06/202306130051699.png)
