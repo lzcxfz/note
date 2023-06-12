@@ -1443,3 +1443,5 @@ public class CharStreamDemo15 {
 ![image-20230613001234264](http://www.iocaop.com/images/2023-06/202306130012287.png)
 
 ![image-20230613001301731](http://www.iocaop.com/images/2023-06/202306130013766.png)
+
+小结：转换流就是用来进行字节流和字符流之间转换的。`InputStreamReader`是从字节流到字符流的桥梁，`OutPutStreamReader`是字符流到字节流的桥梁。
