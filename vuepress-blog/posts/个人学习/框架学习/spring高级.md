@@ -93,4 +93,55 @@ public class A01Application {
 
 ![image-20230614152203349](http://www.iocaop.com/images/2023-06/image-20230614152203349.png)
 
-这个map是私有的，有两种方式可以看，debug和反射。debug不方便，所以使用反射来拿到这个map，看看里面有些什么。
+这个map是私有的，有两种方式可以看，debug和反射。debug不方便，所以使用反射来拿到这个map，看看里面有些什么，打印了一大堆的bean出来。
+
+```java
+@SpringBootApplication
+public class A01Application {
+
+    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+
+        // 返回的是Spring的容器
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(A01Application.class, args);
+
+        // 通过BeanFactory获取bean
+        System.out.println(applicationContext);
+        Field field = DefaultSingletonBeanRegistry.class.getDeclaredField("singletonObjects");
+        field.setAccessible(true);
+        Map<String,Object> map = (Map<String, Object>) field.get(applicationContext.getBeanFactory());
+        System.out.println("map = " + map);
+    }
+
+}
+```
+
+![image-20230614182104965](http://www.iocaop.com/images/2023-06/image-20230614182104965.png)
+
+自定义两个组件，看看能不能拿到：
+
+![image-20230614182442229](http://www.iocaop.com/images/2023-06/image-20230614182442229.png)
+
+```java
+@SpringBootApplication
+public class A01Application {
+
+    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+
+        // 返回的是Spring的容器
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(A01Application.class, args);
+
+        // 通过BeanFactory获取bean
+        System.out.println(applicationContext);
+        Field field = DefaultSingletonBeanRegistry.class.getDeclaredField("singletonObjects");
+        field.setAccessible(true);
+        Map<String,Object> map = (Map<String, Object>) field.get(applicationContext.getBeanFactory());
+        map.entrySet().stream().filter(entry -> entry.getKey().startsWith("component")).forEach(System.out::println);
+    }
+
+}
+```
+
+可以拿到：
+
+![image-20230614182738443](http://www.iocaop.com/images/2023-06/image-20230614182738443.png)
+
