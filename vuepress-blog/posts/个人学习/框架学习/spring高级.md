@@ -82,3 +82,15 @@ public class A01Application {
 ![image-20230614150354169](http://www.iocaop.com/images/2023-06/image-20230614150354169.png)
 
 表面上是只有`getBean`，实际<span style="background-color:pink;">控制反转、基本的依赖注入、Bean的生命周期的各种功能</span>，都在它的实现类进行了实现。
+
+具体是在`DefaultListableBeanFactory`对这些功能进行了实现：
+
+![image-20230614151826379](http://www.iocaop.com/images/2023-06/image-20230614151826379.png)
+
+> 快捷键：在类图中按f4可以跳转到对应类的源码。
+
+其中`DefaultSingletonBeanRegistry`管理了单例bean,在该类，有个Map集合，放了所有的单例bean，key是实例的名称，value就是实例：
+
+![image-20230614152203349](http://www.iocaop.com/images/2023-06/image-20230614152203349.png)
+
+这个map是私有的，有两种方式可以看，debug和反射。debug不方便，所以使用反射来拿到这个map，看看里面有些什么。
