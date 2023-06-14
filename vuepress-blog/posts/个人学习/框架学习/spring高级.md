@@ -48,8 +48,29 @@ public class A01Application {
 }
 ```
 
+`ConfigurableApplicationContex`是`ApplicationContext`的子接口。
+
 ![image-20230529124938109](http://www.iocaop.com/images/2023-05/image-20230529124938109.png)
 
 > ctrl+alt+u可以查看类图
 
 可以看到`ApplicationContext`间接继承了`BeanFactory`接口，同时也继承了其他的一些接口(为了扩展功能)。
+
+**到底什么是`BeanFactory`：**
+
+* 它是`ApplicationContext`的父接口
+* 它才是`Spring`的核心容器，主要的`ApplicationContext`实现都组合了它的功能。
+
+组合二字如何理解？
+
+![image-20230614144006058](http://www.iocaop.com/images/2023-06/image-20230614144006058.png)
+
+![image-20230614144226720](http://www.iocaop.com/images/2023-06/image-20230614144226720.png)
+
+在使用`ConfigurableApplicationContext`获取Bean时，是调用了`BeanFactory`中的方法，而不是由`ConfigurableApplicationContext`来实现的，所以说是在内部组合了一个`BeanFactory`且组合了他的功能，简单的说`BeanFactory` 是`ApplicationContext`的成员变量。通过打断点调试或翻看源码可以证明：
+
+![image-20230614145820372](http://www.iocaop.com/images/2023-06/image-20230614145820372.png)
+
+在`BeanFactory`中可以看到` singletonObjects`，里面存放的是单例bean。
+
+> 快捷键：ctrl+alt+b查看实现类，ctrl+b查看接口
