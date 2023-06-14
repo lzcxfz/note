@@ -74,3 +74,11 @@ public class A01Application {
 在`BeanFactory`中可以看到` singletonObjects`，里面存放的是单例bean。
 
 > 快捷键：ctrl+alt+b查看实现类，ctrl+b查看接口
+
+### 02-BeanFactory的功能
+
+接口中的所有方法：
+
+![image-20230614150354169](http://www.iocaop.com/images/2023-06/image-20230614150354169.png)
+
+表面上是只有`getBean`，实际<span style="background-color:pink;">控制反转、基本的依赖注入、Bean的生命周期的各种功能</span>，都在它的实现类进行了实现。
