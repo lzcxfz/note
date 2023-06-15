@@ -2144,3 +2144,10 @@ public class PropertiesDemo05 {
 }
 ```
 
+或者在idea中设置：
+
+![image-20230616012238618](http://www.iocaop.com/images/2023-06/202306160122686.png)
+
+即可正常显示：
+
+![image-20230616012255934](http://www.iocaop.com/images/2023-06/202306160122964.png)
