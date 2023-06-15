@@ -1645,8 +1645,8 @@ public class ConvertDemo02 {
  */
 public class ConvertDemo03 {
     public static void main(String[] args) {
-        try(ObjectInputStream oos = new ObjectInputStream(new FileInputStream("D:\\dev\\workfile\\ConvertDemo02.txt"))) {
-            Object o = oos.readObject();
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("D:\\dev\\workfile\\ConvertDemo02.txt"))) {
+            Object o = ois.readObject();
             if (o instanceof User){
                 User user = (User)o;
                 System.out.println("user = " + user);
