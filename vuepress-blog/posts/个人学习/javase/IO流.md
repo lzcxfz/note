@@ -2114,7 +2114,7 @@ public class PropertiesDemo04 {
 
 设置后为`UTF-8`后仍然乱码。
 
-尝试过使用转换流，依然无效：这个问题先不纠结了。
+尝试过使用转换流，依然无效：这个问题先不纠结了。实在不行就使用` storeToXML(OutputStream os, String comment, Charset charset)`，写到xml
 
 ```java
 /**
