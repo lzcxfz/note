@@ -1815,6 +1815,8 @@ public class User implements Serializable {
 transient
 ```
 
+该修饰符修饰的变量，不参与序列化。
+
 ```java
 /**
  * 用户
@@ -1844,3 +1846,84 @@ public class User implements Serializable {
 运行：
 
 ![image-20230615224321379](http://www.iocaop.com/images/2023-06/202306152243408.png)
+
+### 23-对象操作流练习-写入、读取多个对象
+
+写入多个对象到本地文件
+
+```java
+    /**
+     * 序列化
+     */
+    private static void serialization() {
+        User lzc1 = new User("lzc", "123456");
+        User lzc2 = new User("laizhuocheng", "654321");
+        User lzc3 = new User("赖卓成", "0.0.0.0.0");
+
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))){
+        oos.writeObject(lzc1);
+        oos.writeObject(lzc2);
+        oos.writeObject(lzc3);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("错误");
+        }
+    }
+}
+```
+
+关键是怎么读？我们在使用字节流读文件时是定义个变量来读，-1表示读完了，这里怎么办？先用`null`试试
+
+```java
+    /**
+     * 反序列化
+     */
+    private static void deserialization() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))){
+            Object o;
+            while((o = ois.readObject())!=null){
+                User user = (User) o;
+                System.out.println("user = " + user);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("错误");
+        }
+    }
+```
+
+![image-20230615225615788](http://www.iocaop.com/images/2023-06/202306152256824.png)
+
+读是能读，但最后报错了，我们复制异常到API中查看：
+
+![image-20230615225933362](http://www.iocaop.com/images/2023-06/202306152259402.png)
+
+既然如此，我们是不是可以通过这个异常来判断是否读到文件末尾了？修改代码：
+
+```java
+    /**
+     * 反序列化
+     */
+    private static void deserialization() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))){
+            while (true){
+                try {
+                    Object o = ois.readObject();
+                    User user = (User) o;
+                    System.out.println("user = " + user);
+                } catch (EOFException e) {
+                    break;
+                } 
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("错误");
+        }
+    }
+```
+
+运行没问题：
+
+![image-20230615230114823](http://www.iocaop.com/images/2023-06/202306152301852.png)
+
+> 除了这个方法，还有没有其他办法？可以使用容器，如`ArrayList`，将多个对象放入容器中进行读取和写入，就不用判断是否到达文件末尾，直接一次性读取整个容器。
