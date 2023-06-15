@@ -249,3 +249,63 @@ public class A05Application {
 
 ### 05-ApplicationContext的功能4
 
+`ApplicationEventPublisher`：发布事件，解耦合。
+
+首先我们定义一个用户注册事件，自定义事件需要继承`ApplicationEvent`:
+
+```java
+/**
+ * 用户注册事件
+ *
+ * @author 赖卓成
+ * @date 2023/06/15
+ */
+public class UserRegisterEvent extends ApplicationEvent {
+
+    public UserRegisterEvent(Object source) {
+        super(source);
+    }
+}
+```
+
+发布事件：使用`ApplicationContext`继承自`ApplicationEventPublisher`中的方法进行发送：
+
+```java
+@SpringBootApplication
+public class A06Application {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(A06Application.class, args);
+        applicationContext.publishEvent(new UserRegisterEvent("欢迎你，lzc，你已注册成功！"));
+    }
+}
+```
+
+发送后有什么用？有监听器进行监听，定义两种监听器，分别发送短信和邮件：
+
+```java
+@Component
+public class Component1 {
+
+    @EventListener
+    public void mail(UserRegisterEvent event) {
+        System.out.println("发送邮件:"+event.getSource());
+    }
+}
+```
+
+```java
+@Component
+public class Component2 {
+    @EventListener
+    public void sms(UserRegisterEvent event) {
+        System.out.println("发送短信:"+event.getSource());
+    }
+}
+```
+
+运行结果：
+
+![image-20230615151558651](http://www.iocaop.com/images/2023-06/image-20230615151558651.png)
+
+> 事件发布最重要的是，解耦合。在本例中，用户注册成功后，不需要将后续步骤写死为发短信或发邮件，而是发布事件，具体发送短信或邮件，由接受的组件来做。
