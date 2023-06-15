@@ -1756,3 +1756,53 @@ public class User implements Serializable {
 报错了，复制`InvalidClassException`到API中查找：
 
 ![image-20230615222846412](http://www.iocaop.com/images/2023-06/202306152228442.png)
+
+看异常信息：
+
+```java
+java.io.InvalidClassException: com.lzc.io.User; local class incompatible: stream classdesc serialVersionUID = -2338702451887482064, local class serialVersionUID = -826703526409179226
+```
+
+说的是，流中的`serialVersionUID`和当前类中的`serialVersionUID`不一样。但是我们根本没有定义这个`serialVersionUID`，怎么回事？
+
+`serialVersionUID`是序列号，如果我们没有显示定义，那么虚拟机会根据类中的成员，包括成员变量和成员方法，自动计算出一个序列号。
+
+自动计算的序列号会有一个问题：<span style="background-color:pink;">如果我们修改了类中的信息，那么虚拟机会再次自动计算出一个序列号</span>。
+
+那么我先遇到我异常就迎刃而解了：因为第一次我们将对象写到文件，虚拟机根据类自动计算出了一个序列号并且写到了文件，然后我们又修改了类中的`username`的修饰符，虚拟机又会自动计算出一个序列号，导致修改以后再次读取(反序列化)时的类的序列号和写到文件中对象的类的序列号不一致。
+
+如何解决？简单，不让虚拟机帮我们自动计算，我们显示地定义这个序列号，而且这个序列号不变，就行了。
+
+怎么定义？
+
+```java
+/**
+ * 用户
+ *
+ * @author lzc
+ * @date 2023/06/15
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class User implements Serializable {
+
+    public static final long serialVersionUID = 1L;
+
+    /**
+     * 用户名
+     */
+    public String username;
+
+    /**
+     * 密码
+     */
+    private String password;
+}
+```
+
+显示定义序列号以后，再试一次，先将对象写到本地文件，再修改`javaBean`，再读取修改之前写好的本地文件，看看会不会报错。
+
+结果：不会报错
+
+![image-20230615223823544](http://www.iocaop.com/images/2023-06/202306152238572.png)
