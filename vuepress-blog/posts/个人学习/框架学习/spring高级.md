@@ -216,3 +216,36 @@ public class A04Application {
 
 #### EnvironmentCapable：读取环境信息
 
+获取系统变量`JAVA_HOME`，不区分大小写。
+
+```java
+@SpringBootApplication
+public class A05Application {
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(A05Application.class, args);
+        String javaHome = applicationContext.getEnvironment().getProperty("java_home");
+        System.out.println("javaHome = " + javaHome);
+    }
+}
+
+```
+
+![image-20230615115831973](http://www.iocaop.com/images/2023-06/image-20230615115831973.png)
+
+也可以拿到配置文件中的键值：
+
+```java
+@SpringBootApplication
+public class A05Application {
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(A05Application.class, args);
+        String port = applicationContext.getEnvironment().getProperty("server.port");
+        System.out.println("port = " + port);
+    }
+}
+```
+
+![image-20230615120101780](http://www.iocaop.com/images/2023-06/image-20230615120101780.png)
+
+### 05-ApplicationContext的功能4
+
