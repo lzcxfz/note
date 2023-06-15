@@ -1663,7 +1663,7 @@ public class ConvertDemo03 {
 
 ### 21~22-对象操作流-注意点
 
-#### 注意点1：
+#### 注意点1：序列化后修改类怎么办
 
 如果一个类的对象被写到文件后，我们又修改了这个类(JavaBean)，再次从本地文件读取，会发生什么？
 
@@ -1806,3 +1806,41 @@ public class User implements Serializable {
 结果：不会报错
 
 ![image-20230615223823544](http://www.iocaop.com/images/2023-06/202306152238572.png)
+
+#### 注意点2：类中某个成员不想被序列化怎么办
+
+加修饰符：
+
+```java
+transient
+```
+
+```java
+/**
+ * 用户
+ *
+ * @author lzc
+ * @date 2023/06/15
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class User implements Serializable {
+
+    public static final long serialVersionUID = 1L;
+
+    /**
+     * 用户名
+     */
+    private String username;
+
+    /**
+     * 密码
+     */
+    private transient String password;
+}
+```
+
+运行：
+
+![image-20230615224321379](http://www.iocaop.com/images/2023-06/202306152243408.png)
