@@ -186,3 +186,30 @@ public class A03Application {
 
 ![image-20230615113540062](http://www.iocaop.com/images/2023-06/image-20230615113540062.png)
 
+### 04-ApplicationContext的功能2
+
+`ResourcePatternResolver`：通过通配符匹配资源
+
+```java
+@SpringBootApplication
+public class A04Application {
+    public static void main(String[] args) throws IOException {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(A04Application.class, args);
+        Resource[] resources = applicationContext.getResources("classpath:application.yml");
+        for (Resource resource : resources) {
+            System.out.println(resource);
+        }
+    }
+}
+```
+
+![image-20230615114459391](http://www.iocaop.com/images/2023-06/image-20230615114459391.png)
+
+> `Resource`是spring中对于资源的抽象。
+
+来试试能不能找到springboot自动配置时所用到的`spring.factories`：
+
+![image-20230615115051615](http://www.iocaop.com/images/2023-06/image-20230615115051615.png)
+
+> - `classpath:` 表示只在当前类路径下搜索资源，<span style="background-color:pink;">不包括其它的 jar 包或类路径</span>。
+> - `classpath*:` 表示在当前类路径以及所有的子类路径中搜索资源，<span style="background-color:pink;">包括其它的 jar 包或类路径</span>。
