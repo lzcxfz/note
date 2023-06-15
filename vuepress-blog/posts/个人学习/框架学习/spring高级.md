@@ -145,3 +145,15 @@ public class A01Application {
 
 ![image-20230614182738443](http://www.iocaop.com/images/2023-06/image-20230614182738443.png)
 
+### 03-ApplicationContext功能1
+
+之前讲过，`ApplicationContext`接口继承了`BeanFactory`接口，扩展了功能，扩展的功能主要是因为继承了下面四个接口：
+
+![image-20230615110657696](http://www.iocaop.com/images/2023-06/image-20230615110657696.png)
+
+* `MessageSource`：提供了<span style="background-color:pink;">处理国际化资源</span>的能力。
+
+* `ResourcePatternResolver`：提供了<span style="background-color:pink;">通过通配符匹配资源</span>的能力,(从磁盘路径，类路径找文件)。
+* `ApplicationEventPublisher`：提供了<span style="background-color:pink;">发布事件对象</span>的能力。
+
+* `EnvironmentCapable`：提供spring中的环境信息，如读取系统环境变量、读取`properties`文件、读取`yml`文件。
