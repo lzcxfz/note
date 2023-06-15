@@ -166,7 +166,7 @@ public class A01Application {
 
 配置：<a href='https://blog.csdn.net/weixin_39960529/article/details/86571962'>点击跳转</a>
 
-通过applicationContext获取：
+通过applicationContext获取,因为`ApplicationContext`接口继承了`MessageSource`接口，调用的是父接口的`getMessage()`：
 
 ```java
 @SpringBootApplication
@@ -185,3 +185,4 @@ public class A03Application {
 ```
 
 ![image-20230615113540062](http://www.iocaop.com/images/2023-06/image-20230615113540062.png)
+
