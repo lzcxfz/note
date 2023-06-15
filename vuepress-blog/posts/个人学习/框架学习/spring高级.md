@@ -186,9 +186,9 @@ public class A03Application {
 
 ![image-20230615113540062](http://www.iocaop.com/images/2023-06/image-20230615113540062.png)
 
-### 04-ApplicationContext的功能2
+### 04-ApplicationContext的功能2和3
 
-`ResourcePatternResolver`：通过通配符匹配资源
+#### `ResourcePatternResolver`：通过通配符匹配资源
 
 ```java
 @SpringBootApplication
@@ -213,3 +213,6 @@ public class A04Application {
 
 > - `classpath:` 表示只在当前类路径下搜索资源，<span style="background-color:pink;">不包括其它的 jar 包或类路径</span>。
 > - `classpath*:` 表示在当前类路径以及所有的子类路径中搜索资源，<span style="background-color:pink;">包括其它的 jar 包或类路径</span>。
+
+#### EnvironmentCapable：读取环境信息
+
