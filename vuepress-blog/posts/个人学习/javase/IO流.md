@@ -1997,3 +1997,150 @@ public class PropertiesDemo01 {
 ```
 
 ![image-20230615231912190](http://www.iocaop.com/images/2023-06/202306152319224.png)
+
+### 26-Properties-特有方法(相较于Map)
+
+![image-20230615232259596](http://www.iocaop.com/images/2023-06/202306152322633.png)
+
+```java
+/**
+ * Properties特有方法
+ *
+ * @author lzc
+ * @date 2023/06/16
+ */
+public class PropertiesDemo02 {
+    public static void main(String[] args) {
+        Properties properties = new Properties();
+        // 设置键值
+        properties.setProperty("a","97");
+        properties.setProperty("b","98");
+        properties.setProperty("c","99");
+
+        // 获取值
+        String a = properties.getProperty("a");
+        System.out.println("a = " + a);
+        System.out.println("=================");
+
+        // 遍历  返回一个不可变的键的集合
+        Set<String> keySet = properties.stringPropertyNames();
+        for (String k : keySet) {
+            String v = properties.getProperty(k);
+            System.out.println("k = " + k);
+            System.out.println("v = " + v);
+        }
+    }
+}
+
+```
+
+![image-20230616004718192](http://www.iocaop.com/images/2023-06/202306160047226.png)
+
+### 27-Properties-load
+
+`Properties`于IO结合的方法：
+
+![image-20230616004824029](http://www.iocaop.com/images/2023-06/202306160048073.png)
+
+load方法可以直接从`.properties`格式的文件中读取键值对到内存中(Properties对象)，文件中的内容是键值格式
+
+例如：
+
+```properties
+username = lzc
+password = 666
+```
+
+```java
+/**
+ * Properties的load
+ *
+ * @author lzc
+ * @date 2023/06/16
+ */
+public class PropertiesDemo03 {
+    public static void main(String[] args) throws FileNotFoundException {
+        Properties properties = new Properties();
+        try (BufferedReader br = new BufferedReader(new FileReader("D:\\dev\\workfile\\PropertiesDemo03.properties"))){
+            properties.load(br);
+            System.out.println("properties = " + properties);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("错误");
+        }
+    }
+}
+```
+
+运行结果：
+
+![image-20230616005532154](http://www.iocaop.com/images/2023-06/202306160055186.png)
+
+> 运行结果顺序和文件中不一样，因为`Properties`属于`Map`、`HashTable`
+
+### 28-Properties-store
+
+```java
+/**
+ * Properties的store方法导出配置
+ *
+ * @author lzc
+ * @date 2023/06/16
+ */
+public class PropertiesDemo04 {
+    public static void main(String[] args) {
+        Properties properties = new Properties();
+        properties.put("k1","v1");
+        properties.put("k2","v2");
+        properties.put("k3","v3");
+        properties.put("k4","v4");
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("D:\\dev\\workfile\\PropertiesDemo04.properties"))){
+            // 参数2为注释 
+            properties.store(bw,"赖卓成导出的配置文件");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("错误");
+        }
+    }
+}
+```
+
+第一次导出，注释有问题，因为没有设置好编码格式：
+
+![image-20230616010342423](http://www.iocaop.com/images/2023-06/202306160103455.png)
+
+![image-20230616010351661](http://www.iocaop.com/images/2023-06/202306160103689.png)
+
+设置后为`UTF-8`后仍然乱码。
+
+尝试过使用转换流，依然无效：这个问题先不纠结了。
+
+```java
+/**
+ * 转换流 解决读取、写入中文乱码的问题  TODO 未解决
+ *
+ * @author lzc
+ * @date 2023/06/16
+ */
+public class PropertiesDemo05 {
+    public static void main(String[] args) {
+        Properties properties = new Properties();
+        properties.put("k1","v1");
+        properties.put("k2","v2");
+        properties.put("k3","v3");
+        properties.put("k4","v4");
+
+        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("D:\\dev\\workfile\\PropertiesDemo05.properties"), StandardCharsets.UTF_8)){
+            // 参数2为注释
+            properties.store(osw,"赖卓成导出的配置文件");
+            osw.flush(); // 刷新缓冲区，确保所有数据都被写入文件
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("错误");
+        }
+
+    }
+}
+```
+
