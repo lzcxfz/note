@@ -1667,3 +1667,92 @@ public class ConvertDemo03 {
 
 如果一个类的对象被写到文件后，我们又修改了这个类(JavaBean)，再次从本地文件读取，会发生什么？
 
+我们先将序列化和反序列化的代码写好，并测试好：
+
+```java
+/**
+ * 将对象写到文件后修改JavaBean再读取会发生什么
+ *
+ * @author lzc
+ * @date 2023/06/15
+ */
+public class ConvertDemo04 {
+    private static final String FILE_PATH = "D:\\dev\\workfile\\ConvertDemo04.txt";
+
+    public static void main(String[] args) {
+        serialization();
+
+        deserialization();
+    }
+
+    /**
+     * 反序列化对象
+     */
+    private static void deserialization() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))){
+            Object o = ois.readObject();
+            if (o instanceof User){
+                User user = (User) o;
+                System.out.println("user = " + user);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("错误");
+        }
+    }
+
+    /**
+     * 序列化对象
+     */
+    private static void serialization() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
+            User user = new User("赖卓成", "123456");
+            oos.writeObject(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("错误");
+        }
+    }
+}
+
+```
+
+```java
+/**
+ * 用户
+ *
+ * @author lzc
+ * @date 2023/06/15
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class User implements Serializable {
+
+    /**
+     * 用户名
+     */
+    private String username;
+
+    /**
+     * 密码
+     */
+    private String password;
+}
+```
+
+
+
+测试没问题：
+
+![image-20230615222405978](http://www.iocaop.com/images/2023-06/202306152224004.png)
+
+![image-20230615222356272](http://www.iocaop.com/images/2023-06/202306152223300.png)
+
+这时，我们修改一下`User`类中的属性`username`的修饰符，将`private`修改为`public `，注释掉序列化方法，直接从内存读取修改之前序列化到文件中的对象：
+
+![image-20230615222637164](http://www.iocaop.com/images/2023-06/202306152226200.png)
+
+报错了，复制`InvalidClassException`到API中查找：
+
+![image-20230615222846412](http://www.iocaop.com/images/2023-06/202306152228442.png)
