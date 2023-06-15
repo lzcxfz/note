@@ -157,3 +157,31 @@ public class A01Application {
 * `ApplicationEventPublisher`：提供了<span style="background-color:pink;">发布事件对象</span>的能力。
 
 * `EnvironmentCapable`：提供spring中的环境信息，如读取系统环境变量、读取`properties`文件、读取`yml`文件。
+
+先来学习功能1，国际化`MessageSource`：
+
+`MessageSource`会根据我们预先配置好的`messages.properties`帮我们翻译：
+
+![image-20230615113331825](http://www.iocaop.com/images/2023-06/image-20230615113331825.png)
+
+配置：<a href='https://blog.csdn.net/weixin_39960529/article/details/86571962'>点击跳转</a>
+
+通过applicationContext获取：
+
+```java
+@SpringBootApplication
+public class A03Application {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(A03Application.class, args);
+        String zhHi = applicationContext.getMessage("hi", null, Locale.CHINA);
+        System.out.println(zhHi);
+        String enHi = applicationContext.getMessage("hi", null, Locale.ENGLISH);
+        System.out.println(enHi);
+        String jaHi = applicationContext.getMessage("hi", null, Locale.JAPANESE);
+        System.out.println(jaHi);
+    }
+}
+```
+
+![image-20230615113540062](http://www.iocaop.com/images/2023-06/image-20230615113540062.png)
