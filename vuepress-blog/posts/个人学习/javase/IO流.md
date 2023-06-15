@@ -1617,3 +1617,46 @@ public class ConvertDemo02 {
 运行报错了：
 
 ![image-20230615215406744](http://www.iocaop.com/images/2023-06/202306152154775.png)
+
+可以复制这个异常到API中找：
+
+![image-20230615215821931](http://www.iocaop.com/images/2023-06/202306152158965.png)
+
+简单的说：就是如果想要`User`类想要能够被对象操作输出流序列化，`User`类就必须要实现`Serializable`接口，实现后，我们再次运行：
+
+![image-20230615220007119](http://www.iocaop.com/images/2023-06/202306152200154.png)
+
+再来看`Serializable`接口，我们实现了这个类，却没有重写任何方法，为什么没有报错？看接口源码：
+
+![image-20230615220055227](http://www.iocaop.com/images/2023-06/202306152200254.png)
+
+什么也没有，这是一个<span style="background-color:pink;">标记性接口</span>，只要实现了这个接口，那么就表示这个类的对象可以被序列化。
+
+### 20-对象操作流-反序列化
+
+和序列化类似：
+
+```java
+/**
+ * 对象操作流-反序列化，将对象从本地文件中读取
+ *
+ * @author lzc
+ * @date 2023/06/15
+ */
+public class ConvertDemo03 {
+    public static void main(String[] args) {
+        try(ObjectInputStream oos = new ObjectInputStream(new FileInputStream("D:\\dev\\workfile\\ConvertDemo02.txt"))) {
+            Object o = oos.readObject();
+            if (o instanceof User){
+                User user = (User)o;
+                System.out.println("user = " + user);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("错误");
+        }
+    }
+}
+```
+
+![image-20230615220557763](http://www.iocaop.com/images/2023-06/202306152205788.png)
