@@ -1941,3 +1941,59 @@ public class User implements Serializable {
 ![image-20230615230932987](http://www.iocaop.com/images/2023-06/202306152309018.png)
 
 ![image-20230615230948942](http://www.iocaop.com/images/2023-06/202306152309979.png)
+
+### 25-Properties-作为Map集合的基本使用
+
+我们知道`Properties`实现了`Map`集合，那么面向接口编程，我们就可以使用`Map`接口中定义好的成员方法。
+
+不解释了，直接看代码：
+
+```java
+/**
+ * Properties作为Map的基本使用
+ *
+ * @author lzc
+ * @date 2023/06/15
+ */
+public class PropertiesDemo01 {
+    public static void main(String[] args) {
+        Properties properties = new Properties();
+
+        // 增
+        properties.put("a",97);
+        properties.put("b",98);
+        properties.put("c",99);
+        System.out.println("properties = " + properties);
+        System.out.println("=================");
+
+        // 删
+        properties.remove("a");
+        System.out.println("properties = " + properties);
+        System.out.println("=================");
+
+        // 改
+        properties.put("b",123);
+        System.out.println("properties = " + properties);
+        System.out.println("=================");
+
+        // 查
+        System.out.println("properties.get(\"c\") = " + properties.get("c"));
+        System.out.println("=================");
+
+        // 遍历
+        Set<Object> keySet = properties.keySet();
+        for (Object o : keySet) {
+            Object v = properties.get(o);
+            System.out.println(o+":"+v);
+        }
+        System.out.println("=================");
+        Set<Map.Entry<Object, Object>> entries = properties.entrySet();
+        for (Map.Entry<Object, Object> entry : entries) {
+            System.out.println("entry.getKey() = " + entry.getKey());
+            System.out.println("entry.getValue() = " + entry.getValue());
+        }
+    }
+}
+```
+
+![image-20230615231912190](http://www.iocaop.com/images/2023-06/202306152319224.png)
