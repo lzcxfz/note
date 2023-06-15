@@ -1927,3 +1927,17 @@ public class User implements Serializable {
 ![image-20230615230114823](http://www.iocaop.com/images/2023-06/202306152301852.png)
 
 > 除了这个方法，还有没有其他办法？可以使用容器，如`ArrayList`，将多个对象放入容器中进行读取和写入，就不用判断是否到达文件末尾，直接一次性读取整个容器。
+
+### 24-Properties-概述
+
+其实`Properties`不是io体系中的，而是集合体系中的一员。
+
+![image-20230615230643193](http://www.iocaop.com/images/2023-06/202306152306225.png)
+
+可以看到，`Properties`继承了`HashTable`，间接继承了`Map`，所以`Properties`是一个双列集合，从图中也可以看出，`Properties`没有泛型，写了会报错，不过它可以存放任意类型的kv，一般使用`String`类型。
+
+为什么不在集合部分学习？因为它跟io相关。
+
+![image-20230615230932987](http://www.iocaop.com/images/2023-06/202306152309018.png)
+
+![image-20230615230948942](http://www.iocaop.com/images/2023-06/202306152309979.png)
