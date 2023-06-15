@@ -1518,5 +1518,68 @@ public class FileReaderDemo03 {
 
 ### 18-对象操作流-基本特点
 
-上代码：
+需求：将用户对象写入文件。
+
+```java
+/**
+ * 用户
+ *
+ * @author lzc
+ * @date 2023/06/15
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class User {
+
+    /**
+     * 用户名
+     */
+    private String username;
+
+    /**
+     * 密码
+     */
+    private String password;
+}
+```
+
+在学习对象操作流之前，我们会这样写：
+
+```java
+/**
+ * 将对象写到文件
+ *
+ * @author lzc
+ * @date 2023/06/15
+ */
+public class ConvertDemo01 {
+    public static void main(String[] args) {
+
+        User lzc = new User("lzc", "911823");
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter("D:\\dev\\workfile\\ConvertDemo01.txt"));) {
+            bw.write(lzc.getUsername());
+            bw.newLine();
+            bw.write(lzc.getPassword());
+        }catch (Exception e){
+            throw new RuntimeException("错误");
+        }
+    }
+}
+```
+
+运行结果：
+
+![image-20230615214100850](http://www.iocaop.com/images/2023-06/202306152141882.png)
+
+写是写好了，会不会有问题？
+
+* 写入时，需要关心对象的属性，一个个写
+* 写入后，文件太容易被读懂。
+
+所以需要使用对象操作流：
+
+可以把对象<span style="background-color:pink;">以字节的形式</span>写到本地文件，直接打开是看不懂的，需要再次使用对象操作流把字节读到内存中，转为对象。
+
+### 19-对象操作流-序列化
 
