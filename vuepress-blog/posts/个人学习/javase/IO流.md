@@ -1583,3 +1583,37 @@ public class ConvertDemo01 {
 
 ### 19-对象操作流-序列化
 
+![image-20230615215731628](http://www.iocaop.com/images/2023-06/202306152157657.png)
+
+对象操作流分两类：对象操作输入流和对象操作输出流。
+
+对象操作输入流（反序列化流）：将本地文件中的对象<span style="background-color:pink;">读到内存</span>中，或<span style="background-color:pink;">接收</span>网络中传输的对象。
+
+对象操作输出流（序列化流）：将对象<span style="background-color:pink;">写到本地文件</span>或在<span style="background-color:pink;">网络中传输</span>对象。
+
+试着使用对象操作输出流将对象写入文件：
+
+```java
+/**
+ * 对象操作流-将对象写到本地文件中
+ *
+ * @author lzc
+ * @date 2023/06/15
+ */
+public class ConvertDemo02 {
+
+    public static void main(String[] args) {
+        User lzc = new User("lzc", "911823616");
+        try (ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream("D:\\dev\\workfile\\ConvertDemo02.txt"));){
+            oos.writeObject(lzc);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("错误");
+        }
+    }
+}
+```
+
+运行报错了：
+
+![image-20230615215406744](http://www.iocaop.com/images/2023-06/202306152154775.png)
