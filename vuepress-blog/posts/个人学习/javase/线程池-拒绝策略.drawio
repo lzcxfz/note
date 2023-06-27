@@ -1,0 +1,217 @@
+<mxfile host="Electron" modified="2023-06-27T13:59:42.197Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.5.0 Chrome/112.0.5615.204 Electron/24.5.1 Safari/537.36" etag="DTNzZ9mzcNK_cr_gEr0v" version="21.5.0" type="device">
+  <diagram name="第 1 页" id="x6CWQ31z59mAk4Qy-NJt">
+    <mxGraphModel dx="2261" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-1" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="59" y="220" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="189" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-3" value="线程池" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="69" y="180" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-4" value="阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="229" y="180" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-5" value="线程池：核心线程数1、最大空闲线程数2、空闲线程存货时间10秒，DiscardOldestPolicy拒绝策略" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="-40" y="30" width="720" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-6" value="有6个任务、分别打印任务号" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="10" y="90" width="260" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-7" value="线程池刚创建完，全是空的" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF3333;" vertex="1" parent="1">
+          <mxGeometry x="59" y="140" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-8" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="69" y="420" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-9" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="199" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-10" value="线程池" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="79" y="380" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-11" value="阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="239" y="380" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-12" value="提交任务0，当前任务数小于核心线程数，创建核心线程执行任务0" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF3333;" vertex="1" parent="1">
+          <mxGeometry y="340" width="460" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-13" value="核心线程1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="79" y="445" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-14" value="核心线程1执行任务0" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="49" y="510" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-16" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="69" y="656" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-17" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="199" y="666" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-18" value="线程池" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="79" y="616" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-19" value="阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="239" y="616" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-20" value="提交任务1，核心线程1正在执行任务0，任务1被放到阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF3333;" vertex="1" parent="1">
+          <mxGeometry y="576" width="460" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-21" value="核心线程1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="79" y="681" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-22" value="线程1执行任务0" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="49" y="746" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-23" value="任务1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="229" y="681" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-24" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="79" y="895" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-25" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="209" y="905" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-26" value="线程池" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="89" y="855" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-27" value="阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="249" y="855" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-28" value="提交任务2，核心线程1正在执行任务0，而阻塞队列又放了任务1，阻塞队列也满了，创建非核心线程执行任务2。" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF3333;" vertex="1" parent="1">
+          <mxGeometry x="-120" y="802" width="910" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-29" value="核心线程1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="89" y="907" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-30" value="核心线程1执行任务0" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="59" y="985" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-31" value="任务1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="219" y="922.5" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-32" value="非核心线程1执行任务2" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="51" y="1015" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-33" value="非核心线程1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="86" y="931" width="69" height="29" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-34" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="49" y="1163" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-35" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="179" y="1173" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-36" value="线程池" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="59" y="1123" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-37" value="阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="219" y="1123" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-38" value="提交任务3，核心线程1正在执行任务0，非核心线程1正在执行任务2，阻塞队列放了任务1，已经满了，线程池也满了，触发拒绝策略。&lt;br&gt;根据拒绝策略，应该丢弃等待时间最久的任务1(阻塞队列只有一个任务，当然他等最久)，将任务3放入阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF3333;" vertex="1" parent="1">
+          <mxGeometry x="-83" y="1070" width="910" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-39" value="核心线程1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="59" y="1175" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-40" value="核心线程1执行任务0" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="29" y="1253" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-41" value="任务1(被丢弃)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="334" y="1188" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-42" value="非核心线程1执行任务2" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="21" y="1283" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-43" value="非核心线程1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="56" y="1199" width="69" height="29" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-44" value="任务3" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="189" y="1188" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-45" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="49" y="1417" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-46" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="179" y="1427" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-47" value="线程池" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="59" y="1377" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-48" value="阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="219" y="1377" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-49" value="提交任务4，核心线程1正在执行任务0，非核心线程1正在执行任务2，阻塞队列满了，线程池也满了，丢弃任务3，任务4进入阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF3333;" vertex="1" parent="1">
+          <mxGeometry x="-90" y="1324" width="910" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-50" value="核心线程1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="59" y="1429" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-51" value="核心线程1执行任务0" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="29" y="1507" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-52" value="任务1(被丢弃)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="334" y="1442" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-53" value="非核心线程1执行任务2" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="21" y="1537" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-54" value="非核心线程1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="56" y="1453" width="69" height="29" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-55" value="任务4" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="189" y="1442" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-56" value="任务3(被丢弃)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="440" y="1442" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-57" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="39" y="1673" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-58" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="169" y="1683" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-59" value="线程池" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="49" y="1633" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-60" value="阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="209" y="1633" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-61" value="提交任务5，核心线程1正在执行任务0，非核心线程1正在执行任务2，阻塞队列满了，线程池也满了，丢弃任务4，任务5进入阻塞队列" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF3333;" vertex="1" parent="1">
+          <mxGeometry x="-92" y="1580" width="910" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-62" value="核心线程1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="49" y="1685" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-63" value="核心线程1执行任务0" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="19" y="1763" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-64" value="任务1(被丢弃)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="324" y="1698" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-65" value="非核心线程1执行任务2" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="11" y="1793" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-66" value="非核心线程1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="46" y="1709" width="69" height="29" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-67" value="任务5" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="179" y="1698" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-68" value="任务3(被丢弃)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="430" y="1698" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-69" value="任务4(被丢弃)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="530" y="1698.5" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="WWQ9vXByA6zPc7UFQxct-70" value="此时没有其他任务了，打印结果为0、2、5，打印的顺序由cpu调度决定。" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF0000;" vertex="1" parent="1">
+          <mxGeometry x="-150" y="1860" width="720" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
