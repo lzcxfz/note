@@ -34,7 +34,7 @@ export default navbar([
     children: [
       { text: "RabbitMQ学习", icon:"Links",link: "/中间件/rabbitmq-b站尚硅谷" },
       { text: "Redis学习", icon:"Links",link: "/中间件/redis-b站黑马2022版" },
-      { text: "高可用Rabbit搭建", icon:"Links",link: "/中间件/haproxy+Keepalive高可用mq" },
+      { text: "高可用RabbitMQ搭建", icon:"Links",link: "/中间件/haproxy+Keepalive高可用mq" },
       { text: "Redis安装", icon:"Links",link: "/中间件/资料/Redis安装说明" },
       { text: "MySQL基础", icon:"Links",link: "/MySQL/基础篇" },
       { text: "MySQL高级", icon:"Links",link: "/MySQL/高级篇" },
