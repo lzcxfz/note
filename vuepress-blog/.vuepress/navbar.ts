@@ -2,18 +2,17 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   "/",
-  "/home",
   {
     text: "JavaSE",
     icon: "edit",
     prefix: "/posts/",
     children: [
       {
-        text: "文章 1-4",
+        text: "个人学习",
         icon: "edit",
-        prefix: "article/",
+        prefix: "个人学习/javase",
         children: [
-          { text: "文章 1", icon: "edit", link: "article1" },
+          { text: "面向对象", icon: "edit", link: "IO流" },
           { text: "文章 2", icon: "edit", link: "article2" },
         ],
       }
