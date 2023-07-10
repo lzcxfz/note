@@ -13,7 +13,7 @@ export default navbar([
       { text: "网络编程", icon:"Links",link: "网络编程" },
       { text: "类加载器和反射", icon:"Links",link: "类加载器和反射" },
       { text: "泛型强化", icon:"Links",link: "泛型强化" },
-      { text: "xml和dtd、schema", icon:"Links",link: "xml和dtd、schema" },
+      { text: "xml和dtd及schema", icon:"Links",link: "xml和dtd及schema" },
 
     ],
   },
