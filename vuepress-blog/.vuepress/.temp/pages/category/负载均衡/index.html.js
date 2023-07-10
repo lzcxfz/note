@@ -1,14 +1,1 @@
-export const data = JSON.parse("{\"key\":\"v-aad5f2fa\",\"path\":\"/category/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/\",\"title\":\"负载均衡 分类\",\"lang\":\"zh-CN\",\"frontmatter\":{\"title\":\"负载均衡 分类\",\"blog\":{\"type\":\"category\",\"name\":\"负载均衡\",\"key\":\"category\"},\"layout\":\"Blog\",\"summary\":\"\",\"head\":[[\"meta\",{\"property\":\"og:url\",\"content\":\"https://www.iocaop.com/category/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/\"}],[\"meta\",{\"property\":\"og:site_name\",\"content\":\"赖卓成的笔记\"}],[\"meta\",{\"property\":\"og:title\",\"content\":\"负载均衡 分类\"}],[\"meta\",{\"property\":\"og:type\",\"content\":\"website\"}],[\"meta\",{\"property\":\"og:locale\",\"content\":\"zh-CN\"}]]},\"excerpt\":\"\",\"headers\":[],\"readingTime\":{\"minutes\":0,\"words\":0},\"filePathRelative\":null}")
-
-if (import.meta.webpackHot) {
-  import.meta.webpackHot.accept()
-  if (__VUE_HMR_RUNTIME__.updatePageData) {
-    __VUE_HMR_RUNTIME__.updatePageData(data)
-  }
-}
-
-if (import.meta.hot) {
-  import.meta.hot.accept(({ data }) => {
-    __VUE_HMR_RUNTIME__.updatePageData(data)
-  })
-}
+export const data = JSON.parse("{\"key\":\"v-aad5f2fa\",\"path\":\"/category/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/\",\"title\":\"负载均衡 分类\",\"lang\":\"zh-CN\",\"frontmatter\":{\"title\":\"负载均衡 分类\",\"blog\":{\"type\":\"category\",\"name\":\"负载均衡\",\"key\":\"category\"},\"layout\":\"Blog\",\"summary\":\"\",\"head\":[[\"meta\",{\"property\":\"og:url\",\"content\":\"https://www.iocaop.com/category/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/\"}],[\"meta\",{\"property\":\"og:site_name\",\"content\":\"赖卓成的笔记\"}],[\"meta\",{\"property\":\"og:title\",\"content\":\"负载均衡 分类\"}],[\"meta\",{\"property\":\"og:type\",\"content\":\"website\"}],[\"meta\",{\"property\":\"og:locale\",\"content\":\"zh-CN\"}]]},\"excerpt\":\"\",\"headers\":[],\"git\":{},\"readingTime\":{\"minutes\":0,\"words\":0},\"filePathRelative\":null}")

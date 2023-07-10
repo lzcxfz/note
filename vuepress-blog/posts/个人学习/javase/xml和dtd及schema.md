@@ -1,6 +1,6 @@
 ---
 title: java基础-xml
-date: 2023-07-07
+date: 2023-07-11
 category:
   - JavaSE
 ---
@@ -242,7 +242,7 @@ xml有两种约束技术：
 <!ELEMENT age (#PCDATA)>
 ```
 
-> 小括号中表示该元素可以有哪些子元素、#PCDATA意思是字符串
+> 小括号中表示该元素可以有哪些子元素、\#PCDATA意思是字符串
 
 ### 09-DTD-入门案例-引入DTD
 
@@ -342,8 +342,8 @@ xml有两种约束技术：
 
 属性约束
 
-* #REQUIRED 必须的
-* #IMPLED 不是必须的
+* \#REQUIRED 必须的
+* \#IMPLED 不是必须的
 * FIXED value 属性值是固定的
 
 例如：

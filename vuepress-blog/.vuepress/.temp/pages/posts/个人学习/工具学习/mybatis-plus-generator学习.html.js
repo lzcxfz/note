@@ -1,14 +1,1 @@
-export const data = JSON.parse("{\"key\":\"v-730968b0\",\"path\":\"/posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/mybatis-plus-generator%E5%AD%A6%E4%B9%A0.html\",\"title\":\"mybatis-plus-generator代码生成器学习\",\"lang\":\"zh-CN\",\"frontmatter\":{\"title\":\"mybatis-plus-generator代码生成器学习\",\"date\":\"2022-11-03T00:00:00.000Z\",\"category\":[\"mybatis-plus-generator\",\"开发工具\"],\"summary\":\"参考文档1：点击跳转 参考文档2：点击跳转 导包： 根据官方文档配置： 把生成器自带的模板复制出来，即可，指定 效果：\",\"head\":[[\"meta\",{\"property\":\"og:url\",\"content\":\"https://www.iocaop.com/posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/mybatis-plus-generator%E5%AD%A6%E4%B9%A0.html\"}],[\"meta\",{\"property\":\"og:site_name\",\"content\":\"赖卓成的笔记\"}],[\"meta\",{\"property\":\"og:title\",\"content\":\"mybatis-plus-generator代码生成器学习\"}],[\"meta\",{\"property\":\"og:type\",\"content\":\"article\"}],[\"meta\",{\"property\":\"og:locale\",\"content\":\"zh-CN\"}],[\"meta\",{\"property\":\"article:published_time\",\"content\":\"2022-11-03T00:00:00.000Z\"}]]},\"excerpt\":\"\",\"headers\":[],\"readingTime\":{\"minutes\":1.77,\"words\":532},\"filePathRelative\":\"posts/个人学习/工具学习/mybatis-plus-generator学习.md\",\"localizedDate\":\"2022年11月3日\"}")
-
-if (import.meta.webpackHot) {
-  import.meta.webpackHot.accept()
-  if (__VUE_HMR_RUNTIME__.updatePageData) {
-    __VUE_HMR_RUNTIME__.updatePageData(data)
-  }
-}
-
-if (import.meta.hot) {
-  import.meta.hot.accept(({ data }) => {
-    __VUE_HMR_RUNTIME__.updatePageData(data)
-  })
-}
+export const data = JSON.parse("{\"key\":\"v-730968b0\",\"path\":\"/posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/mybatis-plus-generator%E5%AD%A6%E4%B9%A0.html\",\"title\":\"mybatis-plus-generator代码生成器学习\",\"lang\":\"zh-CN\",\"frontmatter\":{\"title\":\"mybatis-plus-generator代码生成器学习\",\"date\":\"2022-11-03T00:00:00.000Z\",\"category\":[\"mybatis-plus-generator\",\"开发工具\"],\"summary\":\"参考文档1：点击跳转 参考文档2：点击跳转 导包： 根据官方文档配置： 把生成器自带的模板复制出来，即可，指定 效果：\",\"head\":[[\"meta\",{\"property\":\"og:url\",\"content\":\"https://www.iocaop.com/posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/mybatis-plus-generator%E5%AD%A6%E4%B9%A0.html\"}],[\"meta\",{\"property\":\"og:site_name\",\"content\":\"赖卓成的笔记\"}],[\"meta\",{\"property\":\"og:title\",\"content\":\"mybatis-plus-generator代码生成器学习\"}],[\"meta\",{\"property\":\"og:type\",\"content\":\"article\"}],[\"meta\",{\"property\":\"og:updated_time\",\"content\":\"2023-04-17T06:36:29.000Z\"}],[\"meta\",{\"property\":\"og:locale\",\"content\":\"zh-CN\"}],[\"meta\",{\"property\":\"article:published_time\",\"content\":\"2022-11-03T00:00:00.000Z\"}],[\"meta\",{\"property\":\"article:modified_time\",\"content\":\"2023-04-17T06:36:29.000Z\"}]]},\"excerpt\":\"\",\"headers\":[],\"git\":{\"createdTime\":1681713389000,\"updatedTime\":1681713389000,\"contributors\":[{\"name\":\"赖卓成\",\"email\":\"911823616@qq.com\",\"commits\":1}]},\"readingTime\":{\"minutes\":1.77,\"words\":532},\"filePathRelative\":\"posts/个人学习/工具学习/mybatis-plus-generator学习.md\",\"localizedDate\":\"2022年11月3日\"}")
