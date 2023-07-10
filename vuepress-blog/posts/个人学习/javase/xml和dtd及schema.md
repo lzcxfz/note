@@ -352,3 +352,38 @@ xml有两种约束技术：
 <!ATTLIST person id CDATA #FIXED "p1">
 ```
 
+### 13-schema-schema和dtd的区别
+
+* schema也是一个xml文件，符合xml语法，后缀.xsd
+* 一个xml可引入多个schema，多个schema使用命名空间区分(类似Java包名)
+
+* dtd元素类型取值较为单一，常见为PCDATA，但是schema可以支持很多个数据类型
+
+![image-20230711010132295](http://www.iocaop.com/images/2023-07/202307110101323.png)
+
+### 14-schema-入门案例编写
+
+还是对这个xml进行编写：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<persons>
+    <person>
+        <name>赖卓成</name>
+        <age>25</age>
+    </person>
+</persons>
+```
+
+步骤：
+
+* 创建.xsd文件
+* 定义声明文档
+* 根标签为\<schema\>
+* 在\<schema\>中定义：xmlns=http://www.w3.org/2001/XMLSchema
+* 在\<schema\>中定义属性targetNamespace=唯一url地址，指定当前这个schema文件的命名空间
+* 在\<schema\>中定义属性：elementFormDefault="qualified"，表示这是一个良好的schema文件
+* 通过element定义元素
+* 判断当前元素是简单元素还是复杂元素
+
+![image-20230711010819580](http://www.iocaop.com/images/2023-07/202307110108621.png)

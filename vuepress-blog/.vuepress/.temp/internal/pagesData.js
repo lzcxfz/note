@@ -7,12 +7,14 @@ export const pagesData = {
   "v-5f6c43c2": () => import(/* webpackChunkName: "v-5f6c43c2" */"D:/dev/lzc-sync/note/vuepress-blog/.vuepress/.temp/pages/posts/个人学习/javase/IO流.html.js").then(({ data }) => data),
   // path: /posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/javase/java%E5%B8%B8%E7%94%A8%E7%B1%BB.html
   "v-5ce5848d": () => import(/* webpackChunkName: "v-5ce5848d" */"D:/dev/lzc-sync/note/vuepress-blog/.vuepress/.temp/pages/posts/个人学习/javase/java常用类.html.js").then(({ data }) => data),
-  // path: /posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/javase/%E5%9F%BA%E7%A1%80%E5%8A%A0%E5%BC%BA.html
-  "v-3cae5666": () => import(/* webpackChunkName: "v-3cae5666" */"D:/dev/lzc-sync/note/vuepress-blog/.vuepress/.temp/pages/posts/个人学习/javase/基础加强.html.js").then(({ data }) => data),
+  // path: /posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/javase/xml%E5%92%8Cdtd%E5%8F%8Aschema.html
+  "v-6d6832d0": () => import(/* webpackChunkName: "v-6d6832d0" */"D:/dev/lzc-sync/note/vuepress-blog/.vuepress/.temp/pages/posts/个人学习/javase/xml和dtd及schema.html.js").then(({ data }) => data),
   // path: /posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/javase/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80.html
   "v-217480b6": () => import(/* webpackChunkName: "v-217480b6" */"D:/dev/lzc-sync/note/vuepress-blog/.vuepress/.temp/pages/posts/个人学习/javase/多线程基础.html.js").then(({ data }) => data),
   // path: /posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/javase/%E6%B3%9B%E5%9E%8B%E5%BC%BA%E5%8C%96.html
   "v-a34742b8": () => import(/* webpackChunkName: "v-a34742b8" */"D:/dev/lzc-sync/note/vuepress-blog/.vuepress/.temp/pages/posts/个人学习/javase/泛型强化.html.js").then(({ data }) => data),
+  // path: /posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/javase/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%92%8C%E5%8F%8D%E5%B0%84.html
+  "v-74a3acb6": () => import(/* webpackChunkName: "v-74a3acb6" */"D:/dev/lzc-sync/note/vuepress-blog/.vuepress/.temp/pages/posts/个人学习/javase/类加载器和反射.html.js").then(({ data }) => data),
   // path: /posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/javase/%E7%BA%BF%E7%A8%8B%E6%B1%A0.html
   "v-27ebc30d": () => import(/* webpackChunkName: "v-27ebc30d" */"D:/dev/lzc-sync/note/vuepress-blog/.vuepress/.temp/pages/posts/个人学习/javase/线程池.html.js").then(({ data }) => data),
   // path: /posts/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0/javase/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B.html
