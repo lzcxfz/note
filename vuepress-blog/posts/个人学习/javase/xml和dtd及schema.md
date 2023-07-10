@@ -387,3 +387,74 @@ xml有两种约束技术：
 * 判断当前元素是简单元素还是复杂元素
 
 ![image-20230711010819580](http://www.iocaop.com/images/2023-07/202307110108621.png)
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified"
+        targetNamespace="http:www.iocaop.com/javase/xml">
+    
+<!--定义元素persons-->
+    <element name="persons">
+        <!--表示这是一个复杂元素-->
+        <complexType>
+        <!--表示需要按顺序写-->
+            <sequence>
+                <!--定义person元素-->
+                <element name="person">
+                    <!--复杂元素-->
+                    <complexType>
+                        <!--顺序-->
+                        <sequence>
+                            <!--定义简单元素 type指定元素类型-->
+                            <element name="name" type="string"></element>
+                            <element name="age" type="string"></element>
+                        </sequence>
+                    </complexType>
+                </element>
+            </sequence>
+        </complexType>
+    </element>
+</schema>
+```
+
+### 15-schema-引入schema文件步骤
+
+![image-20230711012624418](http://www.iocaop.com/images/2023-07/202307110126453.png)
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<persons xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http:www.iocaop.com/javase/xml"
+         xsi:schemaLocation="http:www.iocaop.com/javase/xml person.xsd"
+>
+    <person>
+        <name>赖卓成</name>
+        <age>25</age>
+    </person>
+</persons>
+```
+
+换一下顺序，看看约束生效了没：
+
+![image-20230711013146643](http://www.iocaop.com/images/2023-07/202307110131678.png)
+
+### 16-schema-定义属性
+
+示例：
+
+```xml
+<attribute name="id" type="string" use="required"></attribute>
+```
+
+![image-20230711013322376](http://www.iocaop.com/images/2023-07/202307110133403.png)
+
+在原来的xsd中加入：
+
+![image-20230711013421824](http://www.iocaop.com/images/2023-07/202307110134863.png)
+
+生效了：必须要id
+
+![image-20230711013447040](http://www.iocaop.com/images/2023-07/202307110134068.png)
