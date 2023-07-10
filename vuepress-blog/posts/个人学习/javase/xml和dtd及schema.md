@@ -211,3 +211,36 @@ public class XmlDemo01 {
 运行结果：
 
 ![image-20230710235108242](http://www.iocaop.com/images/2023-07/202307102351265.png)
+
+### 13-3-DTD和schema
+
+### 08-DTD入门案例-编写DTD
+
+用来限定xml文件中可以使用的标签以及属性。
+
+xml有两种约束技术：
+
+* DTD
+* schema
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<persons>
+    <person>
+        <name>赖卓成</name>
+        <age>25</age>
+    </person>
+</persons>
+```
+
+对上面的xml，如何写dtd？
+
+```dtd
+<!ELEMENT persions (persion)>
+<!ELEMENT persion (name,age)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT age (#PCDATA)>
+```
+
+> 小括号中表示该元素可以有哪些子元素、#PCDATA意思是字符串
+
