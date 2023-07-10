@@ -11,7 +11,7 @@ export default navbar([
       { text: "IO流", icon:"Links",link: "IO流" },
       { text: "多线程基础", icon:"Links",link: "多线程基础" },
       { text: "网络编程", icon:"Links",link: "网络编程" },
-      { text: "类加载器和反射", icon:"Links",link: "基础加强" },
+      { text: "类加载器和反射", icon:"Links",link: "类加载器和反射" },
       { text: "泛型强化", icon:"Links",link: "泛型强化" },
 
     ],
