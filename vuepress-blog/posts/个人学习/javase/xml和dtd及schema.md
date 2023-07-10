@@ -214,7 +214,7 @@ public class XmlDemo01 {
 
 ### 13-3-DTD和schema
 
-### 08-DTD入门案例-编写DTD
+### 08-DTD-入门案例-编写DTD
 
 用来限定xml文件中可以使用的标签以及属性。
 
@@ -236,11 +236,119 @@ xml有两种约束技术：
 对上面的xml，如何写dtd？
 
 ```dtd
-<!ELEMENT persions (persion)>
-<!ELEMENT persion (name,age)>
+<!ELEMENT persons (person)>
+<!ELEMENT person (name,age)>
 <!ELEMENT name (#PCDATA)>
 <!ELEMENT age (#PCDATA)>
 ```
 
 > 小括号中表示该元素可以有哪些子元素、#PCDATA意思是字符串
+
+### 09-DTD-入门案例-引入DTD
+
+在上面的xml中引入：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE persons SYSTEM 'person.dtd'>
+<persons>
+    <person>
+        <name>赖卓成</name>
+        <age>25</age>
+    </person>
+</persons>
+```
+
+> `SYSTEM`表示引入本地文件
+
+引入后，再乱定义元素就会报错：
+
+![image-20230711003623910](http://www.iocaop.com/images/2023-07/202307110036936.png)
+
+### 10-DTD-三种引入方式
+
+* 引入本地dtd(上一节课的)
+* 在xml文件内部引入(xml和dtd写在同一个文件)
+* 引入网络dtd
+
+内部引入：将dtd约束写在方括号中
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE persons [
+        <!ELEMENT persons (person)>
+        <!ELEMENT person (name,age)>
+        <!ELEMENT name (#PCDATA)>
+        <!ELEMENT age (#PCDATA)>
+        ]>
+<persons>
+    <person>
+        <name>赖卓成</name>
+        <age>25</age>
+        <a></a>
+    </person>
+</persons>
+```
+
+网络引入：
+
+```xml
+<DOCTYPE persons PUBLIC "dtd文件的名称" "dtd文档的url">
+```
+
+### 11-DTD-语法规则-定义元素
+
+定义一个元素的格式为：
+
+```dtd
+<!EMELENT 元素名称 元素类型>
+```
+
+元素类型分两种：
+
+* 简单元素：里面没有其他元素了
+  * EMPTY：标签体为空
+  * ANY：可为空也可不为空
+  * PCDATA：内容为字符串
+* 复杂元素：里面还要其他元素
+  * 多个元素用,或|负号隔开
+  * ,表示定义子元素的顺序。
+    * ？表示出现0次或1次
+    * +表示1次或多次
+    * *表示0次或多次
+    * 不写则表示出现1次
+  * |表示子元素只能出现任意一个
+
+根据规则，优化上面的dtd：
+
+```dtd
+<!ELEMENT persons (person+)>
+<!ELEMENT person (name,age)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT age (#PCDATA)>
+```
+
+### 12-DTD-语法规则-定义属性
+
+格式：
+
+```dtd
+<!ATTLIST 元素名称 属性名称 属性类型 属性约束>
+```
+
+属性类型：
+
+* CDATA：普通字符串
+
+属性约束
+
+* #REQUIRED 必须的
+* #IMPLED 不是必须的
+* FIXED value 属性值是固定的
+
+例如：
+
+```dtd
+<!ATTLIST person id CDATA #FIXED "p1">
+```
 
