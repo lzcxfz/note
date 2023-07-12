@@ -14,6 +14,7 @@ export default navbar([
       { text: "类加载器和反射", icon:"Links",link: "类加载器和反射" },
       { text: "泛型强化", icon:"Links",link: "泛型强化" },
       { text: "xml、dtd、schema", icon:"Links",link: "xml、dtd、schema" },
+      { text: "枚举、注解、单元测试、日志", icon:"Links",link: "枚举、注解、单元测试、日志" },
 
     ],
   },
