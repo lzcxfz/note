@@ -251,3 +251,18 @@ public class JdbcDemo {
   ```
   
   > 如果在 JDBC 中执行 SQL 语句时发生异常，而<span style="background-color:pink;">没有进行提交或回滚操作</span>，会导致数据库连接保持在未决的事务状态，<span style="background-color:pink;">可能会引发阻塞、资源占用和数据不一致等问题</span>。为了保持数据的一致性和可靠性，建议在执行完 SQL 语句后，根据业务逻辑进行适当的提交或回滚操作。
+
+### 05-API详解-Statement
+
+作用：
+
+* 执行SQL
+
+```tex
+int executeUpdate(sql) 执行DML、DDL语句
+DML语句返回影响的行数，DDL语句执行成功后也可能返回0
+
+ResultSet executeQuery(sql) 执行DQL语句
+返回ResultSet结果集对象
+```
+
