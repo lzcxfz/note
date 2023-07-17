@@ -24,6 +24,8 @@ JDBC本质：
 * 各数据库厂商使用相同的接口，Java代码不需要针对不同的数据库进行分别开发
 * 可随时替换底层数据库，访问数据库的Java代码基本不变
 
+## 3-2-API详解
+
 ### 02-快速入门
 
 步骤：
@@ -294,4 +296,67 @@ ResultSet executeQuery(sql) 执行DQL语句
   String 列的名称
   ```
 
-  
+  获取数据有很多类似的方法：
+
+  ![image-20230717203028143](http://www.iocaop.com/images/2023-07/202307172030190.png)
+
+使用步骤：
+
+* 游标向下移动一行，判断该行是否有数据：`next`
+
+* 获取数据：getXxx(参数)
+
+  ```java
+  // 循环判断游标是否是最后一行末尾
+  while(rs.next()){
+      rs.getXxx(参数);
+  }
+  ```
+
+代码：
+
+```java
+public class JdbcDemo03 {
+    public static void main(String[] args) throws Exception{
+        String url = "jdbc:mysql://www.iocaop.com:3306/crud?serverTimezone=UTC&useSSL=false";
+        String username = "root";
+        String password = "911823";
+
+        // 注册驱动
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // 获取连接
+        Connection connection = DriverManager.getConnection(url, username, password);
+
+        // 执行的sql
+        String sql  = "select * from pan_account";
+
+        // 获取sql执行的对象
+        Statement statement = connection.createStatement();
+
+        // 执行sql，返回结果
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()){
+            String id = resultSet.getString("id");
+            System.out.println("id = " + id);
+
+            String nickname = resultSet.getString("nickname");
+            System.out.println("nickname = " + nickname);
+
+            boolean svip = resultSet.getBoolean("svip");
+            System.out.println("svip = " + svip);
+            System.out.println("--------------------------------------");
+        }
+
+        resultSet.close();
+        statement.close();
+        connection.close();
+    }
+}
+
+```
+
+![image-20230717204125896](http://www.iocaop.com/images/2023-07/202307172041932.png)
+
+![image-20230717204133105](http://www.iocaop.com/images/2023-07/202307172041141.png)
