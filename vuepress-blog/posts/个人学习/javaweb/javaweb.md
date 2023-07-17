@@ -158,7 +158,96 @@ public class JdbcDemo {
 
 在这里，执行了注册驱动的方法。
 
-> mysql5.1之后，可以不注册了，会自动注册，在这个文件中记录了驱动全类名：原理还不知道
+> mysql5之后，可以不注册了，会自动注册，在这个文件中记录了驱动全类名：原理还不知道
 >
 > ![image-20230717161817799](http://www.iocaop.com/images/2023-07/image-20230717161817799.png)
 
+### 04-API详解-Connection
+
+作用：
+
+* 获取执行SQL的对象
+
+  * 普通执行SQL对象
+
+    ```java
+         Statement statement = connection.createStatement();
+    ```
+
+  * 预编译SQL执行对象，防止SQL注入
+
+    ```java
+         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+    ```
+
+  * 存储过程执行对象
+
+    ```java
+            CallableStatement callableStatement = connection.prepareCall(sql);
+    ```
+
+* 管理事务
+
+  * MySQL事务管理
+
+    ```tex
+    开启事务：BEGIN;/START TRANSACTION;
+    提交事务： COMMIT;
+    回滚事务： ROLLBACK;
+    MySQL默认自动提交事务
+    ```
+
+  * JDBC事务管理：`Connection`接口中定义了3个方法
+
+    ```tex
+    开启事务:setAutoCommit(boolean autoCommit)：true为自动提交事务，false为手动提交事务。
+    提交事务:commit()
+    回滚事务:rollback()
+    ```
+  
+  代码：两条更新语句，用一个事务控制，要么全部执行成功，要么全部回滚。
+  
+  ```java
+  public class JdbcDemo02 {
+  
+      public static void main(String[] args) throws Exception{
+          String url = "jdbc:mysql://www.iocaop.com:3306/crud?serverTimezone=UTC&useSSL=false";
+          String username = "root";
+          String password = "911823";
+  
+          // 注册驱动
+          Class.forName("com.mysql.jdbc.Driver");
+  
+          // 获取连接
+          Connection connection = DriverManager.getConnection(url, username, password);
+          // 手动提交事务
+          connection.setAutoCommit(false);
+  
+          // sql
+          String sql1 = "update pan_account set nickname = 'lzc' where id = 1";
+          String sql2 = "update pan_account set url_token = 'lzc' where id = 1";
+          Statement statement = null;
+          try {
+              statement = connection.createStatement();
+              boolean execute1 = statement.execute(sql1);
+              boolean execute2 = statement.execute(sql2);
+  //            int i = 1 / 0;
+              System.out.println(execute1);
+              System.out.println(execute2);
+              connection.commit();
+          } catch (SQLException e) {
+              // 事务回滚
+              connection.rollback();
+              throw new RuntimeException(e);
+          }
+  
+          // 释放资源
+          statement.close();
+          connection.close();
+  
+      }
+  }
+  
+  ```
+  
+  > 如果在 JDBC 中执行 SQL 语句时发生异常，而<span style="background-color:pink;">没有进行提交或回滚操作</span>，会导致数据库连接保持在未决的事务状态，<span style="background-color:pink;">可能会引发阻塞、资源占用和数据不一致等问题</span>。为了保持数据的一致性和可靠性，建议在执行完 SQL 语句后，根据业务逻辑进行适当的提交或回滚操作。
