@@ -129,3 +129,36 @@ public class JdbcDemo {
 
 ### 03-API详解-DriverManager
 
+主要作用：
+
+* 注册驱动
+* 获取数据库连接
+
+两个重要的方法：
+
+![image-20230717160857380](http://www.iocaop.com/images/2023-07/image-20230717160857380.png)
+
+为什么我们没有显式地调用`registerDriver`方法，而是这样：
+
+```java
+ Class.forName("com.mysql.jdbc.Driver");
+```
+
+学过类加载以及面向对象知识以后，可以知道，这行代码会将`Driver`类加载到内存，加载到内存后，会立即执行静态代码块：
+
+```java
+    static {
+        try {
+            DriverManager.registerDriver(new Driver());
+        } catch (SQLException var1) {
+            throw new RuntimeException("Can't register driver!");
+        }
+    }
+```
+
+在这里，执行了注册驱动的方法。
+
+> mysql5.1之后，可以不注册了，会自动注册，在这个文件中记录了驱动全类名：原理还不知道
+>
+> ![image-20230717161817799](http://www.iocaop.com/images/2023-07/image-20230717161817799.png)
+
