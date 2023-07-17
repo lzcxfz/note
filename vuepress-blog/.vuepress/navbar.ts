@@ -2,7 +2,7 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   {
-    text: "java基础知识",
+    text: "JAVA SE",
     prefix: "/posts/个人学习/javase/",
     children: [
       { text: "常用类", icon:"Links",link: "java常用类" },
@@ -16,6 +16,14 @@ export default navbar([
       { text: "xml、dtd、schema", icon:"Links",link: "xml、dtd、schema" },
       { text: "枚举、注解、单元测试、日志", icon:"Links",link: "枚举、注解、单元测试、日志" },
 
+    ],
+  },
+
+  {
+    text: "JAVA WEB",
+    prefix: "/posts/个人学习",
+    children: [
+      { text: "JDBC", icon:"Links",link: "/javaweb/jdbc" },
     ],
   },
 
