@@ -266,3 +266,32 @@ ResultSet executeQuery(sql) 执行DQL语句
 返回ResultSet结果集对象
 ```
 
+### 06-API详解-ResultSet
+
+作用：
+
+* 封装了DQL查询语句的结果
+
+  ```tex
+  ResultSet stmt.executeQuery(sql);执行DQL语句，返回ResultSet对象
+  ```
+
+* 获取查询结果
+
+  ```tex
+  boolean next() 将光标从当前位置向前移动一行，判断当前行是否为有效行
+  返回值
+  true：有效行，当前行有数据
+  false：无效行，当前行没有数据
+  ```
+
+* 获取数据
+
+  ```tex
+  getXXX(参数)，如：int getInt(参数),String getString(参数)
+  参数：
+  int 列的编号，从1开始
+  String 列的名称
+  ```
+
+  
