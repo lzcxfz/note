@@ -360,3 +360,13 @@ public class JdbcDemo03 {
 ![image-20230717204125896](http://www.iocaop.com/images/2023-07/202307172041932.png)
 
 ![image-20230717204133105](http://www.iocaop.com/images/2023-07/202307172041141.png)
+
+### 08-PrepareStatement
+
+作用：
+
+预编译SQL执行语句并执行，预防SQL注入问题。
+
+SQL注入：
+
+通过操作输入来修改事先定义好的SQL语句，用以达到执行代码对服务器进行攻击的方法。
