@@ -413,3 +413,38 @@ public class JdbcDemo04 {
 
 作用：
 
+* 预编译SQL并执行SQL语句
+
+使用步骤：
+
+* 获取`PrepareStatement`对象
+
+  ```java
+          // 执行的sql
+          String sql = "select * from pan_account where nickname = ? and url_token = ?";
+  
+          // 获取sql执行的对象
+          PreparedStatement preparedStatement = connection.prepareStatement(sql);
+  ```
+
+* 设置参数
+
+  ```java
+          // 设置参数
+          preparedStatement.setString(1, nickname);
+          preparedStatement.setString(2, pwd);
+  ```
+
+  ```tex
+  setXxx(参数1,参数2) 给?赋值。
+  参数1：问号的位置 从1开始
+  参数2：? 的值
+  ```
+
+* 执行SQL：不需要再传递SQL
+
+  ```java
+          ResultSet resultSet = preparedStatement.executeQuery();
+  ```
+
+  
