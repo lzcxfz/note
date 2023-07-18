@@ -961,3 +961,135 @@ public class Example {
 
 ### 15-添加
 
+```java
+    @Test
+    public void testAdd() throws Exception{
+
+        // 需要插入的数据
+        String brandName = "赖卓成";
+        String companyName = "赖卓成的公司";
+        Integer ordered = 1;
+        String description = "赖卓成的公司的备注";
+        Integer status = 1;
+
+        // 加载配置文件
+        Properties properties = new Properties();
+        properties.load(new FileReader("src/main/resources/druid.properties"));
+
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
+        // 获取连接
+        Connection connection = dataSource.getConnection();
+
+        // sql
+        String sql  = "insert into tb_brand(brand_name,company_name,ordered,description,status) values (?,?,?,?,?)";
+
+        // 获取预编译执行sql的对象
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        // 设置参数
+        preparedStatement.setString(1,brandName);
+        preparedStatement.setString(2,companyName);
+        preparedStatement.setInt(3,ordered);
+        preparedStatement.setString(4,description);
+        preparedStatement.setInt(5,status);
+
+        // 执行sql
+        int row = preparedStatement.executeUpdate();
+
+        if (row>0){
+            System.out.println("插入成功");
+        }else {
+            System.out.println("插入失败");
+        }
+
+        // 释放资源
+        preparedStatement.close();
+        connection.close();
+    }
+```
+
+![image-20230718231637490](http://www.iocaop.com/images/2023-07/202307182316521.png)
+
+![image-20230718231653576](http://www.iocaop.com/images/2023-07/202307182316606.png)
+
+### 16-修改
+
+```java
+    @Test
+    public void testUpdate() throws Exception{
+
+        // 需要修改的数据
+        Integer id = 4;
+        String brandName = "赖卓成1";
+        String companyName = "赖卓成的公司1";
+        Integer ordered = 111;
+        String description = "赖卓成的公司的备注1";
+        Integer status = 0;
+
+        // 加载配置文件
+        Properties properties = new Properties();
+        properties.load(new FileReader("src/main/resources/druid.properties"));
+
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
+        // 获取连接
+        Connection connection = dataSource.getConnection();
+
+        // sql
+        String sql = "update tb_brand set brand_name = ?,company_name = ?, ordered = ?,description = ?,status = ? where id = ?";
+
+        // 获取执行sql的对象
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1,brandName);
+        preparedStatement.setString(2,companyName);
+        preparedStatement.setInt(3,ordered);
+        preparedStatement.setString(4,description);
+        preparedStatement.setInt(5,status);
+        preparedStatement.setInt(6,id);
+
+        int row = preparedStatement.executeUpdate();
+        if (row>0){
+            System.out.println("修改成功");
+        }else {
+            System.out.println("修改失败");
+        }
+    }
+}
+```
+
+![image-20230719000207074](http://www.iocaop.com/images/2023-07/202307190002106.png)
+
+![image-20230719000214724](http://www.iocaop.com/images/2023-07/202307190002758.png)
+
+### 17-删除
+
+```java
+    @Test
+    public void testDelete() throws Exception{
+        // 需要修改的数据
+        Integer id = 4;
+
+        // 加载配置文件
+        Properties properties = new Properties();
+        properties.load(new FileReader("src/main/resources/druid.properties"));
+
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
+        // 获取连接
+        Connection connection = dataSource.getConnection();
+
+        // sql
+        String sql = "delete from tb_brand where id = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1,id);
+
+        int row = preparedStatement.executeUpdate();
+        if (row>0){
+            System.out.println("删除成功");
+        }else {
+            System.out.println("删除失败");
+        }
+    }
+}
+```
+
+![image-20230719000500644](http://www.iocaop.com/images/2023-07/202307190005685.png)
