@@ -1,6 +1,6 @@
 ---
 title: JDBC
-date: 2023-05-10
+date: 2023-07-17
 category:
   - javaweb
 ---
@@ -408,3 +408,8 @@ public class JdbcDemo04 {
 ```
 
 ![image-20230718105943472](http://www.iocaop.com/images/2023-07/image-20230718105943472.png)
+
+### 09-API详解-PrepareStatement
+
+作用：
+
