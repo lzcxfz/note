@@ -34,6 +34,7 @@ export default navbar([
     children: [
       { text: "Spring Security", icon:"Links",link: "/框架学习/springSecurity学习" },
       { text: "Spring高级", icon:"Links",link: "/框架学习/spring高级" },
+      { text: "mybatis", icon:"Links",link: "/框架学习/mybatis" },
       { text: "单体项目搭建", icon:"Links",link: "/框架学习/单体项目搭建套路" },
     ],
   },
