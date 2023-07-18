@@ -360,3 +360,51 @@ public class JdbcDemo03 {
 ![image-20230717204125896](http://www.iocaop.com/images/2023-07/202307172041932.png)
 
 ![image-20230717204133105](http://www.iocaop.com/images/2023-07/202307172041141.png)
+
+### 08-SQL注入演示
+
+```java
+public class JdbcDemo04 {
+
+    public static void main(String[] args) throws Exception{
+
+        String url = "jdbc:mysql://www.iocaop.com:3306/crud?serverTimezone=UTC&useSSL=false";
+        String username = "root";
+        String password = "911823";
+
+        // 模拟前端输入
+        String nickname = "lzc";
+        String pwd = "jgkfdljkglfdjglkfd' or '1' = '1";
+
+        // 注册驱动
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // 获取连接
+        Connection connection = DriverManager.getConnection(url, username, password);
+
+        // 获取sql执行对象
+        Statement statement = connection.createStatement();
+
+        // sql拼接
+        String sql  = "select * from pan_account where nickname = '" + nickname + "' and url_token = '" + pwd + "'";
+
+        // 执行sql，返回结果
+        ResultSet resultSet = statement.executeQuery(sql);
+        if (resultSet.next()) {
+            System.out.println("登录成功");
+        } else {
+            System.out.println("登录失败");
+        }
+
+        // 释放资源
+        resultSet.close();
+        statement.close();
+        connection.close();
+
+    }
+
+}
+
+```
+
+![image-20230718105943472](http://www.iocaop.com/images/2023-07/image-20230718105943472.png)
