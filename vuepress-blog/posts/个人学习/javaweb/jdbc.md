@@ -805,3 +805,152 @@ druid配置详解
 
   ![image-20230718221600167](http://www.iocaop.com/images/2023-07/202307182216201.png)
 
+## 3-3-练习
+
+### 13-环境准备
+
+需求：完成品牌数据的增删查改
+
+* 查询：查询所有数据
+* 添加：添加品牌
+* 修改：根据id修改
+* 删除：根据id删除
+
+环境准备：
+
+* 数据库表`tb_brand`
+
+  ```sql
+  -- 删除tb_brand表
+  drop table if exists tb_brand;
+  -- 创建tb_brand表
+  create table tb_brand
+  (
+      -- id 主键
+      id           int primary key auto_increment,
+      -- 品牌名称
+      brand_name   varchar(20),
+      -- 企业名称
+      company_name varchar(20),
+      -- 排序字段
+      ordered      int,
+      -- 描述信息
+      description  varchar(100),
+      -- 状态：0：禁用  1：启用
+      status       int
+  );
+  -- 添加数据
+  insert into tb_brand (brand_name, company_name, ordered, description, status)
+  values ('三只松鼠', '三只松鼠股份有限公司', 5, '好吃不上火', 0),
+         ('华为', '华为技术有限公司', 100, '华为致力于把数字世界带入每个人、每个家庭、每个组织，构建万物互联的智能世界', 1),
+         ('小米', '小米科技有限公司', 50, 'are you ok', 1);
+  
+  
+  SELECT * FROM tb_brand;
+  ```
+
+* 实体类`Brand`： 基本数据类型应该使用包装类，因为包装类默认是`null`，不会影响业务。
+
+  ```java
+  /**
+   * 品牌类
+   *
+   * @author lzc
+   * @date 2023/07/18
+   */
+  @Data
+  public class Brand {
+  
+      /**
+       * id 主键
+       */
+      private Integer id;
+      
+      /**
+       * 品牌名称
+       */
+      private String brand_name;
+  
+      /**
+       * 企业名称
+       */
+      private String company_name;
+  
+      /**
+       * 排序字段
+       */
+      private Integer ordered;
+  
+      /**
+       * 描述信息
+       */
+      private String description;
+  
+      /**
+       * 状态：0：禁用  1：启用
+       */
+      private Integer status;
+  }
+  ```
+
+  
+
+* 测试用例
+
+### 14-查询所有
+
+```java
+public class Example {
+
+
+    @Test
+    public void testSelectAll() throws Exception{
+
+        String property = System.getProperty("user.dir");
+        System.out.println("property = " + property);
+
+        // 加载配置文件
+        Properties properties = new Properties();
+        properties.load(new FileReader("src/main/resources/druid.properties"));
+
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
+        // 获取连接
+        Connection connection = dataSource.getConnection();
+
+        // sql
+        String sql  = "select * from tb_brand";
+
+        // 获取预编译执行sql的对象
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        // 执行sql
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        // 创建集合用于存储
+        ArrayList<Brand> brands = new ArrayList<>();
+
+        while (resultSet.next()){
+            int id = resultSet.getInt("id");
+            String brandName = resultSet.getString("brand_name");
+            String companyName = resultSet.getString("company_name");
+            int ordered = resultSet.getInt("ordered");
+            String description = resultSet.getString("description");
+            int status = resultSet.getInt("status");
+
+            // 创建对象
+            Brand brand = new Brand();
+            brand.setId(id);
+            brand.setBrandName(brandName);
+            brand.setCompanyName(companyName);
+            brand.setOrdered(ordered);
+            brand.setDescription(description);
+            brand.setStatus(status);
+            brands.add(brand);
+        }
+        System.out.println("brands = " + brands);
+    }
+}
+```
+
+![image-20230718230402805](http://www.iocaop.com/images/2023-07/202307182304854.png)
+
