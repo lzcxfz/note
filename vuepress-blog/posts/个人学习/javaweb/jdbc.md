@@ -1,6 +1,6 @@
 ---
 title: JDBC
-date: 2023-05-10
+date: 2023-07-17
 category:
   - javaweb
 ---
@@ -361,6 +361,7 @@ public class JdbcDemo03 {
 
 ![image-20230717204133105](http://www.iocaop.com/images/2023-07/202307172041141.png)
 
+<<<<<<< HEAD
 ### 08-PrepareStatement
 
 作用：
@@ -370,3 +371,139 @@ public class JdbcDemo03 {
 SQL注入：
 
 通过操作输入来修改事先定义好的SQL语句，用以达到执行代码对服务器进行攻击的方法。
+=======
+### 08-SQL注入演示
+
+```java
+public class JdbcDemo04 {
+
+    public static void main(String[] args) throws Exception{
+
+        String url = "jdbc:mysql://www.iocaop.com:3306/crud?serverTimezone=UTC&useSSL=false";
+        String username = "root";
+        String password = "911823";
+
+        // 模拟前端输入
+        String nickname = "lzc";
+        String pwd = "jgkfdljkglfdjglkfd' or '1' = '1";
+
+        // 注册驱动
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // 获取连接
+        Connection connection = DriverManager.getConnection(url, username, password);
+
+        // 获取sql执行对象
+        Statement statement = connection.createStatement();
+
+        // sql拼接
+        String sql  = "select * from pan_account where nickname = '" + nickname + "' and url_token = '" + pwd + "'";
+
+        // 执行sql，返回结果
+        ResultSet resultSet = statement.executeQuery(sql);
+        if (resultSet.next()) {
+            System.out.println("登录成功");
+        } else {
+            System.out.println("登录失败");
+        }
+
+        // 释放资源
+        resultSet.close();
+        statement.close();
+        connection.close();
+
+    }
+
+}
+
+```
+
+![image-20230718105943472](http://www.iocaop.com/images/2023-07/image-20230718105943472.png)
+
+### 09-API详解-PrepareStatement
+
+作用：
+
+* 预编译SQL并执行SQL语句
+
+使用步骤：
+
+* 获取`PrepareStatement`对象
+
+  ```java
+          // 执行的sql
+          String sql = "select * from pan_account where nickname = ? and url_token = ?";
+  
+          // 获取sql执行的对象
+          PreparedStatement preparedStatement = connection.prepareStatement(sql);
+  ```
+
+* 设置参数
+
+  ```java
+          // 设置参数
+          preparedStatement.setString(1, nickname);
+          preparedStatement.setString(2, pwd);
+  ```
+
+  ```tex
+  setXxx(参数1,参数2) 给?赋值。
+  参数1：问号的位置 从1开始
+  参数2：? 的值
+  ```
+
+* 执行SQL：不需要再传递SQL
+
+  ```java
+          ResultSet resultSet = preparedStatement.executeQuery();
+  ```
+
+  
+
+代码：
+
+```java
+public class JdbcDemo05 {
+
+    public static void main(String[] args) throws Exception {
+        String url = "jdbc:mysql://www.iocaop.com:3306/crud?serverTimezone=UTC&useSSL=false";
+        String username = "root";
+        String password = "911823";
+
+        String nickname = "lzc";
+        String pwd = "jgkfdljkglfdjglkfd' or '1' = '1";
+
+        // 注册驱动
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // 获取连接
+        Connection connection = DriverManager.getConnection(url, username, password);
+
+        // 执行的sql
+        String sql = "select * from pan_account where nickname = ? and url_token = ?";
+
+        // 获取sql执行的对象
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        // 设置参数
+        preparedStatement.setString(1, nickname);
+        preparedStatement.setString(2, pwd);
+
+        // 打印sql
+        System.out.println(preparedStatement);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()){
+            System.out.println("登录成功");
+        }else {
+            System.out.println("登录失败");
+        }
+        
+    }
+}
+```
+
+![image-20230718152620040](http://www.iocaop.com/images/2023-07/image-20230718152620040.png)
+
+做了转义，无法注入SQL。
+>>>>>>> 3ee0ee34820cbb73b4cb8b2a26906baa74a1e4ca
