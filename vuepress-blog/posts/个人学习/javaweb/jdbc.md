@@ -361,17 +361,6 @@ public class JdbcDemo03 {
 
 ![image-20230717204133105](http://www.iocaop.com/images/2023-07/202307172041141.png)
 
-<<<<<<< HEAD
-### 08-PrepareStatement
-
-作用：
-
-预编译SQL执行语句并执行，预防SQL注入问题。
-
-SQL注入：
-
-通过操作输入来修改事先定义好的SQL语句，用以达到执行代码对服务器进行攻击的方法。
-=======
 ### 08-SQL注入演示
 
 ```java
@@ -458,7 +447,6 @@ public class JdbcDemo04 {
           ResultSet resultSet = preparedStatement.executeQuery();
   ```
 
-  
 
 代码：
 
@@ -506,4 +494,3 @@ public class JdbcDemo05 {
 ![image-20230718152620040](http://www.iocaop.com/images/2023-07/image-20230718152620040.png)
 
 做了转义，无法注入SQL。
->>>>>>> 3ee0ee34820cbb73b4cb8b2a26906baa74a1e4ca
