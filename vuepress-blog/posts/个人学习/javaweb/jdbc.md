@@ -948,9 +948,16 @@ public class Example {
             brands.add(brand);
         }
         System.out.println("brands = " + brands);
+
+        // 释放资源
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
     }
 }
 ```
 
 ![image-20230718230402805](http://www.iocaop.com/images/2023-07/202307182304854.png)
+
+### 15-添加
 
