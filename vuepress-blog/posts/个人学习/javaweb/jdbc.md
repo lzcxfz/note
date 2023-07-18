@@ -448,3 +448,50 @@ public class JdbcDemo04 {
   ```
 
   
+
+代码：
+
+```java
+public class JdbcDemo05 {
+
+    public static void main(String[] args) throws Exception {
+        String url = "jdbc:mysql://www.iocaop.com:3306/crud?serverTimezone=UTC&useSSL=false";
+        String username = "root";
+        String password = "911823";
+
+        String nickname = "lzc";
+        String pwd = "jgkfdljkglfdjglkfd' or '1' = '1";
+
+        // 注册驱动
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // 获取连接
+        Connection connection = DriverManager.getConnection(url, username, password);
+
+        // 执行的sql
+        String sql = "select * from pan_account where nickname = ? and url_token = ?";
+
+        // 获取sql执行的对象
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        // 设置参数
+        preparedStatement.setString(1, nickname);
+        preparedStatement.setString(2, pwd);
+
+        // 打印sql
+        System.out.println(preparedStatement);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()){
+            System.out.println("登录成功");
+        }else {
+            System.out.println("登录失败");
+        }
+        
+    }
+}
+```
+
+![image-20230718152620040](http://www.iocaop.com/images/2023-07/image-20230718152620040.png)
+
+做了转义，无法注入SQL。
