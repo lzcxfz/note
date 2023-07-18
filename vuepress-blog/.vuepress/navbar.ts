@@ -65,6 +65,7 @@ export default navbar([
       { text: "minio简单使用", icon:"Links",link: "/工具学习/minio简单使用" },
       { text: "mybatis-plus-generator", icon:"Links",link: "/工具学习/mybatis-plus-generator学习" },
       { text: "springboot整合swagger3", icon:"Links",link: "/工具学习/springboot整合swagger3" },
+      { text: "maven基础", icon:"Links",link: "/工具学习/maven基础" },
       { text: "常用命令", icon:"Links",link: "/工具学习/常用命令" },
 
     ],
