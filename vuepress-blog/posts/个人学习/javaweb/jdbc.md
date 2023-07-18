@@ -494,3 +494,178 @@ public class JdbcDemo05 {
 ![image-20230718152620040](http://www.iocaop.com/images/2023-07/image-20230718152620040.png)
 
 做了转义，无法注入SQL。
+
+### 10-API详解-PrepareStatement原理
+
+Java将SQL发送给数据库以后，需要做如下处理：
+
+![image-20230718195955871](http://www.iocaop.com/images/2023-07/202307181959935.png)
+
+好处：
+
+* 预编译SQL，性能更高
+* 防止SQL注入：<span style="background-color:pink;">将敏感字符进行转义</span>
+
+步骤：
+
+* `PreparedStatement`预编译功能开启: 需要在jdbc链接中添加
+
+  ```java
+  useServerPrepStmts = true
+  ```
+
+* 配置MySQL执行日志(重启MySQL服务后生效)：MySQL配置`my.ini`或`my.cnf`添加如下配置（win或linux）
+
+  ```ini
+  log-output=FILE
+  general-log=1
+  general_log_file=/root/mysql.log
+  slow-query-log=1
+  slow_query_log_file=/root/mysql_slow.log
+  long_query_time=2
+  ```
+
+  配置后重启MySQL：
+
+  ```bash
+  systemctl restart mysqld.service
+  ```
+
+  重启后查看日志是否开启：
+
+  ```sql
+  show global variables like '%general%';
+  ```
+
+  如果没有开启，则开启：
+
+  ```sql
+  set global general_log=on;
+  ```
+
+  如果报权限不足，则将文件夹mysql.log所在的文件夹权限改为777，文件也需要自己创建，权限也是777，最终效果：
+
+  ![image-20230718211609770](http://www.iocaop.com/images/2023-07/202307182116799.png)
+
+  ![image-20230718211655132](http://www.iocaop.com/images/2023-07/202307182116182.png)
+
+* `PreperStatement`原理
+
+  * 在获取`PreparedStatement`对象时，将SQL语句发送给MySQL服务进行检查，编译（这一步很耗时）
+  * 执行时就不用再进行这些步骤了，速度更快
+  * <span style="background-color:pink;">如果SQL模板一样，则只需要进行一次检查、编译</span>
+
+代码：与09类似，只是jdbc链接多了开启预编译
+
+```java
+public class JdbcDemo06 {
+    public static void main(String[] args) throws Exception  {
+        String url = "jdbc:mysql://www.iocaop.com:3306/crud?serverTimezone=UTC&useSSL=false&useServerPrepStmts=true";
+        String username = "root";
+        String password = "911823";
+
+        // 注册驱动
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // 获取连接
+        Connection connection = DriverManager.getConnection(url, username, password);
+
+        // SQL
+        String sql = "select * from pan_account where nickname = ? and url_token = ?";
+
+        // 获取SQL执行对象
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        // 设置参数
+        preparedStatement.setString(1,"赖卓成");
+        // 尝试SQL注入
+        preparedStatement.setString(2,"fgjdksl' '1' = '1 ");
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()){
+            System.out.println("登录成功！");
+        }else {
+            System.out.println("登录失败！");
+        }
+    }
+}
+```
+
+日志：可以看到开启了预编译，显示了预编译的SQL以及执行时的SQL。
+
+![image-20230718212449427](http://www.iocaop.com/images/2023-07/202307182124484.png)
+
+如果jdbc链接不开启预编译，日志则如下：
+
+![image-20230718212644143](http://www.iocaop.com/images/2023-07/202307182126202.png)
+
+并且，我们可以看看，同一个SQL，执行多次，会预编译几次：
+
+```java
+public class JdbcDemo06 {
+    public static void main(String[] args) throws Exception {
+        String url = "jdbc:mysql://www.iocaop.com:3306/crud?serverTimezone=UTC&useSSL=false&useServerPrepStmts=true";
+        String username = "root";
+        String password = "911823";
+
+        // 注册驱动
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // 获取连接
+        Connection connection = DriverManager.getConnection(url, username, password);
+
+        // SQL
+        String sql = "select * from pan_account where nickname = ? and url_token = ? and header_cookie = ?";
+
+        // 获取SQL执行对象
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        // 设置参数
+        preparedStatement.setString(1, "赖卓成");
+        // 尝试SQL注入
+        preparedStatement.setString(2, "fgjdksl' '1' = '1 ");
+        preparedStatement.setString(3,"test");
+
+        ResultSet resultSet = null;
+        resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            System.out.println("登录成功！");
+        } else {
+            System.out.println("登录失败！");
+        }
+
+        preparedStatement.setString(1,"赖卓成");
+        preparedStatement.setString(2,"0");
+        preparedStatement.setString(3,"1");
+        resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()){
+            System.out.println("查询到了数据");
+        }else {
+            System.out.println("没有数据");
+        }
+    }
+}
+
+```
+
+日志：预编译一次，执行了两次，如果后面再执行同样的SQL，不会再编译，而是直接换参数执行。
+
+![image-20230718213437641](http://www.iocaop.com/images/2023-07/202307182134695.png)
+
+什么时候预编译？
+
+我们打断点在SQL执行之前：
+
+![image-20230718214036699](http://www.iocaop.com/images/2023-07/202307182140746.png)
+
+还没有真正执行SQL，就可以看到MySQL打印了日志：
+
+![image-20230718214108969](http://www.iocaop.com/images/2023-07/202307182141018.png)
+
+说明，在获取SQL执行对象的时候，就已经进行了预编译：
+
+```java
+        // 获取SQL执行对象
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+```
+
