@@ -263,3 +263,311 @@ public class MybatisDemo {
 ![image-20230719021218724](http://www.iocaop.com/images/2023-07/202307190212767.png)
 
 ![image-20230719021229303](http://www.iocaop.com/images/2023-07/202307190212333.png)
+
+### 05-Mapper代理开发
+
+在上面我们已经通过`sqlSession`实现了通过namespace和id，执行SQL，查询数据库，但是存在问题：namespace和id<span style="background-color:pink;">存在硬编码问题</span>。
+
+参考官网：
+
+![image-20230719230152968](http://www.iocaop.com/images/2023-07/202307192301026.png)
+
+目的：
+
+* 解决原生方式中的硬编码问题
+* 简化后期执行SQL
+
+步骤：
+
+* 定义SQL映射文件同名的Mapper接口，并且将Mapper接口和SQL映射文件放在同一目录下
+* 设置SQL映射文件中的namespace为Mapper接口全限定名
+* 在Mapper接口中定义方法，方法名就是SQL映射文件中SQL语句的id，并且保持参数类型和返回值类型一致。
+* 编码：
+  * 通过SqlSession的getMapper方法获取Mapper接口的代理对象
+  * 调用对应的方法完成SQL执行
+
+> 如果Mapper接口每次和SQL映射文件名称相同，并且在同一目录下，可以通过扫包的方式简化SQL映射文件的加载
+>
+> ```java
+>         <package name="com.lzc.mybatis.mapper"/>
+> ```
+
+创建接口，与SQL映射文件同名，并定义方法，与需要执行的SQL的id一致：
+
+```java
+public interface UserMapper {
+
+    /**
+     * 查询所有用户
+     *
+     * @return {@link User}
+     */
+    List<User> selectAll();
+}
+
+```
+
+修改SQL映射文件的namespace：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzc.mybatis.mapper.UserMapper">
+    <select id="selectAll" resultType="com.lzc.mybatis.pojo.User">
+        select * from tb_user;
+    </select>
+</mapper>
+```
+
+编码，获取代理对象，执行方法：
+
+```java
+public class MybatisDemo02 {
+    public static void main(String[] args) throws Exception {
+        // 加载核心配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        // 获取sqlSession对象
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        List<User> userList = mapper.selectAll();
+        System.out.println("userList = " + userList);
+
+        // 释放资源
+        sqlSession.close();
+
+    }
+}
+```
+
+执行可以看到:这是代理对象，通过代理对象调用对应的方法，相当于:
+
+```java
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<User> userList = sqlSession.selectList("UserMapper.selectAll");
+```
+
+![image-20230719232044833](http://www.iocaop.com/images/2023-07/202307192320868.png)
+
+执行结果：
+
+![image-20230719232057072](http://www.iocaop.com/images/2023-07/202307192320102.png)
+
+### 06-核心配置文件补充
+
+参考官网：<a href='https://mybatis.org/mybatis-3/zh/configuration.html'>点击跳转</a>
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--起别名，在Mapper.xml中就不需要写全限定名了，默认别名就是类名，不包括包名-->
+    <typeAliases>
+        <package name="com.lzc.mybatis.pojo"/>
+    </typeAliases>
+
+<!--配置多个环境，通过default进行切换-->
+    <environments default="development">
+        <!--开发环境-->
+        <environment id="development">
+<!--    事务管理，默认jdbc，后面交给spring，这里不管        -->
+            <transactionManager type="JDBC"/>
+            <!--数据库配置信息-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://www.iocaop.com:3306/mybatis?serverTimezone=UTC&amp;useSSL=false&amp;useServerPrepStmts=true"/>
+                <property name="username" value="root"/>
+                <property name="password" value="911823"/>
+            </dataSource>
+        </environment>
+
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <!--数据库配置信息-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://www.iocaop.com:3306/mybatis?serverTimezone=UTC&amp;useSSL=false&amp;useServerPrepStmts=true"/>
+                <property name="username" value="root"/>
+                <property name="password" value="911823"/>
+            </dataSource>
+
+        </environment>
+
+
+    </environments>
+
+    <mappers>
+        <!--加载SQL映射文件-->
+        <mapper resource="mapper/UserMapper.xml"/>
+<!--        <package name="com.lzc.mybatis.mapper"/>-->
+    </mappers>
+</configuration>
+```
+
+## 5-2-mybatis查询
+
+### 07-环境准备
+
+表：
+
+```sql
+-- 删除tb_brand表
+drop table if exists tb_brand;
+-- 创建tb_brand表
+create table tb_brand
+(
+    -- id 主键
+    id           int primary key auto_increment,
+    -- 品牌名称
+    brand_name   varchar(20),
+    -- 企业名称
+    company_name varchar(20),
+    -- 排序字段
+    ordered      int,
+    -- 描述信息
+    description  varchar(100),
+    -- 状态：0：禁用  1：启用
+    status       int
+);
+-- 添加数据
+insert into tb_brand (brand_name, company_name, ordered, description, status)
+values ('三只松鼠', '三只松鼠股份有限公司', 5, '好吃不上火', 0),
+       ('华为', '华为技术有限公司', 100, '华为致力于把数字世界带入每个人、每个家庭、每个组织，构建万物互联的智能世界', 1),
+       ('小米', '小米科技有限公司', 50, 'are you ok', 1);
+
+
+SELECT * FROM tb_brand;
+```
+
+商品表实现如下功能：
+
+查询：
+
+* 查询所有数据
+* 查看详情
+* 条件查询
+
+添加
+
+修改：
+
+* 修改所有字段
+* 修改动态字段
+
+删除：
+
+* 删除一个
+* 批量删除
+
+创建实体类：
+
+```java
+/**
+ * 品牌类
+ *
+ * @author lzc
+ * @date 2023/07/18
+ */
+@Data
+public class Brand {
+
+    /**
+     * id 主键
+     */
+    private Integer id;
+
+    /**
+     * 品牌名称
+     */
+    private String brandName;
+
+    /**
+     * 企业名称
+     */
+    private String companyName;
+
+    /**
+     * 排序字段
+     */
+    private Integer ordered;
+
+    /**
+     * 描述信息
+     */
+    private String description;
+
+    /**
+     * 状态：0：禁用  1：启用
+     */
+    private Integer status;
+}
+
+```
+
+安装插件Mybatis-X
+
+### 08-查询所有数据
+
+创建接口：
+
+```java
+public interface BrandMapper {
+
+    List<Brand> selectAll();
+}
+
+```
+
+创建对应的BrandMapper.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzc.mybatis.mapper.BrandMapper">
+    <select id="selectAll" resultType="com.lzc.mybatis.pojo.Brand">
+        select * from tb_brand;
+    </select>
+</mapper>
+```
+
+加载Mapper.xml
+
+```xml
+        <mapper resource="mapper/BrandMapper.xml"/>
+```
+
+获取代理对象，执行SQL：
+
+```java
+public class MybatisDemo03 {
+    public static void main(String[] args) throws Exception{
+        // 加载核心配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        // 获取sqlSession对象
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        // 这里获取到的是Proxy动态代理对象
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+        List<Brand> brands = mapper.selectAll();
+        System.out.println("brands = " + brands);
+    }
+}
+```
+
+![image-20230719234841589](http://www.iocaop.com/images/2023-07/202307192348635.png)
+
+### 09-查询详情
+
+
+
