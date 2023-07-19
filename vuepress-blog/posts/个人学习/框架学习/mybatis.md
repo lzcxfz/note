@@ -635,5 +635,99 @@ public class MybatisDemo04 {
 
 多条件查询：
 
+定义好`resultMap`：
+
+```xml
+    <resultMap id="BrandResultMap" type="com.lzc.mybatis.pojo.Brand">
+        <id column="id" property="id"/>
+        <result column="brand_name" property="brandName"/>
+        <result column="company_name" property="companyName"/>
+        <result column="ordered" property="ordered"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+    </resultMap>
+```
+
+第一种：散装参数
+
+```java
+    Brand selectByCondition(@Param("brandName") String brandName,
+                            @Param("companyName") String companyName,
+                            @Param("status") Integer status);
+```
+
+第二种：对象做参数
+
+```java
+    Brand selectByCondition(Brand brand);
+```
+
+第三种：Map做参数
+
+```java
+    Brand selectByCondition(Map map);
+```
+
+对应的都是同一个SQL映射：
+
+```xml
+    <select id="selectByCondition" resultMap="BrandResultMap">
+        SELECT * FROM tb_brand WHERE
+        brand_name LIKE CONCAT('%', #{brandName}, '%')
+        AND company_name LIKE CONCAT('%', #{companyName}, '%')
+        AND status = #{status}
+    </select>
+```
+
+> Mapper接口中的方法可以重载，但是映射文件中的id不能重复，重载是一种可以实现不同查询条件的灵活方式
+
+编码调用：
+
+```java
+public class MybatisDemo05 {
+    public static void main(String[] args) throws Exception{
+        // 加载核心配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        // 获取sqlSession对象
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        // 这里获取到的是Proxy动态代理对象
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+        // 散装参数
+        Brand brand = mapper.selectByCondition("小","小",1);
+        System.out.println("brand = " + brand);
 
 
+        // 对象参数
+        Brand query = new Brand();
+        query.setBrandName("小");
+        query.setCompanyName("小");
+        query.setStatus(1);
+
+        brand = mapper.selectByCondition(query);
+        System.out.println("brand = " + brand);
+
+
+        // Map参数
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("brandName","小");
+        map.put("companyName","小");
+        map.put("status",1);
+        brand = mapper.selectByCondition(map);
+        System.out.println("brand = " + brand);
+    }
+}
+```
+
+![image-20230720013658943](http://www.iocaop.com/images/2023-07/202307200136973.png)
+
+总结：
+
+散装参数：参数数量超过1，需要使用`@Param(SQL中的参数占位符的名称)`
+
+实体类封装参数：只需要保证SQL中的参数名和实体类属性名对应上，即可设置成功。
+
+map集合参数：只需要保证SQL中的参数名和map集合的键的名称对应上，即可设置成功。
