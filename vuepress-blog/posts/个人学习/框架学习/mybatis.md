@@ -569,5 +569,71 @@ public class MybatisDemo03 {
 
 ### 09-查询详情
 
+根据id查询某条记录详情：
+
+创建方法：
+
+```java
+public interface BrandMapper {
+
+    List<Brand> selectAll();
+
+    Brand selectById(@Param("id") Integer id);
+}
+```
+
+编写SQL：
+
+```xml
+    <select id="selectById" resultType="com.lzc.mybatis.pojo.Brand">
+        select * from tb_brand where id = #{id}
+    </select>
+```
+
+编码运行：
+
+```java
+public class MybatisDemo04 {
+    public static void main(String[] args) throws Exception{
+        // 加载核心配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        // 获取sqlSession对象
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        // 这里获取到的是Proxy动态代理对象
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+        Brand brand = mapper.selectById(1);
+        System.out.println("brand = " + brand);
+    }
+}
+```
+
+![image-20230720000653593](http://www.iocaop.com/images/2023-07/202307200006627.png)
+
+总结：
+
+* 参数占位符
+
+  * \#\{\}：执行SQL时会将\#\{\}占位符替换为?，将来自动设置参数值
+  * \${}：拼SQL，会存在SQL注入问题
+  * 使用时机：参数传递使用\#\{\}，如果要对表名、列名进行动态设置，只能使用\${}进行SQL拼接
+
+* `parameterType`：用于设置参数类型，可以省略
+
+* SQL语句中特殊字符处理
+
+  * 转义字符
+
+  * ```xml
+    <![CDATA[内容]]>
+    ```
+
+### 10-条件查询
+
+多条件查询：
+
 
 
