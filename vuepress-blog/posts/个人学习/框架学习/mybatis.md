@@ -784,3 +784,81 @@ if：用于判断参数是否有值，使用`test`属性进行条件判断
     </select>
 ```
 
+## 5-3-mybatis-添加、修改、删除
+
+### 14-添加-主键返回
+
+```java
+public class MybatisDemo06 {
+
+    public static void main(String[] args) throws Exception {
+
+        // 加载核心配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        // 获取sqlSession对象
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        // 这里获取到的是Proxy动态代理对象
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+        // 需要插入的数据
+        Brand brand = new Brand();
+        brand.setBrandName("波导手机");
+        brand.setCompanyName("波导手机有限公司");
+        brand.setStatus(1);
+        brand.setOrdered(1);
+        brand.setDescription("手机中的战斗机");
+
+        // 插入数据
+       int row =  mapper.insertByBrand(brand);
+       if (row>0) {
+           System.out.println("插入成功");
+           System.out.println("row = " + row);
+       }
+
+       // 提交事务
+       sqlSession.commit();
+    }
+}
+```
+
+```java
+
+    /**
+     * 插入品牌
+     *
+     * @param brand 品牌
+     * @return int
+     */
+    int insertByBrand(Brand brand);
+```
+
+```xml
+    <insert id="insertByBrand">
+        insert into tb_brand(brand_name, company_name, ordered, description, status) values (#{brandName},
+        #{companyName}, #{ordered}, #{description}, #{status})
+    </insert>
+```
+
+运行：
+
+![image-20230720173338815](http://www.iocaop.com/images/2023-07/image-20230720173338815.png)
+
+这时候，返回值是影响的行数，需要返回主键，修改一下：
+
+```xml
+    <insert id="insertByBrand" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_brand(brand_name, company_name, ordered, description, status) values (#{brandName},
+        #{companyName}, #{ordered}, #{description}, #{status})
+    </insert>
+```
+
+这样，插入后的id的值，会设置到原来的对象中：
+
+![image-20230720173801298](http://www.iocaop.com/images/2023-07/image-20230720173801298.png)
+
+![image-20230720173807937](http://www.iocaop.com/images/2023-07/image-20230720173807937.png)
+
+### 15-修改-修改全部字段
