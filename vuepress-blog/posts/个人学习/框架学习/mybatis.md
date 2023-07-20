@@ -731,3 +731,30 @@ public class MybatisDemo05 {
 实体类封装参数：只需要保证SQL中的参数名和实体类属性名对应上，即可设置成功。
 
 map集合参数：只需要保证SQL中的参数名和map集合的键的名称对应上，即可设置成功。
+
+### 11-动态条件查询
+
+```xml
+    <select id="selectByCondition" resultMap="BrandResultMap">
+        SELECT * FROM tb_brand WHERE
+        <if test="brandName != null and brandName != ''">
+            brand_name LIKE CONCAT('%', #{brandName}, '%')
+        </if>
+
+        <if test="companyName != null and companyName != ''">
+            AND company_name LIKE CONCAT('%', #{companyName}, '%')
+        </if>
+
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+    </select>
+```
+
+动态SQL：
+
+if：用于判断参数是否有值，使用`test`属性进行条件判断
+
+存在问题：第一个条件不需要逻辑运算法
+
+解决方法：使用恒等式`1=1`或者`<where>`标签替换`where`关键字
