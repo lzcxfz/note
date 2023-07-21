@@ -901,3 +901,26 @@ public class MybatisDemo06 {
     </update>
 ```
 
+### 17-删除-批量删除
+
+```java
+    /**
+     * 批量删除
+     *
+     * @param ids id
+     */
+    void deleteByIds(@Param("ids") List<Integer> ids);
+```
+
+```xml
+    <delete id="deleteByIds">
+        delete from tb_brand where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+```
+
+如果在xml中的`foreach`的`collection`属性需要使用变量名称，则要加注解`@Param("ids")`
+
+如果是数组,可以不加注解，在`collection`属性，使用`array`。
