@@ -862,3 +862,42 @@ public class MybatisDemo06 {
 ![image-20230720173807937](http://www.iocaop.com/images/2023-07/image-20230720173807937.png)
 
 ### 15-修改-修改全部字段
+
+```xml
+    <update id="update">
+        update tb_brand set
+        brand_name = #{brandName},
+        company_name = #{companyName},
+        ordered = #{ordered},
+        description = #{description},
+        status = #{status}
+        where id = #{id}
+    </update>
+```
+
+### 16-修改-修改动态字段
+
+```xml
+    <update id="updateDynamic">
+        update tb_brand
+        <set>
+            <if test="brandName != null and brandName != ''">
+                brand_name = #{brandName},
+            </if>
+            <if test="companyName != null and companyName != ''">
+                company_name = #{companyName},
+            </if>
+            <if test="ordered != null">
+                ordered = #{ordered},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+```
+
