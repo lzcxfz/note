@@ -924,3 +924,70 @@ public class MybatisDemo06 {
 如果在xml中的`foreach`的`collection`属性需要使用变量名称，则要加注解`@Param("ids")`
 
 如果是数组,可以不加注解，在`collection`属性，使用`array`。
+
+### 19-参数传递
+
+mybatis接口可以接受各种参数：
+
+* 单个参数
+  * POJO
+  * Map
+  * Collection
+  * 其他
+* 多个参数
+  * 基本数据类型、String、包装类、等，需要使用`@Param`注解。为什么？
+
+> Mybatis提供了`ParamNameResolver`类来进行参数封装。
+
+当mybatis发现接口参数是多个时，会创建Map集合，将参数封装进去，map需要对应的键值。
+
+默认基本数据类型为:
+
+```java
+map.put("param1",参数值1);
+map.put("param2",参数值2);
+```
+
+如果写了`@Param("key")`
+
+则会是：
+
+```java
+map.put("key",参数值1);
+```
+
+看源码：`ParamNameResolver`类的`getNamedParams`方法
+
+```java
+  public Object getNamedParams(Object[] args) {
+    final int paramCount = names.size();
+    if (args == null || paramCount == 0) {
+      return null;
+    } else if (!hasParamAnnotation && paramCount == 1) {
+      Object value = args[names.firstKey()];
+      return wrapToMapIfCollection(value, useActualParamName ? names.get(0) : null);
+    } else {
+      final Map<String, Object> param = new ParamMap<>();
+      int i = 0;
+      for (Map.Entry<Integer, String> entry : names.entrySet()) {
+        param.put(entry.getValue(), args[entry.getKey()]);
+        // add generic param names (param1, param2, ...)
+        final String genericParamName = GENERIC_NAME_PREFIX + (i + 1);
+        // ensure not to overwrite parameter named with @Param
+        if (!names.containsValue(genericParamName)) {
+          param.put(genericParamName, args[entry.getKey()]);
+        }
+        i++;
+      }
+      return param;
+    }
+  }
+```
+
+断点调试：
+
+![image-20230726120037410](http://www.iocaop.com/images/2023-07/image-20230726120037410.png)
+
+![image-20230726120004684](http://www.iocaop.com/images/2023-07/image-20230726120004684.png)
+
+![image-20230726120022033](http://www.iocaop.com/images/2023-07/image-20230726120022033.png)
