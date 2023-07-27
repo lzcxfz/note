@@ -997,3 +997,30 @@ map.put("key",参数值1);
 ![image-20230727150933737](http://www.iocaop.com/images/2023-07/image-20230727150933737.png)
 
 原来的`arg0`等被替换了。在xml中，可以使用注解指定的参数，也可以使用`param1`等。
+
+如果是集合，则会走`wrapToMapIfCollection`方法转成map：
+
+```java
+  public static Object wrapToMapIfCollection(Object object, String actualParamName) {
+    if (object instanceof Collection) {
+      ParamMap<Object> map = new ParamMap<>();
+      map.put("collection", object);
+      if (object instanceof List) {
+        map.put("list", object);
+      }
+      Optional.ofNullable(actualParamName).ifPresent(name -> map.put(name, object));
+      return map;
+    } else if (object != null && object.getClass().isArray()) {
+      ParamMap<Object> map = new ParamMap<>();
+      map.put("array", object);
+      Optional.ofNullable(actualParamName).ifPresent(name -> map.put(name, object));
+      return map;
+    }
+    return object;
+  }
+
+```
+
+总结：
+
+![image-20230727151713985](http://www.iocaop.com/images/2023-07/image-20230727151713985.png)
