@@ -986,3 +986,14 @@ map.put("key",参数值1);
 
 断点调试：
 
+先不加注解：
+
+![image-20230727115305866](http://www.iocaop.com/images/2023-07/image-20230727115305866.png)
+
+![image-20230727150806880](http://www.iocaop.com/images/2023-07/image-20230727150806880.png)
+
+加注解：
+
+![image-20230727150933737](http://www.iocaop.com/images/2023-07/image-20230727150933737.png)
+
+原来的`arg0`等被替换了。在xml中，可以使用注解指定的参数，也可以使用`param1`等。
