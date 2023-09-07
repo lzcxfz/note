@@ -24,7 +24,7 @@ export default hopeTheme({
   // sidebar
   sidebar: sidebar,
 
-  footer: "没有个性，怎么签名？",
+  footer: "路虽远，行则将至。",
   
 
   displayFooter: true,
@@ -32,7 +32,7 @@ export default hopeTheme({
   pageInfo: ["Author", "Original", "Date", "Category", "Tag", "ReadingTime"],
 
   blog: {
-    description: "人若无名，专心练剑。",
+    description: "路虽远，行则将至。",
     intro: "/intro.html",
     medias: {
       Email: "911823616@qq.com",
