@@ -7,7 +7,7 @@ title: 主页
 bgImage: https://api.123home.page/api.php?category=all
 heroText: 
 heroFullScreen: true
-tagline: 人若无名，专心练剑。
+tagline: 路虽远，行则将至。
 # projects:
 #   - icon: /logo.svg
 #     name: 自定义项目
