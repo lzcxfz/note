@@ -75,6 +75,10 @@ mkdir -p /data/mysql/conf;
 
 在挂载目录`/data/mysql/`下创建docker-compose.yml
 
+```bash
+touch /data/mysql/docker-compose.yml
+```
+
 ```yml
 version: '3'
 services:
@@ -157,3 +161,62 @@ docker-compose up -d
 
 ## 05-部署redis
 
+目录：
+
+```bash
+mkdir -p /data/redis
+```
+
+yml
+
+```bash
+touch /data/redis/docker-compose.yml
+```
+
+```yml
+version: '3'
+services:
+  redis:
+    image: redis:6.2.6
+    container_name: redis-mallchat
+    restart: always
+    ports:
+      - 6380:6379
+    volumes:
+      - /data/redis/redis.conf:/etc/redis/redis.conf
+      - /data/redis/data:/data
+      - /data/redis/logs:/logs
+    command: ["redis-server","/etc/redis/redis.conf"]
+```
+
+配置文件
+
+```bash
+touch /data/redis/redis.conf
+```
+
+```bash
+port 6379
+timeout 0
+#rdb配置
+save 900 1
+save 300 10
+save 60 10000
+rdbcompression yes
+dbfilename dump.rdb
+dir /data
+appendonly yes
+appendfsync everysec
+#设置你的redis密码
+requirepass 123456
+```
+
+到redis的`docker-compose.yml`所在目录
+
+```bash
+docker-compose up -d
+```
+
+![image-20231019074042060](http://www.iocaop.com/images/2023-10/202310190740096.png)
+
+![image-20231019074632361](http://www.iocaop.com/images/2023-10/202310190746399.png)
