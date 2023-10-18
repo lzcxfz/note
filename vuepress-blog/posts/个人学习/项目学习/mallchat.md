@@ -9,7 +9,7 @@ category:
 
 ## 03-docker-compose搭建
 
-#### 先装docker
+### 先装docker
 
 yum设置阿里源
 
@@ -154,3 +154,6 @@ docker-compose up -d
 尝试连接：
 
 ![image-20231019071743529](http://www.iocaop.com/images/2023-10/202310190717557.png)
+
+## 05-部署redis
+
