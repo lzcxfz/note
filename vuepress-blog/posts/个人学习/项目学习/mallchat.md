@@ -220,3 +220,165 @@ docker-compose up -d
 ![image-20231019074042060](http://www.iocaop.com/images/2023-10/202310190740096.png)
 
 ![image-20231019074632361](http://www.iocaop.com/images/2023-10/202310190746399.png)
+
+## 06-RocketMQ部署
+
+
+
+## 10-项目搭建
+
+创建项目：
+
+![image-20231019081204532](http://www.iocaop.com/images/2023-10/202310190812555.png)
+
+创建module：
+
+聊天服务：
+
+![image-20231019081401581](http://www.iocaop.com/images/2023-10/202310190814618.png)
+
+基础包：
+
+![image-20231019081442867](http://www.iocaop.com/images/2023-10/202310190814903.png)
+
+创建启动包：
+
+![image-20231019081630476](http://www.iocaop.com/images/2023-10/202310190816520.png)
+
+删除多余的src目录，最终：
+
+![image-20231019081722961](http://www.iocaop.com/images/2023-10/202310190817988.png)
+
+预期是未来所有的服务都需要依赖`mallchat-common-start`这个包，所以`mallchat-chat-server`这个模块应该依赖他，为了不写版本号，加入到统一依赖管理中。
+
+记录一下，到这一步，各pom的内容
+
+父工程：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.lzc</groupId>
+    <artifactId>mallchat-learning</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>mallchat-chat-server</module>
+        <module>mallchat-framework</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mallchat.common.start.version>1.0-SNAPSHOT</mallchat.common.start.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.lzc</groupId>
+                <artifactId>mallchat-common-starter</artifactId>
+                <version>${mallchat.common.start.version}</version>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+
+</project>
+
+```
+
+`mallchat-chat-server`模块：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.lzc</groupId>
+        <artifactId>mallchat-learning</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>mallchat-chat-server</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.lzc</groupId>
+            <artifactId>mallchat-common-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
+
+```
+
+`mallchat-framework`模块：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.lzc</groupId>
+        <artifactId>mallchat-learning</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>mallchat-framework</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>mallchat-common-starter</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>
+
+```
+
+`mallchat-common-starter`模块
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.lzc</groupId>
+        <artifactId>mallchat-framework</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>mallchat-common-starter</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>
+
+```
+
