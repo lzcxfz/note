@@ -514,8 +514,6 @@ docker-compose up -d
     </dependencyManagement>
 ```
 
-
-
 复制作者提供的common依赖：
 
 ```xml
@@ -576,3 +574,50 @@ docker-compose up -d
     </dependencies>
 ```
 
+创建配置文件，复制作者的：
+
+```yml
+spring:
+  profiles:
+    #运行的环境
+    active: test
+  application:
+    name: mallchat
+  datasource:
+    url: jdbc:mysql://${mallchat.mysql.ip}:${mallchat.mysql.port}/${mallchat.mysql.db}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: ${mallchat.mysql.username}
+    password: ${mallchat.mysql.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    # Redis服务器地址
+    host: ${mallchat.redis.host}
+    # Redis服务器端口号
+    port: ${mallchat.redis.port}
+    # 使用的数据库索引，默认是0
+    database: 0
+    # 连接超时时间
+    timeout: 1800000
+    # 设置密码
+    password: ${mallchat.redis.password}
+  jackson:
+    serialization:
+    # 将时间转为时间戳，方便与前端交互     
+      write-dates-as-timestamps: true
+```
+
+多环境配置：
+
+```properties
+##################mysql配置##################
+mallchat.mysql.ip=www.iocaop.com
+mallchat.mysql.port=3307
+mallchat.mysql.db=mallchat
+mallchat.mysql.username=root
+mallchat.mysql.password=123456
+##################redis配置##################
+mallchat.redis.host=www.iocaop.com
+mallchat.redis.port=6380
+mallchat.redis.password=123456
+```
+
+![image-20231019083900816](http://www.iocaop.com/images/2023-10/202310190839870.png)
