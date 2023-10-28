@@ -1129,3 +1129,11 @@ public class MPGenerator {
 ```
 
 生成代码，按作者的项目结构微调一下：xml调到resources下，dao层不实现IService
+
+按作者的代码生成器，生成完了后Mapper没有`@Mapper`注解，在启动类下手动扫描：
+
+```java
+@MapperScan({"com.lzc.mallchat.common.**.mapper"})
+```
+
+![image-20231029031217528](http://www.iocaop.com/images/2023-10/202310290312571.png)
