@@ -1027,3 +1027,104 @@ public enum WSRespTypeEnum {
 ![image-20231029005802620](http://www.iocaop.com/images/2023-10/202310290058672.png)
 
 这个方法，判断了当前时间和上一次读消息的时间差，如果超过我们设置的时间，则会发送一个读空闲事件。并且触发下一次执行(通过线程池执行，且是周期性的)。
+
+## 15-用户表设计
+
+直接copy作者的ddl：
+
+```sql
+CREATE TABLE `user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `name` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户昵称',
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户头像',
+  `sex` int(11) DEFAULT NULL COMMENT '性别 1为男性，2为女性',
+  `open_id` char(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '微信openid用户标识',
+  `active_status` int(11) DEFAULT '2' COMMENT '在线状态 1在线 2离线',
+  `last_opt_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '最后上下线时间',
+  `ip_info` json DEFAULT NULL COMMENT 'ip信息',
+  `item_id` bigint(20) DEFAULT NULL COMMENT '佩戴的徽章id',
+  `status` int(11) DEFAULT '0' COMMENT '使用状态 0.正常 1拉黑',
+  `create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  `update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uniq_open_id` (`open_id`) USING BTREE,
+  UNIQUE KEY `uniq_name` (`name`) USING BTREE,
+  KEY `idx_create_time` (`create_time`) USING BTREE,
+  KEY `idx_update_time` (`update_time`) USING BTREE,
+  KEY `idx_active_status_last_opt_time` (`active_status`,`last_opt_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=11000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='用户表';
+```
+
+生成器(复制作者的)：
+
+```xml
+public class MPGenerator {
+    public static void main(String[] args) {
+        //代码生成器
+        AutoGenerator autoGenerator = new AutoGenerator();
+
+        //数据源配置
+        DataSourceConfig dataSourceConfig = new DataSourceConfig();
+        dataSourceConfig.setDbType(DbType.MYSQL);//指定数据库类型
+        //---------------------------数据源-----------------------------------
+        assembleDev(dataSourceConfig);//配置数据源
+        autoGenerator.setDataSource(dataSourceConfig);
+
+        //全局配置
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setOpen(false);
+        //todo 要改输出路径
+        globalConfig.setOutputDir(System.getProperty("user.dir") + "/mallchat-chat-server/src/main/java");
+        //设置作者名字
+        globalConfig.setAuthor("赖卓成");
+        //去掉service的I前缀,一般只需要设置service就行
+        globalConfig.setServiceImplName("%sDao");
+        autoGenerator.setGlobalConfig(globalConfig);
+
+        //包配置
+        PackageConfig packageConfig = new PackageConfig();
+        packageConfig.setParent("com.lzc.mallchat.common.user");//自定义包的路径
+        packageConfig.setEntity("domain.entity");
+        packageConfig.setMapper("mapper");
+        packageConfig.setController("controller");
+        packageConfig.setServiceImpl("dao");
+        autoGenerator.setPackageInfo(packageConfig);
+
+        //策略配置
+        StrategyConfig strategyConfig = new StrategyConfig();
+        //是否使用Lombok
+        strategyConfig.setEntityLombokModel(true);
+        //包，列的命名规则，使用驼峰规则
+        strategyConfig.setNaming(NamingStrategy.underline_to_camel);
+//        strategyConfig.setTablePrefix("t_");
+        strategyConfig.setColumnNaming(NamingStrategy.underline_to_camel);
+        //字段和表注解
+        strategyConfig.setEntityTableFieldAnnotationEnable(true);
+        //todo 这里修改需要自动生成的表结构
+        strategyConfig.setInclude(
+                "user"
+        );
+        //自动填充字段,在项目开发过程中,例如创建时间，修改时间,每次，都需要我们来指定，太麻烦了,设置为自动填充规则，就不需要我们赋值咯
+        List<TableFill> list = new ArrayList<TableFill>();
+        TableFill tableFill1 = new TableFill("create_time", FieldFill.INSERT);
+        TableFill tableFill2 = new TableFill("update_time", FieldFill.INSERT_UPDATE);
+        list.add(tableFill1);
+        list.add(tableFill2);
+
+//        strategyConfig.setTableFillList(list);
+        autoGenerator.setStrategy(strategyConfig);
+
+        //执行
+        autoGenerator.execute();
+
+    }
+    //todo 这里修改你的数据源
+    public static void assembleDev(DataSourceConfig dataSourceConfig) {
+        dataSourceConfig.setDriverName("com.mysql.cj.jdbc.Driver");
+        dataSourceConfig.setUsername("root");
+        dataSourceConfig.setPassword("123456");
+        dataSourceConfig.setUrl("jdbc:mysql://www.iocaop.com:3307/mallchat?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC");
+    }
+}
+```
+
