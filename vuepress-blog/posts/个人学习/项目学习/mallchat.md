@@ -977,3 +977,15 @@ public enum WSRespTypeEnum {
 ![image-20231028235948249](http://www.iocaop.com/images/2023-10/202310282359283.png)
 
 ![image-20231028235958980](http://www.iocaop.com/images/2023-10/202310282359009.png)
+
+再测试一下返回结果：
+
+在我们自定义的处理器重写的处理请求方法最后，返回服务器时间：
+
+```java
+        channelHandlerContext.channel().writeAndFlush(new TextWebSocketFrame("服务器已接收到请求，服务器时间：" + System.currentTimeMillis()));
+```
+
+> 需要注意：写时，也需要写`TextWebSocketFrame`对象，让框架帮我们处理，返回。
+
+![image-20231029000633601](http://www.iocaop.com/images/2023-10/202310290006637.png)
