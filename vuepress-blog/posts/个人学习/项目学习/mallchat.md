@@ -621,3 +621,149 @@ mallchat.redis.password=123456
 ```
 
 ![image-20231019083900816](http://www.iocaop.com/images/2023-10/202310190839870.png)
+
+## 11-Netty实现websocket编码
+
+新建两个包，`user`和`websocket`：
+
+![image-20231028222939906](http://www.iocaop.com/images/2023-10/202310282229939.png)
+
+copy一下作者的代码：(注释掉ip记录和心跳)
+
+netty原理：每个请求进来，都会给请求串联一系列的处理器，每个处理器都是new出来的，每个请求的处理器都是不同的(因为这些处理器是有状态的，不能共用)。对于我们自定义的业务处理器，是没有状态的，所以写成成员变量了，可以共用。：
+
+```java
+    public static final NettyWebSocketServerHandler NETTY_WEB_SOCKET_SERVER_HANDLER = new NettyWebSocketServerHandler();
+```
+
+
+
+```java
+@Slf4j
+@Configuration
+public class NettyWebSocketServer {
+    public static final int WEB_SOCKET_PORT = 8090;
+    public static final NettyWebSocketServerHandler NETTY_WEB_SOCKET_SERVER_HANDLER = new NettyWebSocketServerHandler();
+    // 创建线程池执行器
+    private EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+    private EventLoopGroup workerGroup = new NioEventLoopGroup(NettyRuntime.availableProcessors());
+
+    /**
+     * 启动 ws server
+     *
+     * @return
+     * @throws InterruptedException
+     */
+    @PostConstruct
+    public void start() throws InterruptedException {
+        run();
+    }
+
+    /**
+     * 销毁
+     */
+    @PreDestroy
+    public void destroy() {
+        Future<?> future = bossGroup.shutdownGracefully();
+        Future<?> future1 = workerGroup.shutdownGracefully();
+        future.syncUninterruptibly();
+        future1.syncUninterruptibly();
+        log.info("关闭 ws server 成功");
+    }
+
+    public void run() throws InterruptedException {
+        // 服务器启动引导对象
+        ServerBootstrap serverBootstrap = new ServerBootstrap();
+        serverBootstrap.group(bossGroup, workerGroup)
+                .channel(NioServerSocketChannel.class)
+                .option(ChannelOption.SO_BACKLOG, 128)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .handler(new LoggingHandler(LogLevel.INFO)) // 为 bossGroup 添加 日志处理器
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        ChannelPipeline pipeline = socketChannel.pipeline();
+                        //30秒客户端没有向服务器发送心跳则关闭连接
+//                        pipeline.addLast(new IdleStateHandler(30, 0, 0));
+                        // 因为使用http协议，所以需要使用http的编码器，解码器
+                        pipeline.addLast(new HttpServerCodec());
+                        // 以块方式写，添加 chunkedWriter 处理器
+                        pipeline.addLast(new ChunkedWriteHandler());
+                        /**
+                         * 说明：
+                         *  1. http数据在传输过程中是分段的，HttpObjectAggregator可以把多个段聚合起来；
+                         *  2. 这就是为什么当浏览器发送大量数据时，就会发出多次 http请求的原因
+                         */
+                        pipeline.addLast(new HttpObjectAggregator(8192));
+                        //保存用户ip
+//                        pipeline.addLast(new HttpHeadersHandler());
+                        /**
+                         * 说明：
+                         *  1. 对于 WebSocket，它的数据是以帧frame 的形式传递的；
+                         *  2. 可以看到 WebSocketFrame 下面有6个子类
+                         *  3. 浏览器发送请求时： ws://localhost:7000/hello 表示请求的uri
+                         *  4. WebSocketServerProtocolHandler 核心功能是把 http协议升级为 ws 协议，保持长连接；
+                         *      是通过一个状态码 101 来切换的
+                         */
+                        pipeline.addLast(new WebSocketServerProtocolHandler("/"));
+                        // 自定义handler ，处理业务逻辑
+                        pipeline.addLast(NETTY_WEB_SOCKET_SERVER_HANDLER);
+                    }
+                });
+        // 启动服务器，监听端口，阻塞直到启动成功
+        serverBootstrap.bind(WEB_SOCKET_PORT).sync();
+    }
+}
+```
+
+可以看到上面的`pipeline`中添加了很多处理器，我们再来自定义一个处理器`NettyWebSocketServerHandler`继承`SimpleChannelInboundHandler<TextWebSocketFrame>`，重写方法：
+
+```java
+public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+    @Override
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame) throws Exception {
+        String text = textWebSocketFrame.text();
+        System.out.println("接收到的消息：" + text);
+    }
+}
+```
+
+这个处理器是所有请求共用的(无状态的)，需要加上注解`@ChannelHandler.Sharable`标识所有的`pipline`都可以共用这个处理器。
+
+到此，项目可以启动了，创建启动类：
+
+```java
+/**
+ * 启动类
+ * @author 赖卓成
+ * @date 2023/10/28
+ */
+@SpringBootApplication
+@ComponentScan(basePackages = {"com.lzc.mallchat"})
+public class MallchatCustomApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MallchatCustomApplication.class,args);
+    }
+}
+```
+
+启动：
+
+![image-20231028225636375](http://www.iocaop.com/images/2023-10/202310282256418.png)
+
+postman测试：
+
+![image-20231028225929858](http://www.iocaop.com/images/2023-10/202310282259897.png)
+
+![image-20231028225953070](http://www.iocaop.com/images/2023-10/202310282259128.png)
+
+连接成功，发个消息试试：
+
+![image-20231028230112557](http://www.iocaop.com/images/2023-10/202310282301597.png)
+
+![image-20231028230120973](http://www.iocaop.com/images/2023-10/202310282301010.png)
+
+首先会发起http请求，服务端接收到后，会将http请求转换为websocket请求：
+
+![image-20231028230359746](http://www.iocaop.com/images/2023-10/202310282303801.png)
