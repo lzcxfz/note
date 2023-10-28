@@ -728,7 +728,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
 }
 ```
 
-这个处理器是所有请求共用的(无状态的)，需要加上注解`@ChannelHandler.Sharable`标识所有的`pipline`都可以共用这个处理器。
+这个处理器是所有请求共用的(无状态的)，需要加上注解`@ChannelHandler.Sharable`标识所有的`pipeline`都可以共用这个处理器。
 
 到此，项目可以启动了，创建启动类：
 
@@ -767,3 +767,29 @@ postman测试：
 首先会发起http请求，服务端接收到后，会将http请求转换为websocket请求：
 
 ![image-20231028230359746](http://www.iocaop.com/images/2023-10/202310282303801.png)
+
+## 12-Netty实现websocket原理
+
+在`NettyWebSocketServer`(拷贝作者的)这个配置类中，往`pipeline`中添加了处理器`WebSocketServerProtocolHandler`
+
+```java
+                        pipeline.addLast(new WebSocketServerProtocolHandler("/"));
+```
+
+看这个类的源码，重写了`handlerAdded`方法：
+
+![image-20231028231331880](http://www.iocaop.com/images/2023-10/202310282313920.png)
+
+握手处理器`WebSocketServerProtocolHandshakeHandler`中，判断了是否为http请求，
+
+如果是，则代表是第一次请求，需要将连接升级为websocket请求，并且在里面做了响应的组装：
+
+![image-20231028231913274](http://www.iocaop.com/images/2023-10/202310282319326.png)
+
+响应处理完，会发送一些事件，成功事件、失败事件等。
+
+![image-20231028232150118](http://www.iocaop.com/images/2023-10/202310282321176.png)
+
+除此之外，还会在`pipeline`中移除当前处理器：只有第一次请求才需要升级为websocket，后面用不到了。
+
+![image-20231028232346883](http://www.iocaop.com/images/2023-10/202310282323928.png)
