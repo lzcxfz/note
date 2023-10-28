@@ -1137,3 +1137,49 @@ public class MPGenerator {
 ```
 
 ![image-20231029031217528](http://www.iocaop.com/images/2023-10/202310290312571.png)
+
+写个测试类试一下：
+
+引入依赖：
+
+```xml
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+```
+
+创建测试类：
+
+```java
+@SpringBootTest
+// 如果找不到SpringRunner需要引入spring-test依赖
+@RunWith(SpringRunner.class)
+public class DaoTest {
+
+    @Autowired
+    private UserDao userDao;
+
+    @Test
+    public void test(){
+        System.out.println(userDao.getById(1));
+        User user = new User();
+        user.setName("你好123");
+        user.setOpenId("123123");
+        boolean save = userDao.save(user);
+        System.out.println("save = " + save);
+    }
+}
+```
+
+![image-20231029032526762](http://www.iocaop.com/images/2023-10/202310290325809.png)
