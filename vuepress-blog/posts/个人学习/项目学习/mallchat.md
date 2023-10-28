@@ -793,3 +793,21 @@ postman测试：
 除此之外，还会在`pipeline`中移除当前处理器：只有第一次请求才需要升级为websocket，后面用不到了。
 
 ![image-20231028232346883](http://www.iocaop.com/images/2023-10/202310282323928.png)
+
+来重写一下握手成功事件的处理：在自定义的处理器中，重写`userEventTriggered`方法
+
+```java
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt){
+        // 判断事件，如果是握手完成事件，则打印
+        if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
+            System.out.println("握手成功");
+        }
+    }
+```
+
+重启，进行websocket连接：
+
+![image-20231028232935606](http://www.iocaop.com/images/2023-10/202310282329636.png)
+
+握手成功后，`WebSocketServerProtocolHandler`会发送一个握手成功的事件，会被它的下游处理器所接受，我们在自定义的处理器中接收到后，做了打印处理。
