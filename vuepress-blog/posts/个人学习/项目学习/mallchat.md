@@ -811,3 +811,169 @@ postman测试：
 ![image-20231028232935606](http://www.iocaop.com/images/2023-10/202310282329636.png)
 
 握手成功后，`WebSocketServerProtocolHandler`会发送一个握手成功的事件，会被它的下游处理器所接受，我们在自定义的处理器中接收到后，做了打印处理。
+
+## 13-websocket前后端交互协议
+
+目前比较简单，就使用json来交互。可以改用protobuf，节省内存消耗。
+
+约定好json结构就好了，这里参考作者的，前后端都使用这个结构。
+
+```json
+{
+type:1,//1.请求登录二维码，2心跳检测 3用户认证
+data:{}
+}
+```
+
+创建包：
+
+![image-20231028233905610](http://www.iocaop.com/images/2023-10/202310282339639.png)
+
+定义请求对象，响应对象，类型枚举等。
+
+请求对象`WSBaseReq`:
+
+```java
+@Data
+public class WSBaseReq {
+
+    /**
+     * 类型
+     * @see com.lzc.mallchat.common.websocket.domain.enums.WSReqTypeEnum
+     */
+    private Integer type;
+
+    /**
+     * 请求内容，用来存放json
+     */
+    private String data;
+}
+
+```
+
+请求类型枚举：
+
+```java
+@AllArgsConstructor
+@Getter
+public enum WSReqTypeEnum {
+    LOGIN(1, "请求登录二维码"),
+    HEARTBEAT(2, "心跳包"),
+    AUTHORIZE(3, "登录认证"),
+    ;
+
+    private final Integer type;
+    private final String desc;
+
+    private static Map<Integer, WSReqTypeEnum> cache;
+
+    static {
+        cache = Arrays.stream(WSReqTypeEnum.values()).collect(Collectors.toMap(WSReqTypeEnum::getType, Function.identity()));
+    }
+
+    public static WSReqTypeEnum of(Integer type) {
+        return cache.get(type);
+    }
+}
+```
+
+响应对象：
+
+```java
+@Data
+public class WSBaseResp<T> {
+
+    /**
+     * 类型
+     */
+    private Integer type;
+
+    /**
+     * 数据
+     */
+    private T data;
+}
+```
+
+响应类型枚举：
+
+```java
+@AllArgsConstructor
+@Getter
+public enum WSRespTypeEnum {
+    LOGIN_URL(1, "登录二维码返回", WSLoginUrl.class),
+    LOGIN_SCAN_SUCCESS(2, "用户扫描成功等待授权", null),
+    LOGIN_SUCCESS(3, "用户登录成功返回用户信息", WSLoginSuccess.class),
+    MESSAGE(4, "新消息", WSMessage.class),
+    ONLINE_OFFLINE_NOTIFY(5, "上下线通知", WSOnlineOfflineNotify.class),
+    INVALIDATE_TOKEN(6, "使前端的token失效，意味着前端需要重新登录", null),
+    BLACK(7, "拉黑用户", WSBlack.class),
+    MARK(8, "消息标记", WSMsgMark.class),
+    RECALL(9, "消息撤回", WSMsgRecall.class),
+    APPLY(10, "好友申请", WSFriendApply.class),
+    MEMBER_CHANGE(11, "成员变动", WSMemberChange.class),
+    ;
+
+    private final Integer type;
+    private final String desc;
+    private final Class dataClass;
+
+    private static Map<Integer, WSRespTypeEnum> cache;
+
+    static {
+        cache = Arrays.stream(WSRespTypeEnum.values()).collect(Collectors.toMap(WSRespTypeEnum::getType, Function.identity()));
+    }
+
+    public static WSRespTypeEnum of(Integer type) {
+        return cache.get(type);
+    }
+}
+```
+
+具体响应对象类型对应的类，直接复制作者的。
+
+![image-20231028235034795](http://www.iocaop.com/images/2023-10/202310282350833.png)
+
+再引入一下`swagger`：
+
+```xml
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <!--使用Swagger2-->
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+```
+
+在自定义处理器中，判断类型，进行测试：
+
+```java
+    @Override
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame){
+        String text = textWebSocketFrame.text();
+        // 反序列化
+        WSBaseReq req = JSONUtil.toBean(text, WSBaseReq.class);
+        Integer type = req.getType();
+        // 转为枚举
+        WSReqTypeEnum typeEnum = WSReqTypeEnum.of(type);
+        switch (typeEnum){
+            case LOGIN:
+                // 请求登录二维码
+                System.out.println("请求登录二维码");
+                break;
+            case HEARTBEAT:
+                // 心跳包
+                break;
+            case AUTHORIZE:    
+                // 登录认证
+                break;
+            default:
+                break;
+        }
+        System.out.println("接收到的消息：" + text);
+    }
+```
+
+![image-20231028235948249](http://www.iocaop.com/images/2023-10/202310282359283.png)
+
+![image-20231028235958980](http://www.iocaop.com/images/2023-10/202310282359009.png)
