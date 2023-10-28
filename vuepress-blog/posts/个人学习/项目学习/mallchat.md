@@ -989,3 +989,41 @@ public enum WSRespTypeEnum {
 > 需要注意：写时，也需要写`TextWebSocketFrame`对象，让框架帮我们处理，返回。
 
 ![image-20231029000633601](http://www.iocaop.com/images/2023-10/202310290006637.png)
+
+## 14-Netty心跳原理
+
+心跳10秒发一次包，检测连接。记录、更新用户最后一次心跳的时间。用来判断在线用户数量。
+
+在配置类中打开心跳检测（pipeline中添加心跳检测处理器）：
+
+```java
+                        pipeline.addLast(new IdleStateHandler(30, 0, 0));
+```
+
+到自定义处理器重写的事件触发器方法中判断：
+
+```java
+        if (evt instanceof IdleStateEvent) {
+            IdleStateEvent event = (IdleStateEvent) evt;
+            if (event.state() == IdleState.READER_IDLE) {
+                System.out.println("读空闲");
+                // 读空闲则用户下线
+            }
+        }
+```
+
+> 读空闲：连接已经一段时间没有接收到新的数据包或信息，可能存在通信问题或对端没有继续发送数据。
+
+读空闲不是连接已经关闭，而是需要我们手动调用关闭。
+
+```java
+                ctx.channel().close();
+```
+
+原理：在设定的时间内没有读消息，则发送一个读空闲事件
+
+![image-20231029005521244](http://www.iocaop.com/images/2023-10/202310290055316.png)
+
+![image-20231029005802620](http://www.iocaop.com/images/2023-10/202310290058672.png)
+
+这个方法，判断了当前时间和上一次读消息的时间差，如果超过我们设置的时间，则会发送一个读空闲事件。并且触发下一次执行(通过线程池执行，且是周期性的)。
