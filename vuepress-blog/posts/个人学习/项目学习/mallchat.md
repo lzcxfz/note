@@ -1128,3 +1128,4 @@ public class MPGenerator {
 }
 ```
 
+生成代码，按作者的项目结构微调一下：xml调到resources下，dao层不实现IService
