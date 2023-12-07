@@ -147,6 +147,8 @@ public class A01Application {
 
 ### 03-ApplicationContext功能1
 
+#### 国际化
+
 之前讲过，`ApplicationContext`接口继承了`BeanFactory`接口，扩展了功能，扩展的功能主要是因为继承了下面四个接口：
 
 ![image-20230615110657696](http://www.iocaop.com/images/2023-06/image-20230615110657696.png)
@@ -248,6 +250,8 @@ public class A05Application {
 ![image-20230615120101780](http://www.iocaop.com/images/2023-06/image-20230615120101780.png)
 
 ### 05-ApplicationContext的功能4
+
+#### 事件发布
 
 `ApplicationEventPublisher`：发布事件，解耦合。
 
