@@ -316,3 +316,194 @@ public class Component2 {
 
 ### 07-BeanFactory的实现
 
+测试类：定义两个`Bean`类，写一个配置类，将这两个`Bean`注入到ioc
+
+```java
+public class TestBeanFactory {
+
+    @Configuration
+    static class Config {
+
+        @Bean
+        public Bean1 bean1() {
+            return new Bean1();
+        }
+
+        @Bean
+        public Bean2 bean2() {
+            return new Bean2();
+        }
+    }
+
+    static class Bean1 {
+        private static final Logger logger = LoggerFactory.getLogger(Bean1.class);
+        @Autowired
+        private Bean2 bean2;
+        public Bean1() {
+            logger.info("Bean1 init");
+        }
+
+        public Bean2 getBean2() {
+            return bean2;
+        }
+    }
+
+    static class Bean2 {
+        private static final Logger logger = LoggerFactory.getLogger(Bean2.class);
+
+        public Bean2() {
+            logger.info("Bean2 init");
+        }
+    }
+
+
+
+
+
+}
+```
+
+主函数：分为7步，来看看`BeanFactory`的创建和`Bean`的创建
+
+* 步骤1：创建beanFactory，这是核心容器，创建后，内部没有bean，需要添加bean的定义，beanFactory会根据定义创建bean
+
+  ```java
+          DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+  ```
+
+* 步骤2：添加bean的定义(class,scope,初始化方、销毁方法等)，这是bean的描述信息
+
+  ```java
+          // 这里先创建Config的定义,genericBeanDefinition设置bean的特征(单例多例等 )
+          AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(Config.class).setScope("singleton").getBeanDefinition();
+  ```
+
+* 步骤3：创建好bean的定义后，使用beanFactory的registerBeanDefinition方法注册bean的定义，参数1是bean的名称，参数2是bean的定义（BeanDefinition）
+
+  ```java
+          // 注册完成后，beanFactory内部就有了一个bean的定义，可以根据定义创建config的bean
+          beanFactory.registerBeanDefinition("config", beanDefinition);
+  ```
+
+  验证一下beanFactory中有哪些bean
+
+  ```java
+          System.out.println("=============步骤3：beanFactory调用registerBeanDefinition方法注册config后容器中有哪些Bean的定义======================");
+          String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+          for (String beanDefinitionName : beanDefinitionNames) {
+              System.out.println("beanDefinitionName = " + beanDefinitionName);
+          }
+  ```
+
+  ![image-20231212183131662](http://www.iocaop.com/images/2023-12/image-20231212183131662.png)
+
+  问：beanFactory中有一个bean的定义，那为什么没有Bean1和Bean2的定义呢？
+
+  答：因为beanFactory缺少了解析@Configuration和@Bean的功能。
+
+  问：怎么让他功能完整呢？
+
+  答：调用工具类AnnotationConfigUtils，这个工具类会解析@Configuration和@Bean，将解析结果添加到beanFactory中
+
+* 步骤4：调用工具类AnnotationConfigUtils，会给beanFactory添加一些常用的后置处理器，对beanFactory的功能做一些扩展
+
+  ```java
+   AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
+  ```
+  
+  验证一下beanFactory中有哪些bean
+  
+  ```java
+          System.out.println("==============步骤4：使用工具类AnnotationConfigUtils注册后置处理器后beanFactory中有哪些Bean的定义=====================");
+          beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+          for (String beanDefinitionName : beanDefinitionNames) {
+              System.out.println("beanDefinitionName = " + beanDefinitionName);
+          }
+  ```
+  
+  ![image-20231212183523950](http://www.iocaop.com/images/2023-12/image-20231212183523950.png)
+  
+  多出了很多`Bean`这些`Bean`是注解后置处理器，看名字大概就能猜到作用了。
+  
+* 步骤5：获取这些后置处理器,这些后置处理器统一类型为：BeanFactoryPostProcessor，这些后置处理器会对beanFactory做一些扩展
+
+  ```java
+          Map<String, BeanFactoryPostProcessor> beansOfType = beanFactory.getBeansOfType(BeanFactoryPostProcessor.class);
+  ```
+
+  逐一执行这些后置处理器，效果：会对注解@Configuration和@Bean进行解析，将解析结果添加到beanFactory中：
+
+  ```java
+  beansOfType.values().stream().forEach(beanFactoryPostProcessor -> beanFactoryPostProcessor.postProcessBeanFactory(beanFactory));
+  ```
+
+  执行解析后打印一下beanFactory中有哪些bean：
+
+  ```java
+          System.out.println("==============步骤5：获取这些后置处理器并逐一执行后，BeanFactory中有哪些Bean的定义=====================");
+          beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+          for (String beanDefinitionName : beanDefinitionNames) {
+              System.out.println("beanDefinitionName = " + beanDefinitionName);
+          }
+  ```
+
+  ![image-20231212183830859](http://www.iocaop.com/images/2023-12/image-20231212183830859.png)
+
+  可以看到，已经将`bean1`和`bean2`加入到`beanFactory`中了。
+
+  后置处理器的主要功能：对beanFactory做扩展，补充了Bean的定义。
+
+主函数完整代码：
+
+```java
+    public static void main(String[] args) {
+        // 1.创建beanFactory，这是核心容器，创建后，内部没有bean，需要添加bean的定义，beanFactory会根据定义创建bean
+        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+        // 2.添加bean的定义(class,scope,初始化方、销毁方法等)，这是bean的描述信息
+        // 这里先创建Config的定义,genericBeanDefinition设置bean的特征(单例多例等 )
+        AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(Config.class).setScope("singleton").getBeanDefinition();
+        // 3.创建好bean的定义后，使用beanFactory的registerBeanDefinition方法注册bean的定义，参数1是bean的名称，参数2是bean的定义
+        // 注册完成后，beanFactory内部就有了一个bean的定义，可以根据定义创建config的bean
+        beanFactory.registerBeanDefinition("config", beanDefinition);
+
+        // 验证一下beanFactory中有哪些bean
+        System.out.println("=============步骤3：beanFactory调用registerBeanDefinition方法注册config后容器中有哪些Bean的定义======================");
+        String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+            System.out.println("beanDefinitionName = " + beanDefinitionName);
+        }
+        // 结果：beanDefinitionName = config，说明beanFactory中有一个bean的定义，那为什么没有Bean1和Bean2的定义呢？
+        // 因为beanFactory缺少了解析@Configuration和@Bean的功能，怎么让他功能完整呢？
+        // 4.调用工具类AnnotationConfigUtils，这个工具类会解析@Configuration和@Bean，将解析结果添加到beanFactory中
+        // 会给beanFactory添加一些常用的后置处理器，对beanFactory的功能做一些扩展
+        AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
+        // 验证一下beanFactory中有哪些bean
+        System.out.println("==============步骤4：使用工具类AnnotationConfigUtils注册后置处理器后beanFactory中有哪些Bean的定义=====================");
+        beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+            System.out.println("beanDefinitionName = " + beanDefinitionName);
+        }
+/*      结果：
+        beanDefinitionName = config
+        beanDefinitionName = org.springframework.context.annotation.internalConfigurationAnnotationProcessor  // @Configuration注解的后置处理器，解析@Configuration注解以及@Bean注解
+        beanDefinitionName = org.springframework.context.annotation.internalAutowiredAnnotationProcessor      //
+        beanDefinitionName = org.springframework.context.annotation.internalCommonAnnotationProcessor
+        beanDefinitionName = org.springframework.context.event.internalEventListenerProcessor
+        beanDefinitionName = org.springframework.context.event.internalEventListenerFactory
+*/
+        //
+
+        // 5.获取这些后置处理器,这些后置处理器统一类型为：BeanFactoryPostProcessor，这些后置处理器会对beanFactory做一些扩展
+        Map<String, BeanFactoryPostProcessor> beansOfType = beanFactory.getBeansOfType(BeanFactoryPostProcessor.class);
+        // 逐一执行这些后置处理器，效果：会对注解@Configuration和@Bean进行解析，将解析结果添加到beanFactory中
+        beansOfType.values().stream().forEach(beanFactoryPostProcessor -> beanFactoryPostProcessor.postProcessBeanFactory(beanFactory));
+        // 解析之后再打印一下beanFactory中有哪些bean
+        System.out.println("==============步骤5：获取这些后置处理器并逐一执行后，BeanFactory中有哪些Bean的定义=====================");
+        beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+            System.out.println("beanDefinitionName = " + beanDefinitionName);
+        }
+        // 后置处理器的主要功能：对beanFactory做扩展，补充了Bean的定义
+    }
+```
+
