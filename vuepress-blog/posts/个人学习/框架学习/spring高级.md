@@ -451,7 +451,7 @@ public class TestBeanFactory {
 
   可以看到，已经将`bean1`和`bean2`加入到`beanFactory`中了。
 
-  后置处理器的主要功能：对beanFactory做扩展，补充了Bean的定义。
+  beanFactory的后置处理器的主要功能：对beanFactory做扩展，补充了Bean的定义。
 
 主函数完整代码：
 
@@ -523,7 +523,7 @@ public class TestBeanFactory {
 
   `Bean1`可以获取，但是`Bean1`中自动装配进来的`Bean2`为null，是因为`@Autowired`没有起作用。
 
-  这个功能对于`BeanFactory`来说也是扩展功能，是由另外的后置处理器来实现的(在`Config`类我们就学习了`internalConfigurationAnnotationProcessor`，`注解后置处理器`)。处理自动装配的处理器叫做`Bean的后置处理器`，这些处理器可以解析`@Autowired`注解。
+  这个功能对于`BeanFactory`来说也是扩展功能，是由另外的Bean的后置处理器来实现的(在`Config`类我们就学习了`internalConfigurationAnnotationProcessor`，`注解后置处理器`)。处理自动装配的处理器叫做`Bean的后置处理器`，这些处理器可以解析`@Autowired`注解。
 
 * Bean的后置处理器介绍
 
@@ -545,7 +545,7 @@ public class TestBeanFactory {
 
   ![image-20231219183013945](http://www.iocaop.com/images/2023-12/image-20231219183013945.png)
 
-  > 这里需要把步骤6中的代码注释，因为Bean的后处理器作用是在Bean的生命周期各个阶段提供功能扩展，如果不把步骤6中的代码注释，Bean在步骤6中进行获取的时候，已经创建完成了，但是当时没有添加Bean的后处理器，Bean2还是会为null
+  > 这里需要把步骤6中的代码注释，因为Bean的后处理器作用是在Bean的生命周期各个阶段提供功能扩展，如果不把步骤6中的代码注释，Bean在步骤6中进行获取的时候，已经创建完成了(就进入Bean的生命周期，就会调用Bean的后置处理器)，但是当时没有添加internalAutowiredAnnotationProcessor这个Bean的后处理器，Bean2还是会为null
 
   > 在步骤3中已经使用：
   >
