@@ -507,3 +507,59 @@ public class TestBeanFactory {
     }
 ```
 
+### 08-BeanFactory的实现
+
+* 步骤6：获取`Bean1`，再通过`Bean1`获取`Bean2`
+
+  ```java
+          // 6.获取beanFactory中的bean
+          System.out.println("==============步骤6：获取beanFactory中的bean=====================");
+          Bean1 bean1 = beanFactory.getBean(Bean1.class);
+          System.out.println("bean1 = " + bean1);
+          System.out.println("bean1.getBean2() = " + bean1.getBean2());
+  ```
+
+  ![image-20231219180716448](http://www.iocaop.com/images/2023-12/image-20231219180716448.png)
+
+  `Bean1`可以获取，但是`Bean1`中自动装配进来的`Bean2`为null，是因为`@Autowired`没有起作用。
+
+  这个功能对于`BeanFactory`来说也是扩展功能，是由另外的后置处理器来实现的(在`Config`类我们就学习了`internalConfigurationAnnotationProcessor`，`注解后置处理器`)。处理自动装配的处理器叫做`Bean的后置处理器`，这些处理器可以解析`@Autowired`注解。
+
+* Bean的后置处理器介绍
+
+  `Bean的后置处理器`在工具类`AnnotationConfigUtils`中也包含：`internalAutowiredAnnotationProcessor`，作用就是解析`@Autowired`和`@Value`等注解。
+
+  `internalCommonAnnotationProcessor`后置处理器是解析`@Resource`注解的，这不是`Spring`的注解，是JavaEE的注解。
+
+  > Bean的后置处理器在Bean的生命周期的各个阶段，提供一些扩展功能，例如：@Autowired、@Resource
+
+* 步骤7：让Bean的后置处理器起作用
+
+  ```java
+          beanFactory.getBeansOfType(BeanPostProcessor.class).values().forEach(beanFactory::addBeanPostProcessor);
+          System.out.println("==============步骤7：获取beanFactory中的bean=====================");
+          Bean1 bean1 = beanFactory.getBean(Bean1.class);
+          System.out.println("bean1 = " + bean1);
+          System.out.println("bean1.getBean2() = " + bean1.getBean2());
+  ```
+
+  ![image-20231219183013945](http://www.iocaop.com/images/2023-12/image-20231219183013945.png)
+
+  > 这里需要把步骤6中的代码注释，因为Bean的后处理器作用是在Bean的生命周期各个阶段提供功能扩展，如果不把步骤6中的代码注释，Bean在步骤6中进行获取的时候，已经创建完成了，但是当时没有添加Bean的后处理器，Bean2还是会为null
+
+  > 在步骤3中已经使用：
+  >
+  > ```java
+  >         AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
+  > ```
+  >
+  > 添加了Bean的后置处理器，为什么还要在步骤7中使用：
+  >
+  > ```java
+  >         beanFactory.getBeansOfType(BeanPostProcessor.class).values().forEach(beanFactory::addBeanPostProcessor);
+  > ```
+  >
+  > 步骤3只是把Bean的后置处理器添加到BeanFactory(Bean的后置处理器只是存在于BeanFactory中的Bean而已)，步骤7是建立BeanFactory与Bean的后置处理器之间的联系(告诉BeanFactory，将来该Bean工厂中的Bean创建时需要用哪些后置处理器)。
+
+  > 看日志可以知道，BeanFactory中的Bean不是在Bean工厂创建的时候把所有Bean都创建，而是用到的时候，调用构造函数去创建。
+
