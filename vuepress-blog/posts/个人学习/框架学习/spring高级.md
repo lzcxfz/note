@@ -561,5 +561,25 @@ public class TestBeanFactory {
   >
   > 步骤3只是把Bean的后置处理器添加到BeanFactory(Bean的后置处理器只是存在于BeanFactory中的Bean而已)，步骤7是建立BeanFactory与Bean的后置处理器之间的联系(告诉BeanFactory，将来该Bean工厂中的Bean创建时需要用哪些后置处理器)。
 
-  > 看日志可以知道，BeanFactory中的Bean不是在Bean工厂创建的时候把所有Bean都创建，而是用到的时候，调用构造函数去创建。
+  > 看日志可以知道，BeanFactory中的Bean不是在Bean工厂创建的时候把所有Bean都创建，而是用到的时候，调用构造函数去创建。刚开始都是创建`BeanDefinition`，保存了Bean的描述信息，默认都是延迟创建的，当用到Bean的时候，才会创建Bean。
+  >
+  > `BeanFactory`中的单例Bean可以在Bean工厂创建的时候就创建这些单例Bean，调用一下方法就好了：
+  >
+  > ```java
+  >         // 预先实例化所有的单例对象，走完依赖注入、初始化等流程
+  >         beanFactory.preInstantiateSingletons();
+  > ```
+
+`BeanFactory`和`ApplicationContext`还是有些区别的。`BeanFactory`不会主动做一些事情：
+
+* 不会主动调用BeanFactory的后置处理器
+* 不会主动添加Bean的后置处理器
+* 不会主动初始化单例Bean
+* 不会解析BeanFactory，不会解析${}和el表达式#{}
+
+Bean的后置处理器有排序的逻辑。
+
+`BeanFactory`是一个基础的东西，很多扩展功能都没有加入到BeanFactory体系中来，而`ApplicationContext`会把这些事做好，都会帮加好。
+
+### 09-BeanFactory的实现
 
