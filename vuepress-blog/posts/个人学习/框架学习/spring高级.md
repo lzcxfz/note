@@ -899,3 +899,50 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 
   ![image-20231221011236591](http://www.iocaop.com/images/2023-12/202312210112636.png)
 
+上面两种`ApplicationContext`的实现的运行原理是：
+
+1.创建`BeanFactory`
+
+```java
+        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+```
+
+2.使用`XmlBeanDefinitionReader`读取xml中Bean的定义，创建好`BeanDefinition`，加入到这个`BeanFactory`中
+
+```java
+        // 读取配置文件
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+        reader.loadBeanDefinitions("b01.xml");
+```
+
+完整代码：
+
+```java
+    public static void main(String[] args) {
+//        testClassPathXmlApplicationContext();
+//        testFileSystemXmlApplicationContext();
+
+        // 创建一个BeanFactory
+        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+
+        // 读取之前打印的BeanDefinition名称
+        System.out.println("读取之前打印的BeanDefinition名称");
+        String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+            System.out.println("beanDefinitionName = " + beanDefinitionName);
+        }
+
+        // 读取配置文件
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+        reader.loadBeanDefinitions("b01.xml");
+
+        // 读取之后打印的BeanDefinition名称
+        System.out.println("读取之后打印的BeanDefinition名称");
+        String[] definitionNames = beanFactory.getBeanDefinitionNames();
+        for (String beanDefinitionName : definitionNames) {
+            System.out.println("beanDefinitionName = " + beanDefinitionName);
+        }
+    }
+```
+
+![image-20231221012330018](http://www.iocaop.com/images/2023-12/202312210123068.png)
