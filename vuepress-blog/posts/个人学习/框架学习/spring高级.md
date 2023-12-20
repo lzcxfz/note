@@ -901,13 +901,13 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 
 上面两种`ApplicationContext`的实现的运行原理是：
 
-1.创建`BeanFactory`
+1.创建`BeanFactory`，刚开始里面没有任何Bean
 
 ```java
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 ```
 
-2.使用`XmlBeanDefinitionReader`读取xml中Bean的定义，创建好`BeanDefinition`，加入到这个`BeanFactory`中
+2.借助`XmlBeanDefinitionReader`读取xml中Bean的定义，创建好`BeanDefinition`，加入到这个`BeanFactory`中
 
 ```java
         // 读取配置文件
@@ -915,13 +915,12 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
         reader.loadBeanDefinitions("b01.xml");
 ```
 
+3.更多功能，加Bean后处理器、BeanFactory后置处理器、初始化单例Bean等。
+
 完整代码：
 
 ```java
     public static void main(String[] args) {
-//        testClassPathXmlApplicationContext();
-//        testFileSystemXmlApplicationContext();
-
         // 创建一个BeanFactory
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
