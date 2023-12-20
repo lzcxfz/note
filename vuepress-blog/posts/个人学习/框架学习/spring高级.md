@@ -784,3 +784,6 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 ![image-20231220165557235](http://www.iocaop.com/images/2023-12/image-20231220165557235.png)
 
 数字越小的，优先级越高，所以`CommonAnnotationBeanPostProcessor`排在前面。
+
+### 10-ApplicationContext的实现
+
