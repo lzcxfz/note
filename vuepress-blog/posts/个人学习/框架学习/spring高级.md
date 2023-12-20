@@ -451,7 +451,7 @@ public class TestBeanFactory {
 
   可以看到，已经将`bean1`和`bean2`加入到`beanFactory`中了。
 
-  beanFactory的后置处理器的主要功能：对beanFactory做扩展，补充了Bean的定义。
+  beanFactory的后置处理器的主要功能：对beanFactory做扩展，**补充了Bean的定义**。
 
 主函数完整代码：
 
@@ -572,8 +572,8 @@ public class TestBeanFactory {
 
 `BeanFactory`和`ApplicationContext`还是有些区别的。`BeanFactory`不会主动做一些事情：
 
-* 不会主动调用BeanFactory的后置处理器
-* 不会主动添加Bean的后置处理器
+* 不会主动调用BeanFactory的后置处理器(不会主动解析`@Configuration`和`@Bean`注解，补充Bean的定义)
+* 不会主动添加Bean的后置处理器(解析`@Autowired`等注解)
 * 不会主动初始化单例Bean
 * 不会解析BeanFactory，不会解析${}和el表达式#{}
 
