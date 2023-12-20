@@ -730,4 +730,35 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 
 最终注入的是Bean3，为什么？
 
-跟Bean的后置处理器的顺序有关系。
+跟Bean的后置处理器的顺序有关系，谁先被添加，谁就先执行。
+
+验证一下我们添加Bean的后置处理器的顺序：在步骤7中，打印出Bean的后置处理器，再添加。
+
+```java
+        // 7.让Bean的后置处理器起作用：通过类型获取所有的Bean后置处理器，并添加到beanFactory中
+        beanFactory.getBeansOfType(BeanPostProcessor.class).values().forEach(beanPostProcessor -> {
+            System.out.println("添加beanPostProcessor = " + beanPostProcessor);
+            beanFactory.addBeanPostProcessor(beanPostProcessor);
+        });
+```
+
+![image-20231220161528374](http://www.iocaop.com/images/2023-12/image-20231220161528374.png)
+
+可以看到是先添加了`AutowiredAnnotationBeanPostProcessor`后添加`CommonAnnotationBeanPostProcessor`，所以先执行了解析`@AutoWired`的Bean后置处理器，所以装配进来的是Bean3类型。
+
+加个比较器，打乱一下顺序：
+
+```java
+        beanFactory.getBeansOfType(BeanPostProcessor.class).values().stream().sorted(beanFactory.getDependencyComparator()).forEach(beanPostProcessor -> {
+            System.out.println("添加beanPostProcessor = " + beanPostProcessor);
+            beanFactory.addBeanPostProcessor(beanPostProcessor);
+        });
+```
+
+顺序换了：
+
+![image-20231220162438795](http://www.iocaop.com/images/2023-12/image-20231220162438795.png)
+
+这样，注入的类型就是`@Resource(name = "bean4")`：
+
+![image-20231220162557337](http://www.iocaop.com/images/2023-12/image-20231220162557337.png)
