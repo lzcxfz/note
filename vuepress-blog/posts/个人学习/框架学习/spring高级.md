@@ -583,3 +583,114 @@ Bean的后置处理器有排序的逻辑。
 
 ### 09-BeanFactory的实现
 
+```
+AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
+```
+
+![image-20231220152435856](http://www.iocaop.com/images/2023-12/image-20231220152435856.png)
+
+问题：如果在依赖注入时，即加了`@Autowired`又加了`@Resource`，会怎么样？谁先生效？
+
+在原来代码上，新加一个接口，两个实现类：
+
+```java
+    interface Inter{}
+
+    static class Bean3 implements Inter{
+        private static final Logger logger = LoggerFactory.getLogger(Bean1.class);
+
+        public Bean3(){
+            logger.info("Bean3 init");
+        }
+    }
+
+    static class Bean4 implements Inter{
+        private static final Logger logger = LoggerFactory.getLogger(Bean1.class);
+        public Bean4(){
+            logger.info("Bean4 init");
+        }
+    }
+
+```
+
+在`Config`中使用`@Bean`加入到容器中：
+
+```java
+    @Configuration
+    static class Config {
+
+        @Bean
+        public Bean1 bean1() {
+            return new Bean1();
+        }
+
+        @Bean
+        public Bean2 bean2() {
+            return new Bean2();
+        }
+
+        @Bean
+        public Inter bean3(){
+            return new Bean3();
+        }
+
+        @Bean
+        public Inter bean4(){
+            return new Bean4();
+        }
+    }
+
+```
+
+> 还是用原来的代码，原来的代码使用了
+>
+> ```java
+> AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
+> ```
+>
+> 会补充Bean的定义，所以这些Bean会被加入到容器中
+
+在原来的Bean1中使用注解装配并获取`Inter`
+
+```java
+    static class Bean1 {
+        private static final Logger logger = LoggerFactory.getLogger(Bean1.class);
+        @Autowired
+        private Bean2 bean2;
+
+        @Autowired
+        private Inter inter;
+        public Bean1() {
+            logger.info("Bean1 init");
+        }
+
+        public Bean2 getBean2() {
+            return bean2;
+        }
+
+        public Inter getInter(){
+            return this.inter;
+        }
+    }
+```
+
+这样写会报错，因为使用接口类型获取，`@Autowired`注入时是根据类型匹配,有多个，不知道要注入哪一个，需要指定Bean的名称，或者修改变量名与类名一致，修改如下：
+
+```java
+        @Autowired
+        private Inter bean3;
+
+        public Inter getInter(){
+            return this.bean3;
+        }
+```
+
+```java
+        // 8.获取beanFactory中的Inter
+        System.out.println("==============步骤8：获取beanFactory中的Inter,使用@Autowired注解注入接口，但是变量名是Bean3=====================");
+        System.out.println("beanFactory.getBean(Bean1.class).getInter() = " + beanFactory.getBean(Bean1.class).getInter());
+```
+
+运行后获取到的Bean的类型是和变量名对应类名相匹配的Bean：
+
+![image-20231220154543318](http://www.iocaop.com/images/2023-12/image-20231220154543318.png)
