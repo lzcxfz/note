@@ -876,3 +876,26 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 
   ![image-20231221010526433](http://www.iocaop.com/images/2023-12/202312210105481.png)
 
+* `FileSystemXmlApplicationContext`
+
+  和`ClassPathXmlApplicationContext`一样，但是传入的是磁盘路径，而不是类路径`classpath`
+
+  ```java
+      public static void testFileSystemXmlApplicationContext() {
+          // 传入配置文件路径，会根据配置文件创建bean
+          FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext("D:\\lzc-sync\\code\\java-workspace\\spring\\src\\main\\resources\\b01.xml");
+  
+          // 获取容器中所有Bean的名称
+          String[] beanDefinitionNames = context.getBeanDefinitionNames();
+          for (String beanDefinitionName : beanDefinitionNames) {
+              System.out.println("beanDefinitionName = " + beanDefinitionName);
+          }
+  
+          // 获取Bean2，并打印Bean2中的Bean1
+          Bean2 bean2 = context.getBean(Bean2.class);
+          System.out.println("bean2.getBean1() = " + bean2.getBean1());
+      }
+  ```
+
+  ![image-20231221011236591](http://www.iocaop.com/images/2023-12/202312210112636.png)
+
