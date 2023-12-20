@@ -787,3 +787,68 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 
 ### 10-ApplicationContext的实现
 
+学习4个比较典型的实现类。
+
+* `ClassPathXmlApplicationContext`
+
+  ```java
+      /**
+       * 测试ClassPathXmlApplicationContext
+       */
+      public void testClassPathXmlApplicationContext() {
+          // 传入配置文件路径，会根据配置文件创建bean
+          ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("b01.xml");
+      }
+  ```
+
+  传入的xml文件放在类路径下(resources)，xml中的内容就是Bean的定义，其实就是定义`BeanDefinition`，只不过是用xml的形式来指定Bean的特征(类型、名字、单例多例、初始化、销毁方法等)
+
+  先创建两个Bean类：
+
+  Bean1和Bean2，Bean2依赖了Bean1，并提供了get、set方法，没有使用注解装配，而是使用set方法进行注入。
+
+  ```java
+      static class Bean1{
+  
+      }
+  
+      static class Bean2{
+  
+          private Bean1 bean1;
+  
+          public Bean2(){
+              System.out.println("Bean2 init");
+          }
+  
+          public void setBean1(Bean1 bean1) {
+              this.bean1 = bean1;
+          }
+  
+          public Bean1 getBean1() {
+              return bean1;
+          }
+      }
+  ```
+
+  在xml中如何配置呢：
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+  
+      <bean id="bean1" class="com.lzc.spring.TestApplicationContext.Bean1"/>
+  
+      <bean id="bean2" class="com.lzc.spring.TestApplicationContext.Bean2">
+          <property name="bean1" ref="bean1"/>
+      </bean>
+  
+  </beans>
+  
+  ```
+
+  > idea快速创建xml：
+  >
+  > ![image-20231221010323208](http://www.iocaop.com/images/2023-12/202312210103259.png)
+
