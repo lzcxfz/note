@@ -762,3 +762,25 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 这样，注入的类型就是`@Resource(name = "bean4")`：
 
 ![image-20231220162557337](http://www.iocaop.com/images/2023-12/image-20231220162557337.png)
+
+这个比较器哪来的？在`AnnotationConfigUtils`工具类注册`BeanFactory`的后置处理器时设置给`BeanFactory`的。
+
+![image-20231220162924928](http://www.iocaop.com/images/2023-12/image-20231220162924928.png)
+
+这个比较器使用的是单例模式中的饿汉模式。
+
+![image-20231220163532409](http://www.iocaop.com/images/2023-12/image-20231220163532409.png)
+
+打开`CommonAnnotationBeanPostProcessor`源码，`Ctrl+F12`搜索`getOrder()`方法：
+
+点击后跳转到父类：`InitDestroyAnnotationBeanPostProcessor`，看到父类实现了接口`PriorityOrdered`，间接也实现了接口`Ordered`
+
+![image-20231220165250340](http://www.iocaop.com/images/2023-12/image-20231220165250340.png)
+
+那么`CommonAnnotationBeanPostProcessor`和`AutowiredAnnotationBeanPostProcessor`的优先级谁高谁低在哪里设置的呢？
+
+![image-20231220165515163](http://www.iocaop.com/images/2023-12/image-20231220165515163.png)
+
+![image-20231220165557235](http://www.iocaop.com/images/2023-12/image-20231220165557235.png)
+
+数字越小的，优先级越高，所以`CommonAnnotationBeanPostProcessor`排在前面。
