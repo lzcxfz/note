@@ -674,7 +674,7 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
     }
 ```
 
-这样写会报错，因为使用接口类型获取，`@Autowired`注入时是根据类型匹配,有多个，不知道要注入哪一个，需要指定Bean的名称，或者修改变量名与类名一致，修改如下：
+这样写会报错，因为使用接口类型获取，`@Autowired`注入时是根据类型匹配,有多个，不知道要注入哪一个，需要指定Bean的名称，或者修改变量名与类名一致，修改如下：(用`@Qualifier`也行)
 
 ```java
         @Autowired
@@ -694,3 +694,40 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 运行后获取到的Bean的类型是和变量名对应类名相匹配的Bean：
 
 ![image-20231220154543318](http://www.iocaop.com/images/2023-12/image-20231220154543318.png)
+
+再来试一下`Resource`:变量名是bean3但是注解参数指定的Bean名称是bean4
+
+```java
+//        @Autowired
+        @Resource(name = "bean4")
+        private Inter bean3;
+```
+
+```java
+        System.out.println("==============步骤9：获取beanFactory中的Inter,使用@Resource注解注入接口，但是变量名是Bean4=====================");
+        System.out.println("beanFactory.getBean(Bean1.class).getInter() = " + beanFactory.getBean(Bean1.class).getInter());
+```
+
+最终获取到的Bean的类型是Bean4:
+
+![image-20231220155345714](http://www.iocaop.com/images/2023-12/image-20231220155345714.png)
+
+那如果即加`@Autowired`又加`Resource`，会怎么样？
+
+```java
+        @Autowired
+        @Resource(name = "bean4")
+        private Inter bean3;
+```
+
+```java
+        // 10 即加@AutoWired又加@Resouce
+        System.out.println("==============步骤10：即加@AutoWired又加@Resouce=====================");
+        System.out.println("beanFactory.getBean(Bean1.class).getInter() = " + beanFactory.getBean(Bean1.class).getInter());
+```
+
+![image-20231220155729504](http://www.iocaop.com/images/2023-12/image-20231220155729504.png)
+
+最终注入的是Bean3，为什么？
+
+跟Bean的后置处理器的顺序有关系。
