@@ -945,3 +945,41 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 ```
 
 ![image-20231221012330018](http://www.iocaop.com/images/2023-12/202312210123068.png)
+
+* `AnnotationConfigApplicationContext`
+
+  写个配置类：
+
+  ```java
+      @Configuration
+      static class Config{
+          @Bean
+          public Bean1 bean1(){
+              return new Bean1();
+          }
+  
+          @Bean
+          public Bean2 bean2(Bean1 bean1){
+              Bean2 bean2 = new Bean2();
+              bean2.setBean1(bean1);
+              return bean2;
+          }
+      }
+  ```
+
+  ```java
+      public static void testAnnotationConfigApplicationContext(){
+          AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+          // 获取容器中所有Bean的名称
+          String[] beanDefinitionNames = context.getBeanDefinitionNames();
+          for (String beanDefinitionName : beanDefinitionNames) {
+              System.out.println("beanDefinitionName = " + beanDefinitionName);
+          }
+  
+          // 获取Bean2，并打印Bean2中的Bean1
+          Bean2 bean2 = context.getBean(Bean2.class);
+          System.out.println("bean2.getBean1() = " + bean2.getBean1());
+      }
+  ```
+
+  
