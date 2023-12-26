@@ -969,6 +969,7 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 
   ```java
       public static void testAnnotationConfigApplicationContext(){
+          // 将配置类作为参数，传递给AnnotationConfigApplicationContext
           AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
           // 获取容器中所有Bean的名称
           String[] beanDefinitionNames = context.getBeanDefinitionNames();
@@ -981,5 +982,20 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
           System.out.println("bean2.getBean1() = " + bean2.getBean1());
       }
   ```
-
   
+  ![image-20231226235939686](http://www.iocaop.com/images/2023-12/202312262359761.png)
+  
+  与之前xml的有什么区别？
+  
+  除了`Bean1`和`Bean2`，`Config`也在容器中，只不过这个类的作用是接下来提供更多的`BeanDefinition`，除此之外，还加入了Bean的后置处理器，在图中的Debug日志中可以看到。前两种xml的是没有的，需要自己手动去加：
+  
+  ```xml
+      <context:annotation-config/>
+  ```
+  
+  然后再启动上面的`ClassPathXmlApplicationContext`例子：也会有这几个Bean的后置处理器
+  
+  ![image-20231227000847089](http://www.iocaop.com/images/2023-12/202312270008150.png)
+  
+  相关搜索：<a href='https://blog.csdn.net/qq_39668099/article/details/89675960'>点击跳转</a>
+
