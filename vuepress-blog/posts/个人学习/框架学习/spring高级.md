@@ -999,3 +999,74 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
   
   相关搜索：<a href='https://blog.csdn.net/qq_39668099/article/details/89675960'>点击跳转</a>
 
+* `AnnotationConfigServletWebServerApplicationContext`，内嵌web容器(tomcat)的ioc容器
+
+  先写个配置类：
+
+  ```java
+      /**
+       * web配置 最少需要三个bean  1、DispatcherServlet 2、ServletWebServerFactory
+       */
+      @Configuration
+      static class WebConfig{
+  
+          /**
+           * 创建web容器
+           * @return
+           */
+          @Bean
+          public ServletWebServerFactory servletWebServerFactory(){
+              return new TomcatServletWebServerFactory();
+          }
+  
+          /**
+           *  前控制器 所有请求都会经过这个servlet
+           * @return
+           */
+          @Bean
+          public DispatcherServlet dispatcherServlet(){
+              return new DispatcherServlet();
+          }
+  
+          /**
+           * Servlet是运行在Tomcat容器中的，需要将DispatcherServlet注册到Tomcat容器中
+           */
+          @Bean
+          public DispatcherServletRegistrationBean dispatcherServletRegistrationBean(DispatcherServlet dispatcherServlet){
+              // 参数1 需要注册的servlet 参数2 路径
+              return new DispatcherServletRegistrationBean(dispatcherServlet, "/");
+          }
+  
+          /**
+           * 加一个控制器 用于呈现效果 Bean的名称如果以/开头，会被认为是一个路径，将来访问时，可以通过路径访问到这个Controller
+           */
+          @Bean("/hello")
+          public Controller controller (){
+  
+              return new Controller() {
+                  @Override
+                  public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+                      response.getWriter().println("hello world");
+                      return null;
+                  }
+              };
+          }
+  
+      }
+  ```
+
+  构造传参：
+
+  ```java
+      public static void testAnnotationConfigServletWebServerApplicationContext(){
+          // 创建时指定配置类，
+          AnnotationConfigServletWebServerApplicationContext context = new AnnotationConfigServletWebServerApplicationContext(WebConfig.class);
+  
+      }
+  ```
+
+  启动：
+
+  ![image-20231227003620495](http://www.iocaop.com/images/2023-12/202312270036578.png)
+
+  ![image-20231227003735025](http://www.iocaop.com/images/2023-12/202312270037067.png)
