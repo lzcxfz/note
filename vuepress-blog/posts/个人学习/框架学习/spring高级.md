@@ -785,7 +785,7 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
 
 数字越小的，优先级越高，所以`CommonAnnotationBeanPostProcessor`排在前面。
 
-### 10-ApplicationContext的实现
+### 10~12-ApplicationContext的实现
 
 学习4个比较典型的实现类。
 
