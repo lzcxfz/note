@@ -4,7 +4,7 @@ layout: Blog
 icon: home
 title: 主页
 # heroImage: /logo.svg
-bgImage: https://api.123home.page/api.php?category=all
+bgImage: http://www.iocaop.com/images/2023-12/f05f4c72928630cc82cd9d4aa3c9765.jpg
 heroText: 
 heroFullScreen: true
 tagline: 路虽远，行则将至。
