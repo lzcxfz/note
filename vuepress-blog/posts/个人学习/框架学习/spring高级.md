@@ -1215,3 +1215,33 @@ public class MyPostProcessor implements InstantiationAwareBeanPostProcessor, Des
 * 依赖注入时：处理`@Autowired`，`@Value`，`@Resource`
 * Bean初始化前后：前处理`@PostConstruct`、`@ConfigurationProperties`，后做代理增强，替换原来的Bean
 * 销毁前：处理`@PreDestroy`
+
+### 14-模板设计模式
+
+可以看到在`Bean的后置处理器`中，有很多扩展功能，那么来模拟一下Bean的生命周期，并且模拟`Bean的后置处理器`，模拟一下扩展功能。
+
+```java
+/**
+ * 模拟bean后处理器
+ *
+ * @author 赖卓成
+ * @date 2024/01/03
+ */
+public class SimulateBeanPostProcessor {
+
+    public static void main(String[] args) {
+        System.out.println("执行构造方法");
+        System.out.println("依赖注入");
+        System.out.println("初始化");
+        System.out.println("销毁");
+    }
+}
+```
+
+这时候需要在初始化时增加功能，如处理`@Autowired`，过了一段时间又要处理`@Value`，如何优雅实现？
+
+使用模板设计模式：
+
+```java
+```
+
