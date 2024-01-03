@@ -1070,3 +1070,71 @@ AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);
   ![image-20231227003620495](http://www.iocaop.com/images/2023-12/202312270036578.png)
 
   ![image-20231227003735025](http://www.iocaop.com/images/2023-12/202312270037067.png)
+
+### 13-Bean的生命周期
+
+先大致看一下生命周期，创建一个Bean用来体现生命周期：
+
+```java
+/**
+ * 生命周期Bean
+ *
+ * @author 赖卓成
+ * @date 2024/01/03
+ */
+@Component
+public class LifeCycleBean {
+
+    private static final Logger log = LoggerFactory.getLogger(LifeCycleBean.class);
+
+    public LifeCycleBean() {
+        log.info("构造");
+    }
+
+    /**
+     * 这里做依赖注入，注入环境变量
+     *
+     * @param home 达梦数据库home
+     */
+    @Autowired
+    public void autowire(@Value("${DM_HOME}") String home){
+        log.info("依赖注入，{}",home);
+    }
+
+    @PostConstruct
+    public void init(){
+        log.info("初始化");
+    }
+
+    @PreDestroy
+    public void destroy(){
+        log.info("销毁");
+    }
+}
+
+```
+
+启动类：
+
+```java
+@SpringBootApplication
+public class BeanLifePeriod {
+    public static void main(String[] args) {
+        ConfigurableApplicationContext run = SpringApplication.run(BeanLifePeriod.class, args);
+        run.close();
+    }
+}
+```
+
+启动可以看到日志：
+
+![image-20240103174002894](http://www.iocaop.com/images/2024-01/image-20240103174002894.png)
+
+小结：
+
+Bean的生命周期：
+
+* 执行构造方法创建Bean
+* 依赖注入
+* 初始化
+* IOC容器关闭之前销毁Bean
