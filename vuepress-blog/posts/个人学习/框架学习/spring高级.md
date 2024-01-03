@@ -1221,6 +1221,23 @@ public class MyPostProcessor implements InstantiationAwareBeanPostProcessor, Des
 可以看到在`Bean的后置处理器`中，有很多扩展功能，那么来模拟一下Bean的生命周期，并且模拟`Bean的后置处理器`，模拟一下扩展功能。
 
 ```java
+    static class MyBeanFactory{
+        public Object getBean(){
+            Object bean = new Object();
+            System.out.println("执行构造方法");
+            System.out.println("依赖注入");
+            System.out.println("初始化");
+            System.out.println("销毁");
+            return bean;
+        }
+    }
+```
+
+这时候需要在初始化时增加功能，如处理`@Autowired`，过了一段时间又要处理`@Value`，如何优雅实现？
+
+使用模板设计模式：
+
+```java
 /**
  * 模拟bean后处理器
  *
@@ -1230,18 +1247,77 @@ public class MyPostProcessor implements InstantiationAwareBeanPostProcessor, Des
 public class SimulateBeanPostProcessor {
 
     public static void main(String[] args) {
-        System.out.println("执行构造方法");
-        System.out.println("依赖注入");
-        System.out.println("初始化");
-        System.out.println("销毁");
+
+        MyBeanFactory beanFactory = new MyBeanFactory();
+        beanFactory.addBeanPostProcessor(new BeanPostProcessor() {
+            @Override
+            public void inject(Object Bean) {
+                System.out.println("处理@Autowired注解");
+            }
+        });
+        Object bean = beanFactory.getBean();
+
+    }
+
+
+    /**
+     * 模拟BeanFactory
+     *
+     * @author 赖卓成
+     * @date 2024/01/03
+     */
+    static class MyBeanFactory{
+        public Object getBean(){
+            Object bean = new Object();
+            System.out.println("执行构造方法");
+            System.out.println("依赖注入");
+            System.out.println("初始化");
+            beanPostProcessorList.forEach(b->b.inject(bean));
+            System.out.println("销毁");
+            return bean;
+        }
+
+        /**
+         * bean后处理器列表
+         */
+        private List<BeanPostProcessor> beanPostProcessorList = new ArrayList<>();
+
+        /**
+         * 添加bean后处理器
+         *
+         * @param beanPostProcessor bean后处理器
+         */
+        public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor){
+            this.beanPostProcessorList.add(beanPostProcessor);
+        }
+
+    }
+
+    /**
+     * 模拟bean后处理器，定义接口
+     *
+     * @author 赖卓成
+     * @date 2024/01/03
+     */
+    static interface BeanPostProcessor{
+        void inject(Object Bean);
     }
 }
 ```
 
-这时候需要在初始化时增加功能，如处理`@Autowired`，过了一段时间又要处理`@Value`，如何优雅实现？
+![image-20240103184341571](http://www.iocaop.com/images/2024-01/image-20240103184341571.png)
 
-使用模板设计模式：
+当我们需要增加功能时，多写一个实现，添加到列表中就可以了。如添加`@Value`注解处理器：
 
 ```java
+    public static void main(String[] args) {
+
+        MyBeanFactory beanFactory = new MyBeanFactory();
+        beanFactory.addBeanPostProcessor(Bean -> System.out.println("处理@Autowired注解"));
+        beanFactory.addBeanPostProcessor(Bean -> System.out.println("处理@Value注解"));
+        Object bean = beanFactory.getBean();
+
+    }
 ```
 
+![image-20240103184457974](http://www.iocaop.com/images/2024-01/image-20240103184457974.png)
