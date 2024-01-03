@@ -1141,4 +1141,77 @@ Bean的生命周期：
 
 之前学习过很多`后置处理器`，其中有一种叫做`BeanFactory后置处理器`主要作用是补充Bean的定义，另一种是`Bean的后置处理器`。
 
-跟Bean生命周期相关的是`Bean的后置处理器`，
+跟Bean生命周期相关的是`Bean的后置处理器`，重写一下`InstantiationAwareBeanPostProcessor`和`DestructionAwareBeanPostProcessor`的方法，体会一下Bean各个生命周期时`Bean的后置处理器`提供的增强：
+
+```java
+@Component
+public class MyPostProcessor implements InstantiationAwareBeanPostProcessor, DestructionAwareBeanPostProcessor {
+
+    private static final Logger log = LoggerFactory.getLogger(MyPostProcessor.class);
+
+    @Override
+    public void postProcessBeforeDestruction(Object bean, String beanName) throws BeansException {
+        if (beanName.equals("lifeCycleBean")){
+            log.info("<<<<<<<<<销毁之前执行，如@PreDestroy");
+        }
+    }
+
+    @Override
+    public boolean requiresDestruction(Object bean) {
+        return DestructionAwareBeanPostProcessor.super.requiresDestruction(bean);
+    }
+
+    @Override
+    public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+        if (beanName.equals("lifeCycleBean")){
+            log.info("<<<<<<<<<实例化之前执行，这里返回的对象会替换掉原来的Bean");
+        }
+        return null;
+    }
+
+    @Override
+    public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+        if (beanName.equals("lifeCycleBean")){
+            log.info("<<<<<<<<<实例化之后执行，这里如果返回false，则会跳过依赖注入阶段");
+        }
+        return true;
+    }
+
+    @Override
+    public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+        if (beanName.equals("lifeCycleBean")){
+            log.info("<<<<<<<<<依赖注入阶段执行，如@Autowired，@Value，@Resource");
+        }
+        return pvs;
+    }
+
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        if (beanName.equals("lifeCycleBean")){
+            log.info("<<<<<<<<<初始化之前执行，这里返回的对象会替换掉原来的Bean，如@PostConstruct、@ConfigurationProperties");
+        }
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        if (beanName.equals("lifeCycleBean")){
+            log.info("<<<<<<<<<初始化之后执行，这里返回的对象会替换掉原来的Bean，如代理增强");
+        }
+        return bean;
+    }
+}
+```
+
+运行：
+
+![image-20240103181245742](http://www.iocaop.com/images/2024-01/image-20240103181245742.png)
+
+小结：
+
+* Bean的创建，即构造方法前后做了增强：前处理和Bean，后根据返回值决定是否进入依赖注入阶段
+
+* 依赖注入时：处理`@Autowired`，`@Value`，`@Resource`
+* Bean初始化前后：前处理`@PostConstruct`、`@ConfigurationProperties`，后做代理增强，替换原来的Bean
+* 销毁前：处理`@PreDestroy`
