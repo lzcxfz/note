@@ -1321,3 +1321,153 @@ public class SimulateBeanPostProcessor {
 ```
 
 ![image-20240103184457974](http://www.iocaop.com/images/2024-01/image-20240103184457974.png)
+
+### 15-常见的Bean的后置处理器
+
+先创建一个干净的`ApplicationContext`，然后注册Bean，启动后看看效果：
+
+```java
+/**
+ * 测试Bean的后置处理器
+ *
+ * @author 赖卓成
+ * @date 2024/01/05
+ */
+public class TestBeanPostProcessor01 {
+
+    public static void main(String[] args) {
+        // 一个干净的Spring容器 为什么说是干净的？因为没有注册任何bean的后置处理器 不会干扰测试
+        GenericApplicationContext context = new GenericApplicationContext();
+        // 注册Bean1
+        context.registerBean("bean1",Bean1.class);
+        context.registerBean("bean2",Bean2.class);
+        context.registerBean("bean3",Bean3.class);
+
+        // 初始化Spring容器 执行BeanFactoryPostProcessor BeanPostProcessor 初始化单例bean
+        context.refresh();
+
+        // 关闭容器
+        context.close();
+    }
+}
+```
+
+```java
+public class Bean1 {
+
+    public static Logger logger = LoggerFactory.getLogger(Bean1.class);
+
+    private Bean2 bean2;
+
+    private Bean3 bean3;
+
+    private String os;
+
+    public Bean1() {
+        logger.info("构造");
+    }
+
+    @Autowired
+    public void setBean2(Bean2 bean2) {
+        logger.info("@Autowired生效，注册Bean2,{}",bean2);
+        this.bean2 = bean2;
+    }
+
+    @Autowired
+    public void setBean3(Bean3 bean3) {
+        logger.info("@Autowired生效，注册Bean3,{}",bean3);
+        this.bean3 = bean3;
+    }
+
+    @Autowired
+    public void setOs(@Value("${OS}") String os) {
+        logger.info("@Autowired生效，注册home,{}",os);
+        this.os = os;
+    }
+
+    @PostConstruct
+    public void init(){
+        logger.info("@PostConstruct生效，初始化");
+    }
+
+
+    @PreDestroy
+    public void destroy(){
+        logger.info("@PreDestroy生效，销毁");
+    }
+
+
+    @Override
+    public String toString() {
+        return "Bean1{" +
+                "bean2=" + bean2 +
+                ", bean3=" + bean3 +
+                ", home='" + os + '\'' +
+                '}';
+    }
+}
+```
+
+```java
+public class Bean2 {
+
+    private static Logger logger = LoggerFactory.getLogger(Bean2.class);
+
+    public Bean2() {
+        logger.info("Bean2构造");
+    }
+}
+
+```
+
+```java
+public class Bean3 {
+
+    private static Logger logger = LoggerFactory.getLogger(Bean3.class);
+
+    public Bean3() {
+        logger.info("Bean3构造");
+    }
+}
+```
+
+启动后发现，只执行了构造，依赖注入，初始化后，销毁前等方法都没有执行：
+
+![image-20240105005231997](http://www.iocaop.com/images/2024-01/202401050052044.png)
+
+因为这是一个干净的`ApplicationContext`容器，没有任何的Bean后置处理器，所以没有这些功能，现在为容器添加上`AutowiredAnnotationBeanPostProcessor`的Bean的后置处理器：
+
+这些Bean的后置处理器也是以Bean的形式存在容器的：
+
+```java
+        context.registerBean(AutowiredAnnotationBeanPostProcessor.class);
+```
+
+添加后执行出现报错：
+
+![image-20240105005531717](http://www.iocaop.com/images/2024-01/202401050055788.png)
+
+需要替换默认的`自动装配候选者解析器`，后续会细讲：
+
+```java
+        context.getDefaultListableBeanFactory().setAutowireCandidateResolver(new ContextAnnotationAutowireCandidateResolver());
+```
+
+这样就可以看到现在拥有了依赖注入的功能，`@Autowired`起作用了
+
+![image-20240105005918604](http://www.iocaop.com/images/2024-01/202401050059663.png)
+
+再加上`CommonAnnotationBeanPostProcessor`
+
+```java
+        context.registerBean(CommonAnnotationBeanPostProcessor.class);
+```
+
+`@PostConstruct`,`@PreDestroy`等注解也起作用了，包括`@Resource`，这里没写。
+
+![image-20240105010128287](http://www.iocaop.com/images/2024-01/202401050101349.png)
+
+> 这里学习了`@Autowired`比较少见的用法，配合`@Value`注入环境变量。
+>
+> `@Autowired`如果写在方法上，则认为是从容器中装配方法参数类型的Bean，如果参数类型是`String`，则需要配合`@Value`进行装配，否则没用。
+
