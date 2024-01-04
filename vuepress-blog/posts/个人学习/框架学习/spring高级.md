@@ -1453,7 +1453,7 @@ public class Bean3 {
         context.getDefaultListableBeanFactory().setAutowireCandidateResolver(new ContextAnnotationAutowireCandidateResolver());
 ```
 
-这样就可以看到现在拥有了依赖注入的功能，`@Autowired`起作用了
+这样就可以看到现在拥有了依赖注入的功能，`@Autowired`起作用了，并且可以看到，在执行了需要装配的Bean的构造后，进行了依赖注入。
 
 ![image-20240105005918604](http://www.iocaop.com/images/2024-01/202401050059663.png)
 
