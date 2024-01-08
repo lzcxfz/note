@@ -1322,7 +1322,7 @@ public class SimulateBeanPostProcessor {
 
 ![image-20240103184457974](http://www.iocaop.com/images/2024-01/image-20240103184457974.png)
 
-### 15-常见的Bean的后置处理器
+### 15~16-常见的Bean的后置处理器
 
 先创建一个干净的`ApplicationContext`，然后注册Bean，启动后看看效果：
 
@@ -1471,3 +1471,46 @@ public class Bean3 {
 >
 > `@Autowired`如果写在方法上，则认为是从容器中装配方法参数类型的Bean，如果参数类型是`String`，则需要配合`@Value`进行装配，否则没用。
 
+再创建Bean4：
+
+```java
+@ConfigurationProperties(prefix = "java")
+@Data
+public class Bean4 {
+
+    /**
+     * 名称
+     */
+    private String home;
+
+    /**
+     * 年龄
+     */
+    private String version;
+}
+```
+
+直接获取Bean，打印
+
+```java
+        Bean4 bean4 = context.getBean(Bean4.class);
+        System.out.println("bean4 = " + bean4);
+```
+
+![image-20240108164908541](http://www.iocaop.com/images/2024-01/image-20240108164908541.png)
+
+加上相应的Bean后置处理器：
+
+```java
+        ConfigurationPropertiesBindingPostProcessor.register(context.getDefaultListableBeanFactory());
+
+        // 初始化Spring容器 执行BeanFactoryPostProcessor BeanPostProcessor 初始化单例bean
+        context.refresh();
+
+        Bean4 bean4 = context.getBean(Bean4.class);
+        System.out.println("bean4 = " + bean4);
+```
+
+![image-20240108172532765](http://www.iocaop.com/images/2024-01/image-20240108172532765.png)
+
+> 此处读取的是环境变量中的值，不是application.yml中的值
