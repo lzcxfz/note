@@ -1514,3 +1514,6 @@ public class Bean4 {
 ![image-20240108172532765](http://www.iocaop.com/images/2024-01/image-20240108172532765.png)
 
 > 此处读取的是环境变量中的值，不是application.yml中的值
+
+### 17-@Autowired Bean后置处理器的执行分析
+
