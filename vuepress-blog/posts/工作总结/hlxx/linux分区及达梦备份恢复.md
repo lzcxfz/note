@@ -174,3 +174,5 @@ recover时失败:
 启动实例：
 
 ![image-20240916212408494](http://www.iocaop.com/images/2024-09/202409162124546.png)
+
+参考文档：<a href='http://www.iocaop.com/images/2024-09/202409170014890.docx'>点击下载</a>
