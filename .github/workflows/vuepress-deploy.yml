@@ -18,15 +18,15 @@ jobs:
     - name: Build
       run: npm run docs:build
     - name: Initialize destination Git repository
-          run: |
-            git init
-            git config user.name "赖卓成"
-            git config user.email "911823616@qq.com"
-            git remote add origin https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/lzcxfz/webserver.git
-        - name: Add and commit files
-          run: |
-            git add.
-            git commit -m "Deploy build files"
-        - name: Push to destination Git repository
-          run: |
-            git push origin master -f
+      run: |
+        git init
+        git config user.name "赖卓成"
+        git config user.email "911823616@qq.com"
+        git remote add origin https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/lzcxfz/webserver.git
+    - name: Add and commit files
+      run: |
+        git add.
+        git commit -m "Deploy build files"
+    - name: Push to destination Git repository
+      run: |
+        git push origin master -f
