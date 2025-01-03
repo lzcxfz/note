@@ -20,9 +20,11 @@ jobs:
     - name: Initialize destination Git repository
       run: |
         git init
-        git remote set-url origin https://${{secrets.GIT_USERNAME}}:${{secrets.GIT_PASSWORD}}@github.com/lzcxfz/webserver.git 
         git config user.name "lzcxfz"
         git config user.email "911823616@qq.com"
+        export GIT_USERNAME=${{ secrets.GIT_USERNAME }}
+        export GIT_PASSWORD=${{ secrets.GIT_PASSWORD }}
+        git remote add origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/lzcxfz/webserver.git
     - name: Add and commit files
       run: |
         git add .
