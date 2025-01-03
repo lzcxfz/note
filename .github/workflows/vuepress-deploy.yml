@@ -29,4 +29,4 @@ jobs:
         git commit -m "Deploy build files"
     - name: Push to destination Git repository
       run: |
-        git push origin master
+        git push origin main
