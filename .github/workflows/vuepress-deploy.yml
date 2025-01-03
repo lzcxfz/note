@@ -25,7 +25,7 @@ jobs:
         git config user.email "911823616@qq.com"
     - name: Add and commit files
       run: |
-        git add.
+        git add .
         git commit -m "Deploy build files"
     - name: Push to destination Git repository
       run: |
