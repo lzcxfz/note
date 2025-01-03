@@ -23,10 +23,14 @@ jobs:
         git config user.name "赖卓成"
         git config user.email "911823616@qq.com"
         git remote add origin https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_PASSWORD }}@github.com/lzcxfz/webserver.git
+    - name: Fetch and merge from origin master (if exists)
+      run: |
+        git fetch origin master
+        git merge origin/master --allow-unrelated-histories
     - name: Add and commit files
       run: |
         git add.
         git commit -m "Deploy build files"
     - name: Push to destination Git repository
       run: |
-        git push origin master -f
+        git push origin master
