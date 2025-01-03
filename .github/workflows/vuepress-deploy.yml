@@ -19,6 +19,7 @@ jobs:
       run: npm run docs:build
     - name: Initialize destination Git repository
       run: |
+        git init
         git config user.name "lzcxfz"
         git config user.email "911823616@qq.com"
         export GIT_USERNAME=${{ secrets.GIT_USERNAME }}
