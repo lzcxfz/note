@@ -22,7 +22,7 @@ jobs:
         git init
         git config user.name "赖卓成"
         git config user.email "911823616@qq.com"
-        git remote set-url origin https://lzcxfz:${{ secrets.GIT_PASSWORD }}@github.com/lzcxfz/webserver.git
+        git remote set-url origin https://911823616@qq.com:${{ secrets.GIT_PASSWORD }}@github.com/lzcxfz/webserver.git
     - name: Add and commit files
       run: |
         git add .
