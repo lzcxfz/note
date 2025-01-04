@@ -19,11 +19,11 @@ jobs:
       run: npm run docs:build
     - name: Initialize destination Git repository
       run: |
-        git config user.name "lzcxfz"
+        git init
+        git config user.name "赖卓成"
         git config user.email "911823616@qq.com"
         export GIT_USERNAME=${{ secrets.GIT_USERNAME }}
         export GIT_PASSWORD=${{ secrets.GIT_PASSWORD }}
-        git init
         git remote add origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/lzcxfz/webserver.git
     - name: Add and commit files
       run: |
