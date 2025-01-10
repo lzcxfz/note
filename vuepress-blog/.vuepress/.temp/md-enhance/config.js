@@ -1,8 +1,8 @@
 import { defineClientConfig } from "@vuepress/client";
     import { defineAsyncComponent } from "vue";
-import FlowChart from "D:/dev/lzc-sync/note/node_modules/vuepress-plugin-md-enhance/lib/client/components/FlowChart";
-import Presentation from "D:/dev/lzc-sync/note/node_modules/vuepress-plugin-md-enhance/lib/client/components/Presentation";
-import "D:/dev/lzc-sync/note/node_modules/vuepress-plugin-md-enhance/lib/client/styles/container/index.scss";
+import FlowChart from "/home/runner/work/note/note/node_modules/vuepress-plugin-md-enhance/lib/client/components/FlowChart";
+import Presentation from "/home/runner/work/note/note/node_modules/vuepress-plugin-md-enhance/lib/client/components/Presentation";
+import "/home/runner/work/note/note/node_modules/vuepress-plugin-md-enhance/lib/client/styles/container/index.scss";
 
 
 export default defineClientConfig({
