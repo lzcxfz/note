@@ -23,7 +23,6 @@ jobs:
         ls
         git config --global user.email "911823616@qq.com"
         git config --global user.name "赖卓成"
-        git remote add origin https://lzcxfz:${{ secrets.GIT_PASSWORD }}@github.com/lzcxfz/webserver.git
     - name: Add and commit files
       run: |
         git add .
