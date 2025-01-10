@@ -25,8 +25,8 @@ jobs:
         git config --global user.name "赖卓成"
     - name: Add and commit files
       run: |
-        git add .
+        git add - A
         git commit -m "Deploy build files"
     - name: Push to destination Git repository
       run: |
-        git push origin main
+        git push -f https://github.com/lzcxfz/note.git master:pages
