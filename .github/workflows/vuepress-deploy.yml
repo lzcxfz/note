@@ -19,6 +19,7 @@ jobs:
       run: npm run docs:build
     - name: Initialize destination Git repository
       run: |
+        git init 
         git remote add origin https://lzcxfz:${{ secrets.GIT_PASSWORD }}@github.com/lzcxfz/webserver.git
     - name: Add and commit files
       run: |
