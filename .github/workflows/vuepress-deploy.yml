@@ -25,7 +25,7 @@ jobs:
         git config --global user.name "赖卓成"
     - name: Add and commit files
       run: |
-        git add -A
+        git add .
         git commit -m "Deploy build files"
     - name: Push to destination Git repository
       run: |
