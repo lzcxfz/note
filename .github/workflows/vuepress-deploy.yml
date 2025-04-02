@@ -23,5 +23,5 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
-        source: 'vuepress-blog/.vuepress/dist'
-        target: '/usr/local/nginx/html'
+        source: 'vuepress-blog/.vuepress/dist/'
+        target: '/usr/local/webserver/nginx/html'
