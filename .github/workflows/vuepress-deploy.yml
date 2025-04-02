@@ -17,16 +17,11 @@ jobs:
       run: npm ci
     - name: Build
       run: npm run docs:build
-    - name: Initialize destination Git repository
-      run: |
-        cd vuepress-blog/.vuepress/dist
-        ls
-        git config --global user.email "911823616@qq.com"
-        git config --global user.name "赖卓成"
-    - name: Add and commit files
-      run: |
-        git add .
-        git commit -m "Deploy build files"
-    - name: Push to destination Git repository
-      run: |
-        git push -f https://github.com/lzcxfz/note.git main:pages 
+    - name: Deploy to server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        source: 'vuepress-blog/.vuepress/dist'
+        target: '/usr/local/nginx/html'
