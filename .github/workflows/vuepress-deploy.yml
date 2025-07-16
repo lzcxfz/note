@@ -24,4 +24,4 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         source: 'vuepress-blog/.vuepress/dist/'
-        target: '/root/nginx/html'
+        target: '/root/lzc-sync/code/deploy/blog/nginx/html'
